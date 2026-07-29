@@ -21,8 +21,16 @@
  * SETUP — about five minutes, once
  * ----------------------------------------------------------------------------
  *   1. Open the spreadsheet your form responses go into.
- *   2. Extensions > Apps Script. Delete whatever is in Code.gs and paste this
- *      whole file in. Rename the file to MedLit.gs if you like.
+ *   2. From THAT SPREADSHEET, choose Extensions > Apps Script. Delete whatever
+ *      is in Code.gs and paste this whole file in. Rename it MedLit.gs if you
+ *      like.
+ *
+ *      Getting here by opening script.google.com and starting a new project
+ *      does not work the same way. A project made that way is not attached to
+ *      any spreadsheet, so setup() has nothing to build in, and Google will not
+ *      let it add the MedLit menu or open the logging dialogs. If you already
+ *      did that, the fix is to paste this into the spreadsheet's own editor as
+ *      above. Failing that, fill in SPREADSHEET_ID and accept losing the menu.
  *
  *   3. SET THE TIMEZONE (do this before step 5, or the Sunday email fires at
  *      the wrong hour). In the Apps Script editor: Project Settings, in the
@@ -57,6 +65,9 @@
  *
  *   No "MedLit" menu? Reload the spreadsheet tab. The menu is added when the
  *   spreadsheet opens, so a tab that was already open won't have it.
+ *
+ *   "Cannot read properties of null" from setup()? The script is not attached
+ *   to a spreadsheet. See step 2 above.
  * ============================================================================
  */
 
@@ -64,6 +75,22 @@
 /* ============================================================================
  * SETTINGS — everything you need to edit lives between here and "END SETTINGS"
  * ========================================================================== */
+
+/**
+ * Leave this EMPTY if the script lives inside the spreadsheet — which is the
+ * setup you want. You get that by opening the spreadsheet and choosing
+ * Extensions > Apps Script, not by starting a new project at script.google.com.
+ *
+ * Only fill it in if you deliberately keep this as a standalone project. Paste
+ * the long id out of the spreadsheet's own address bar, the part between
+ * /d/ and /edit:
+ *   docs.google.com/spreadsheets/d/THIS_PART_HERE/edit
+ *
+ * Be aware of what a standalone project cannot do: no MedLit menu, no logging
+ * dialogs, and no "Last updated" stamp. Google only gives those to a script
+ * that lives inside the file. Everything else still works.
+ */
+var SPREADSHEET_ID = '';                                     // <<< EDIT THIS
 
 /** Where volunteer alerts and the weekly partner digest are sent. */
 var ALERT_EMAIL = 'medliterateofficial@gmail.com';          // <<< EDIT THIS
@@ -247,7 +274,7 @@ var C = {
  * ========================================================================== */
 
 function setup() {
-  var ss  = SpreadsheetApp.getActiveSpreadsheet();
+  var ss  = getSpreadsheet_();
   var log = [];
 
   log.push('MedLit setup — ' + new Date());
@@ -289,8 +316,18 @@ function setup() {
   }
 
   log.push('');
-  log.push('OK   Menu installed. Reload the spreadsheet tab and look for "MedLit"');
-  log.push('     in the menu bar, next to Help.');
+  if (SpreadsheetApp.getActiveSpreadsheet()) {
+    log.push('OK   Menu installed. Reload the spreadsheet tab and look for "MedLit"');
+    log.push('     in the menu bar, next to Help.');
+  } else {
+    log.push('WARN This script is standalone, working on the spreadsheet in');
+    log.push('     SPREADSHEET_ID. The tabs, the emails and the Sunday digest all');
+    log.push('     work, but there will be no MedLit menu, no logging dialogs and');
+    log.push('     no "Last updated" stamp — Google only gives those to a script');
+    log.push('     that lives inside the spreadsheet.');
+    log.push('     To get them: open the spreadsheet, Extensions > Apps Script,');
+    log.push('     paste this file there, and clear SPREADSHEET_ID.');
+  }
   log.push('');
   log.push('Setup finished. Submit your form once to test it end to end.');
 
@@ -483,6 +520,43 @@ function buildDashboardTab_(ss) {
   return (existed ? 'OK   Tab checked: ' : 'OK   Tab created: ') + TAB.dashboard;
 }
 
+/**
+ * The spreadsheet this script works on.
+ *
+ * getActiveSpreadsheet() returns the file a bound script lives in. In a
+ * standalone project there is no such file and it returns null, which is where
+ * "Cannot read properties of null" comes from. This turns that into an
+ * explanation, and lets SPREADSHEET_ID stand in when it's set.
+ */
+function getSpreadsheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();   // null in a standalone project
+  if (ss) return ss;
+
+  if (SPREADSHEET_ID) {
+    try {
+      return SpreadsheetApp.openById(SPREADSHEET_ID);
+    } catch (err) {
+      throw new Error(
+        'SPREADSHEET_ID is set to "' + SPREADSHEET_ID + '", but that spreadsheet ' +
+        'could not be opened. Check you copied the id from between /d/ and /edit ' +
+        'in the address bar, and that this account can open the file. (' + err.message + ')');
+    }
+  }
+
+  throw new Error(
+    'This script is not attached to a spreadsheet.\n\n' +
+    'It looks like it was created as a new project at script.google.com. A ' +
+    'project made that way has no spreadsheet of its own, so there is nothing ' +
+    'for setup() to build in.\n\n' +
+    'The fix, and the one worth doing: open your form-response spreadsheet, ' +
+    'choose Extensions > Apps Script, and paste this file in there instead. ' +
+    'That version can also add the MedLit menu and the logging dialogs, which ' +
+    'a standalone project cannot.\n\n' +
+    'If you would rather keep this project where it is, paste the spreadsheet ' +
+    'id into SPREADSHEET_ID at the top of this file. Everything except the ' +
+    'menu, the dialogs and the "Last updated" stamp will work.');
+}
+
 function getOrCreateSheet_(ss, name) {
   return ss.getSheetByName(name) || ss.insertSheet(name);
 }
@@ -506,7 +580,7 @@ function writeHeaders_(sh, headers) {
  */
 
 function onVolunteerFormSubmit(e) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getSpreadsheet_();
   var v  = readSubmission_(e);
   var noteParts = [];
 
@@ -606,7 +680,7 @@ function alertBody_(v) {
     'They have been sent the confirmation email, which says we will be in',
     'touch within a week.',
     '',
-    SpreadsheetApp.getActiveSpreadsheet().getUrl()
+    getSpreadsheet_().getUrl()
   ].join('\n');
 }
 
@@ -638,7 +712,7 @@ function onEdit(e) {
     if (sh.getName() === TAB.dashboard &&
         e.range.getRow() === DASH.stampRow &&
         e.range.getColumn() === DASH.stampCol) return;
-    touchDashboardStamp_(e.source || SpreadsheetApp.getActiveSpreadsheet());
+    touchDashboardStamp_(e.source);
   } catch (err) {
     // A simple trigger must never throw — it would surface as an error toast
     // on an ordinary edit.
@@ -647,7 +721,7 @@ function onEdit(e) {
 
 function touchDashboardStamp_(ss) {
   try {
-    var sh = (ss || SpreadsheetApp.getActiveSpreadsheet()).getSheetByName(TAB.dashboard);
+    var sh = (ss || getSpreadsheet_()).getSheetByName(TAB.dashboard);
     if (sh) sh.getRange(DASH.stampRow, DASH.stampCol).setValue(new Date());
   } catch (ignore) {}
 }
@@ -658,7 +732,7 @@ function touchDashboardStamp_(ss) {
  * ========================================================================== */
 
 function sendWeeklyPartnerDigest() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = getSpreadsheet_();
   var sh = ss.getSheetByName(TAB.partners);
   if (!sh) { Logger.log('No "' + TAB.partners + '" tab. Run setup() first.'); return; }
 
@@ -793,7 +867,7 @@ function openWorkshopDialog() {
 
 function submitWorkshopLog(d) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet_();
     var sh = requireSheet_(ss, TAB.workshops);
 
     var date = parseIsoDate_(d.date);
@@ -886,7 +960,7 @@ function openPartnerDialog() {
 
 function submitPartnerUpdate(d) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet_();
     var sh = requireSheet_(ss, TAB.partners);
 
     var row = readInt_(d.row);
@@ -927,7 +1001,7 @@ function submitPartnerUpdate(d) {
 
 /** Every organisation on the Partners tab, newest rows last. */
 function partnerOptions_() {
-  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB.partners);
+  var sh = getSpreadsheet_().getSheetByName(TAB.partners);
   if (!sh || sh.getLastRow() < 2) return [];
   var rows = sh.getRange(2, 1, sh.getLastRow() - 1, PARTNER_HEADERS.length).getValues();
   var out = [];
@@ -978,7 +1052,7 @@ function openHoursDialog() {
 
 function submitVolunteerHours(d) {
   try {
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet_();
     var sh = requireSheet_(ss, TAB.hours);
 
     var volunteer = String(d.volunteer || '').trim();
@@ -1011,7 +1085,7 @@ function submitVolunteerHours(d) {
 
 /** Volunteer names, de-duplicated, alphabetical. */
 function volunteerOptions_() {
-  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB.volunteers);
+  var sh = getSpreadsheet_().getSheetByName(TAB.volunteers);
   if (!sh || sh.getLastRow() < 2) return [];
   var names = sh.getRange(2, 2, sh.getLastRow() - 1, 1).getValues();
   var seen = {}, out = [];
