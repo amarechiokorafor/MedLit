@@ -6,17 +6,17 @@ step, so it deploys as-is.
 ```
 index.html                       the whole page
 styles.css                       the whole stylesheet
-assets/medlit-logo.png           stacked lockup — header
+assets/medlit-logo.png           stacked lockup — header and footer
 assets/medlit-logo-vertical.png  full lockup with tagline — hero
-assets/medlit-bottle.png         bottle detail from the lockup — footer
 assets/favicon.png               browser tab icon
 assets/apple-touch-icon.png      iOS home-screen icon
 assets/guides/                   guide PDFs
 ```
 
-All four are cut from the two official lockups at print resolution with
-transparent backgrounds, so they sit on any background. The footer mark and
-the favicon are the pill bottle taken out of the stacked lockup.
+Both lockups are cut from the official logo PDF at print resolution with
+transparent backgrounds. The favicon is the vertical lockup squared off — it
+keeps the wordmark, which a bottle-only icon would lose. In the footer the
+wordmark sits on a white chip, because navy-on-navy would disappear.
 
 ## Before you publish — one thing to swap
 

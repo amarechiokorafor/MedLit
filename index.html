@@ -18,12 +18,11 @@
 
   <!-- ============================================================
        1. HEADER — logo, tagline, section nav
-       LOGO ASSETS — all cut from the two official lockups, transparent:
-         assets/medlit-logo.png           stacked lockup — header
-         assets/medlit-logo-vertical.png  full lockup with tagline — hero
-         assets/medlit-bottle.png         bottle detail from the stacked
-                                          lockup — footer
-         assets/favicon.png               same bottle, square — browser tab
+       LOGO ASSETS — the two official lockups, cut out with transparent
+       backgrounds. Nothing here is redrawn or recoloured.
+         assets/medlit-logo.png           stacked lockup — header and footer
+         assets/medlit-logo-vertical.png  full lockup with tagline — hero,
+                                          and squared off for the favicon
        The tagline beside the header logo is real HTML text as well as being
        part of the artwork, so screen readers and search engines get it.
        ============================================================ -->
@@ -230,12 +229,12 @@
     <div class="container footer-inner">
 
       <div class="footer__brand">
-        <img class="footer__mark" src="assets/medlit-bottle.png"
-             alt="" width="324" height="420">
-        <div>
-          <p class="footer__name">MedLit</p>
-          <p class="footer__tagline">health made understandable.</p>
-        </div>
+        <!-- The wordmark is navy, so it sits on a white chip rather than
+             straight on the navy footer, where it would disappear. -->
+        <span class="footer__chip">
+          <img src="assets/medlit-logo.png" alt="MedLit" width="398" height="420">
+        </span>
+        <p class="footer__tagline">health made understandable.</p>
       </div>
 
       <div class="footer__contact">
