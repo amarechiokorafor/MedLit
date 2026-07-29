@@ -64,9 +64,9 @@
     <section class="hero">
       <div class="shell hero__inner">
 
-        <div class="hero__copy reveal">
+        <div class="hero__copy">
           <p class="eyebrow">Student-led nonprofit</p>
-          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a&nbsp;privilege.</h1>
+          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a&nbsp;<span class="mark">privilege</span>.</h1>
           <p class="hero__sub">
             MedLit is a student-led nonprofit that makes health information understandable
             &mdash; free workshops and free plain-language guides.
@@ -78,7 +78,7 @@
           </div>
         </div>
 
-        <div class="hero__demo reveal">
+        <div class="hero__demo">
           <div class="rx">
             <div class="rx__cap" aria-hidden="true"></div>
             <div class="rx__body">
@@ -138,13 +138,13 @@
          ============================================================ -->
     <section class="section panel panel--ink" id="problem">
       <div class="shell">
-        <p class="eyebrow eyebrow--onink reveal">The problem</p>
-        <p class="statement reveal">
+        <p class="eyebrow eyebrow--onink">The problem</p>
+        <p class="statement">
           Every day, people struggle with prescription labels, lab results, and insurance
           letters. The print is small, the words are hard to understand, and the person who
           could explain it has already moved on to the next patient.
         </p>
-        <p class="statement statement--turn reveal">
+        <p class="statement statement--turn">
           So people guess. And guessing about your own health is a risk no one should have
           to take.
         </p>
@@ -158,14 +158,14 @@
          ============================================================ -->
     <section class="section" id="what-we-do">
       <div class="shell">
-        <div class="section__head reveal">
+        <div class="section__head">
           <p class="eyebrow">What we do</p>
-          <h2>Three things, done properly.</h2>
+          <h2>Three things, done <span class="mark">properly</span>.</h2>
         </div>
 
         <ul class="cards" role="list">
 
-          <li class="card card--butter reveal">
+          <li class="card card--butter">
             <p class="card__tag">Workshops</p>
             <h3>Free workshops</h3>
             <p>
@@ -180,7 +180,7 @@
             </ul>
           </li>
 
-          <li class="card reveal">
+          <li class="card">
             <p class="card__tag">Guides</p>
             <h3>Free guides</h3>
             <p>
@@ -190,7 +190,7 @@
             <p class="card__note">Reviewed before release. Free to print and hand out.</p>
           </li>
 
-          <li class="card reveal">
+          <li class="card">
             <p class="card__tag">Evaluation</p>
             <h3>Measured results</h3>
             <p>
@@ -213,15 +213,15 @@
          ============================================================ -->
     <section class="section section--tint" id="guides">
       <div class="shell">
-        <div class="section__head reveal">
+        <div class="section__head">
           <p class="eyebrow">Guides</p>
-          <h2>Free to read, print, and hand out.</h2>
+          <h2>Free to read, print, and <span class="mark">hand out</span>.</h2>
           <p class="section__lede">No sign-up. No email address. No catch.</p>
         </div>
 
         <ul class="guides" role="list">
 
-          <li class="guide reveal">
+          <li class="guide">
             <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf" tabindex="-1" aria-hidden="true">
               <img src="assets/guides/what-does-my-prescription-label-say.jpg"
                    alt="" width="620" height="802" loading="lazy">
@@ -252,9 +252,9 @@
          ============================================================ -->
     <section class="section panel panel--butter" id="get-involved">
       <div class="shell cta">
-        <div class="cta__text reveal">
+        <div class="cta__text">
           <p class="eyebrow">Get involved</p>
-          <h2>We&rsquo;re looking for our first volunteers.</h2>
+          <h2>We&rsquo;re looking for our <span class="mark">first volunteers</span>.</h2>
           <p class="cta__lede">
             People to run workshops, write guides, and translate them. If you can explain
             things clearly, or you speak a second language, there is a place for you here.
@@ -265,7 +265,7 @@
             <li>Translate</li>
           </ul>
         </div>
-        <div class="cta__action reveal">
+        <div class="cta__action">
           <!-- FORM_URL PLACEHOLDER — this is the same link as the two above -->
           <a class="btn btn--ink btn--lg" href="FORM_URL">Volunteer with MedLit</a>
           <p class="cta__fine">Takes about two minutes.</p>
@@ -278,9 +278,9 @@
          ============================================================ -->
     <section class="section panel panel--ink" id="partner">
       <div class="shell cta">
-        <div class="cta__text reveal">
+        <div class="cta__text">
           <p class="eyebrow eyebrow--onink">Partner with us</p>
-          <h2 class="onink">Bring a free workshop to your space.</h2>
+          <h2 class="onink">Bring a <span class="mark mark--onink">free workshop</span> to your space.</h2>
           <p class="cta__lede onink">
             If you run a senior community, a library, or a community organization, we would
             love to visit. We handle the materials and the facilitators &mdash; you bring the
@@ -288,7 +288,7 @@
             with dates.
           </p>
         </div>
-        <div class="cta__action reveal">
+        <div class="cta__action">
           <a class="btn btn--butter btn--lg" href="mailto:medliterateofficial@gmail.com?subject=Hosting%20a%20free%20MedLit%20workshop">
             Email us about hosting
           </a>
@@ -338,9 +338,9 @@
   <script>
     // Progressive enhancement only. Everything above works without this file.
     (function () {
-      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
       // 1. Label counter — reports how much of the prescription is decoded.
+      //    This is the page's one interactive mechanic. Everything else is
+      //    static on purpose: type and structure carry the design.
       var rows  = document.querySelectorAll('.rx__row');
       var count = document.getElementById('rx-count');
       if (rows.length && count) {
@@ -356,21 +356,7 @@
         rows.forEach(function (r) { r.addEventListener('toggle', tally); });
       }
 
-      // 2. Reveal on scroll. Without IntersectionObserver, everything just shows.
-      var items = document.querySelectorAll('.reveal');
-      if (reduce || !('IntersectionObserver' in window)) {
-        items.forEach(function (el) { el.classList.add('is-in'); });
-      } else {
-        document.documentElement.classList.add('has-reveal');
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
-          });
-        }, { rootMargin: '0px 0px -12% 0px' });
-        items.forEach(function (el) { io.observe(el); });
-      }
-
-      // 3. Header gets a shadow once the page has moved.
+      // 2. Header gets a shadow once the page has moved.
       var header = document.querySelector('.site-header');
       var onScroll = function () {
         header.classList.toggle('is-stuck', window.scrollY > 8);
