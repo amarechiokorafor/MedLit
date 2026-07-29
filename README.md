@@ -19,11 +19,15 @@ transparent backgrounds. The favicon is the vertical lockup squared off — it
 keeps the wordmark, which a bottle-only icon would lose. In the footer the
 wordmark sits on a white chip, because navy-on-navy would disappear.
 
-## Before you publish — one thing to swap
+## The volunteer form
 
-**The volunteer form.** Search `index.html` for `FORM_URL` (three places, each
-flagged with a comment: the header button, the hero button, and the Get involved
-panel) and replace it with your Google Form link.
+All three "Get involved" buttons — header nav, hero, and the Get involved panel
+— point at the same Google Form. If the form link ever changes, change all
+three; the header one carries a comment saying so.
+
+Volunteer submissions are handled by `automation/MedLit.gs`: it copies each one
+to a Volunteers tab, emails you an alert, and sends the volunteer a
+confirmation. That file has its own setup notes at the top.
 
 ## Deploying
 
