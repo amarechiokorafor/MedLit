@@ -1,0 +1,432 @@
+/* ==========================================================================
+   MedLit — health made understandable.
+   Single stylesheet. No frameworks, no build step.
+
+   Contents
+   1.  Design tokens
+   2.  Base & resets
+   3.  Accessibility helpers (skip link, focus, visually-hidden)
+   4.  Layout (container, sections)
+   5.  Header & nav
+   6.  Hero
+   7.  Buttons
+   8.  Cards (what we do)
+   9.  Guides
+   10. Footer
+   11. Responsive
+   ========================================================================== */
+
+/* ---------- 1. Design tokens ---------------------------------------------
+   Colours sampled from the MedLit logo. Every text/background pair used in
+   this file meets WCAG AA (4.5:1 body, 3:1 large text & UI borders).
+   Orange is deliberately never used behind white text — it does not have the
+   contrast for it. It carries dark navy ink instead.
+   -------------------------------------------------------------------------- */
+:root {
+  --navy:        #1433a0;  /* brand blue, from the wordmark */
+  --navy-deep:   #0f2578;  /* hover / pressed */
+  --ink:         #0b1b4d;  /* headings, and text on orange */
+  --body:        #34405a;  /* body copy */
+  --muted:       #46536b;  /* meta text */
+
+  --orange:      #f58220;  /* pill-bottle cap */
+  --orange-soft: #fde3c9;  /* icon wells, tints */
+  --amber:       #f9c56a;  /* pill-bottle body */
+
+  --white:       #ffffff;
+  --tint:        #eef3fa;  /* light blue-gray section background */
+  --line:        #d3ddec;
+
+  --radius:      14px;
+  --radius-lg:   20px;
+  --shadow:      0 2px 4px rgba(11, 27, 77, .05), 0 10px 24px rgba(11, 27, 77, .07);
+
+  --measure:     34rem;    /* comfortable reading width */
+  --gutter:      clamp(1.25rem, 4vw, 2.5rem);
+
+  --font: "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+          Arial, "Noto Sans", sans-serif;
+}
+
+/* ---------- 2. Base & resets --------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  /* 18px minimum body text is a hard requirement — our readers include
+     older adults. Everything below scales from here in rem. */
+  font-size: 18px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--body);
+  font-family: var(--font);
+  font-size: 1rem;          /* 18px */
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 .6em;
+  text-wrap: balance;
+}
+
+h1 { font-size: clamp(2rem, 1.35rem + 2.9vw, 3.15rem); font-weight: 800; }
+h2 { font-size: clamp(1.6rem, 1.3rem + 1.3vw, 2.15rem); font-weight: 800; }
+h3 { font-size: 1.28rem; font-weight: 700; }
+
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+img, svg { max-width: 100%; height: auto; }
+
+a { color: var(--navy); text-underline-offset: .18em; }
+a:hover { color: var(--navy-deep); }
+
+ul { padding: 0; }
+
+/* ---------- 3. Accessibility helpers ------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -120%);
+  z-index: 100;
+  background: var(--ink);
+  color: var(--white);
+  padding: .7rem 1.25rem;
+  border-radius: 0 0 var(--radius) var(--radius);
+  font-weight: 700;
+  text-decoration: none;
+}
+.skip-link:focus { transform: translate(-50%, 0); color: var(--white); }
+
+/* One visible, high-contrast focus ring everywhere. Navy sits on the page
+   background (white / tint) thanks to the offset gap, so it stays legible
+   even on navy-filled buttons. */
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* …except inside the navy footer, where amber is the readable ring. */
+.site-footer :focus-visible { outline-color: var(--amber); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- 4. Layout ----------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: 68rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.narrow { max-width: calc(var(--measure) + var(--gutter) * 2); }
+.center { text-align: center; }
+.center .lead { margin-inline: auto; }
+
+.section {
+  padding-block: clamp(3rem, 7vw, 5rem);
+  /* keeps anchored sections clear of the sticky header */
+  scroll-margin-top: 5.5rem;
+}
+.section--tint { background: var(--tint); }
+
+.lead {
+  font-size: 1.11rem;
+  max-width: var(--measure);
+}
+
+.section-intro {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: var(--measure);
+  margin-top: -.3em;
+}
+
+/* ---------- 5. Header & nav ---------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--white);
+  border-bottom: 1px solid var(--line);
+  /* the orange cap of the pill bottle, as a hairline */
+  box-shadow: inset 0 4px 0 var(--orange);
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem 1.5rem;
+  padding-block: .85rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  text-decoration: none;
+  color: inherit;
+}
+.brand__mark { width: 2.6rem; height: 2.6rem; flex: none; }
+.brand__text { display: flex; flex-direction: column; }
+
+.brand__name {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.brand__name-light { font-weight: 400; }
+
+.brand__tagline {
+  font-size: .8rem;
+  color: var(--muted);
+  letter-spacing: .01em;
+}
+
+.site-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem 1.25rem;
+  margin: 0;
+  list-style: none;
+}
+.site-nav a {
+  display: inline-block;
+  padding: .4rem .1rem;
+  font-size: .95rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+}
+.site-nav a:hover,
+.site-nav a:focus-visible { border-bottom-color: var(--orange); }
+
+/* ---------- 6. Hero ------------------------------------------------------- */
+.hero {
+  background:
+    radial-gradient(58rem 26rem at 12% -18%, #fdf1e3 0%, rgba(253, 241, 227, 0) 62%),
+    linear-gradient(180deg, var(--white) 0%, var(--tint) 100%);
+  border-bottom: 1px solid var(--line);
+}
+.hero__inner {
+  padding-block: clamp(3rem, 9vw, 6.25rem);
+  max-width: 52rem;
+}
+.hero h1 { margin-bottom: .45em; }
+.hero__sub {
+  font-size: clamp(1.1rem, 1rem + .5vw, 1.33rem);
+  color: var(--body);
+  max-width: 38rem;
+  margin-bottom: 2rem;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .85rem;
+}
+
+/* ---------- 7. Buttons ---------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  min-height: 3rem;              /* generous touch/click target */
+  padding: .75rem 1.6rem;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  font-size: 1.02rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.btn--primary { background: var(--navy); color: var(--white); }
+.btn--primary:hover { background: var(--navy-deep); color: var(--white); }
+
+.btn--ghost {
+  background: var(--white);
+  color: var(--navy);
+  border-color: var(--navy);
+}
+.btn--ghost:hover { background: #e9eefb; color: var(--navy-deep); }
+
+/* Orange carries dark navy ink, never white — that is what keeps it AA. */
+.btn--accent { background: var(--orange); color: var(--ink); }
+.btn--accent:hover { background: #dd6f12; color: var(--ink); }
+
+.btn--lg { font-size: 1.1rem; padding: .95rem 2.2rem; min-height: 3.4rem; }
+.btn--sm { font-size: .98rem; padding: .6rem 1.3rem; min-height: 2.75rem; }
+
+/* ---------- 8. Cards (what we do) ---------------------------------------- */
+.card-grid,
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Guide cards keep a fixed comfortable width and fill the row left to right,
+   so a single guide doesn't stretch across the page — and card two, three,
+   four just slot in beside it. */
+.guide-grid {
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 21rem));
+  justify-content: start;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem 1.6rem;
+  box-shadow: var(--shadow);
+}
+.card h3 { margin-bottom: .5em; }
+.card p { color: var(--body); font-size: .99rem; }
+
+.card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: var(--orange-soft);
+  color: #9a3f06;               /* dark orange — AA on the soft orange well */
+}
+
+/* ---------- 9. Guides ----------------------------------------------------- */
+.guide-grid { margin-top: 2rem; }
+
+.guide {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 6px solid var(--orange);
+  border-radius: var(--radius-lg);
+  padding: 1.7rem 1.6rem;
+  box-shadow: var(--shadow);
+}
+.guide__title { margin-bottom: .45em; }
+.guide__desc { color: var(--body); font-size: .99rem; margin-bottom: .7em; }
+.guide__meta {
+  font-size: .87rem;
+  color: var(--muted);
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  margin-bottom: 1.3em;
+}
+.guide .btn { margin-top: auto; }
+
+/* ---------- 10. Footer ---------------------------------------------------- */
+.site-footer {
+  background: var(--ink);
+  color: #e7ecf7;
+  padding-block: clamp(2.5rem, 6vw, 3.75rem) 2rem;
+  border-top: 6px solid var(--orange);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 4rem;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer__mark { width: 2.5rem; height: 2.5rem; }
+.footer__name {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--white);
+  margin: .5rem 0 .1rem;
+}
+.footer__tagline { color: #b9c6e2; font-size: .95rem; }
+
+.footer__heading {
+  font-size: .87rem;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: .8rem;
+}
+.footer__contact ul { list-style: none; margin: 0; display: grid; gap: .55rem; }
+.footer__contact a {
+  color: var(--white);
+  font-size: 1rem;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, .45);
+}
+.footer__contact a:hover { color: var(--amber); text-decoration-color: var(--amber); }
+
+.disclaimer {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, .22);
+  color: #d5deef;               /* AA on the navy footer */
+  font-size: .95rem;
+  max-width: 46rem;
+}
+
+/* ---------- 11. Responsive ------------------------------------------------
+   The layout is fluid by default; these are the few places that need help.
+   Verified down to a 360px-wide viewport.
+   -------------------------------------------------------------------------- */
+@media (max-width: 52rem) {
+  .site-header { position: static; }   /* give small screens their height back */
+  .header-inner { justify-content: center; text-align: center; }
+  .site-nav { width: 100%; }
+  .site-nav ul { justify-content: center; gap: .25rem 1rem; }
+  .section { scroll-margin-top: 1rem; }
+}
+
+@media (max-width: 30rem) {
+  :root { --gutter: 1.15rem; }
+  .brand__mark { width: 2.3rem; height: 2.3rem; }
+  .brand__name { font-size: 1.45rem; }
+  .card-grid, .guide-grid { grid-template-columns: 1fr; }
+  .btn { width: 100%; }               /* full-width, easy to hit */
+  .btn-row { flex-direction: column; align-items: stretch; }
+  .footer-inner { gap: 2rem; }
+}

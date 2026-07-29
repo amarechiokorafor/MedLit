@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MedLit — health made understandable.</title>
+  <meta name="description" content="MedLit is a student-led nonprofit that makes health information understandable — free workshops and free plain-language guides.">
+
+  <!-- FAVICON: swap assets/favicon.svg for the official logo mark when you have it exported. -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/favicon.svg">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ============================================================
+       1. HEADER — logo, tagline, section nav
+       LOGO: assets/medlit-mark.svg is a vector rebuild of the pill-bottle
+       mark. To use the official artwork instead, drop the file in /assets
+       and change the src below (keep the alt text as-is).
+       The word "MedLit" and the tagline are real HTML text, not baked into
+       the image, so they stay searchable and screen-reader friendly.
+       ============================================================ -->
+  <header class="site-header">
+    <div class="container header-inner">
+
+      <a class="brand" href="#top">
+        <img class="brand__mark" src="assets/medlit-mark.svg" alt="" width="64" height="64">
+        <span class="brand__text">
+          <span class="brand__name">Med<span class="brand__name-light">Lit</span></span>
+          <span class="brand__tagline">health made understandable.</span>
+        </span>
+      </a>
+
+      <nav class="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="#problem">The problem</a></li>
+          <li><a href="#what-we-do">What we do</a></li>
+          <li><a href="#guides">Guides</a></li>
+          <li><a href="#get-involved">Get involved</a></li>
+          <li><a href="#partner">Partner with us</a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+         2. HERO
+         ============================================================ -->
+    <section class="hero" id="top">
+      <div class="container hero__inner">
+        <h1>Understanding your own health shouldn&rsquo;t be a privilege.</h1>
+        <p class="hero__sub">
+          MedLit is a student-led nonprofit that makes health information understandable
+          &mdash; free workshops and free plain-language guides.
+        </p>
+        <div class="btn-row">
+          <!-- FORM_URL PLACEHOLDER #1 of 2 — replace with your Google Form link -->
+          <a class="btn btn--primary" href="FORM_URL">Get involved</a>
+          <a class="btn btn--ghost" href="#guides">See our guides</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         3. THE PROBLEM
+         ============================================================ -->
+    <section class="section section--tint" id="problem">
+      <div class="container narrow">
+        <h2>The problem</h2>
+        <p class="lead">
+          Every day, people struggle with prescription labels, lab results, and insurance
+          letters. The print is small, the words are hard to understand, and the person who
+          could explain it has already moved on to the next patient. So people guess. And
+          guessing about your own health is a risk no one should have to take.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         4. WHAT WE DO — card grid
+         TO ADD A CARD: copy one <li class="card"> … </li> block below.
+         The grid reflows on its own; no other changes needed.
+         ============================================================ -->
+    <section class="section" id="what-we-do">
+      <div class="container">
+        <h2>What we do</h2>
+        <ul class="card-grid" role="list">
+
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 7a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM1 21v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/>
+                <path d="M21 7a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM13 21v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/>
+              </svg>
+            </span>
+            <h3>Free workshops</h3>
+            <p>
+              45-minute interactive sessions at senior communities, libraries, and community
+              organizations, covering how to read prescription labels, lab results, and
+              insurance letters.
+            </p>
+          </li>
+
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h11a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4z"/>
+                <path d="M8 8h6M8 12h6"/>
+              </svg>
+            </span>
+            <h3>Free guides</h3>
+            <p>
+              One-page plain-language guides in English and Spanish, reviewed by a licensed
+              healthcare professional before release.
+            </p>
+          </li>
+
+          <li class="card">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 21h18"/>
+                <path d="M6 21V12M12 21V5M18 21v-6"/>
+              </svg>
+            </span>
+            <h3>Measured results</h3>
+            <p>
+              We test comprehension before and after every workshop, so we can show people
+              actually learned something.
+            </p>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         5. GUIDES
+         TO ADD A GUIDE: put the PDF in assets/guides/ and copy one
+         <li class="guide"> … </li> block below. Update the title, the
+         one-line description, the file size, and both href values.
+         ============================================================ -->
+    <section class="section section--tint" id="guides">
+      <div class="container">
+        <h2>Guides</h2>
+        <p class="section-intro">
+          Free to read, download, print, and hand out. No sign-up, no email required.
+        </p>
+
+        <ul class="guide-grid" role="list">
+
+          <li class="guide">
+            <h3 class="guide__title">What Does My Prescription Label Say?</h3>
+            <p class="guide__desc">
+              A one-page walkthrough of every part of a prescription label &mdash; drug name,
+              dose, directions, refills, and dates &mdash; in plain language.
+            </p>
+            <p class="guide__meta">PDF &middot; 1 page &middot; English</p>
+            <a class="btn btn--primary btn--sm"
+               href="assets/guides/what-does-my-prescription-label-say.pdf"
+               download>
+              Download guide
+              <span class="visually-hidden">: What Does My Prescription Label Say? (PDF)</span>
+            </a>
+          </li>
+
+          <!-- ADD NEW GUIDE CARDS HERE -->
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         6. GET INVOLVED
+         ============================================================ -->
+    <section class="section" id="get-involved">
+      <div class="container narrow center">
+        <h2>Get involved</h2>
+        <p class="lead">
+          We&rsquo;re looking for our first volunteers to run workshops, write guides, and
+          translate them. If you can explain things clearly, or speak a second language,
+          there is a place for you here.
+        </p>
+        <!-- FORM_URL PLACEHOLDER #2 of 2 — replace with your Google Form link -->
+        <a class="btn btn--accent btn--lg" href="FORM_URL">Volunteer with MedLit</a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         7. PARTNER WITH US
+         ============================================================ -->
+    <section class="section section--tint" id="partner">
+      <div class="container narrow center">
+        <h2>Partner with us</h2>
+        <p class="lead">
+          If you run a senior community, a library, or a community organization, we would love
+          to bring a free workshop to your space. We handle the materials and the facilitators
+          &mdash; you bring the room and the people. Tell us a little about your group and
+          we&rsquo;ll follow up with dates.
+        </p>
+        <a class="btn btn--primary btn--lg" href="mailto:medliterateofficial@gmail.com?subject=Hosting%20a%20free%20MedLit%20workshop">
+          Email us about hosting
+        </a>
+      </div>
+    </section>
+
+    <!-- ADD NEW SECTIONS HERE (remember to add a matching nav link in the header) -->
+
+  </main>
+
+  <!-- ============================================================
+       8. FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+
+      <div class="footer__brand">
+        <img class="footer__mark" src="assets/medlit-mark.svg" alt="" width="48" height="48">
+        <p class="footer__name">MedLit</p>
+        <p class="footer__tagline">health made understandable.</p>
+      </div>
+
+      <div class="footer__contact">
+        <h2 class="footer__heading">Contact</h2>
+        <ul role="list">
+          <li><a href="mailto:medliterateofficial@gmail.com">medliterateofficial@gmail.com</a></li>
+          <li><a href="https://www.instagram.com/med.literate/">Instagram: @med.literate</a></li>
+          <li><a href="https://www.tiktok.com/@med.literate">TikTok: @med.literate</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="container">
+      <p class="disclaimer">
+        MedLit provides general health education, not medical advice. Always talk to your
+        doctor or pharmacist about your specific medications.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
