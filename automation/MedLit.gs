@@ -119,11 +119,12 @@ var ALERT_EMAIL = 'medliterateofficial@gmail.com';          // <<< EDIT THIS
 var FROM_NAME = 'MedLit';                                    // <<< EDIT THIS
 
 /**
- * Where the confirmation email sends people to read the guides.
+ * The guides section of the site.
  *
- * This points at the guides section of the site rather than at one PDF, so it
- * keeps working as the library grows. Publish a second guide and this link
- * already covers it — no edit here, ever.
+ * CURRENTLY UNUSED. The confirmation email no longer links to it. Kept here
+ * because it is the right link to reach for when something does need one:
+ * it points at the section rather than at one PDF, so it keeps working as the
+ * library grows. Put {{guide}} back in CONFIRMATION_BODY and it fills in.
  */
 var GUIDE_URL = 'https://amarechiokorafor.github.io/MedLit/#guides';   // <<< EDIT THIS
 
@@ -153,25 +154,14 @@ var CONFIRMATION_SUBJECT = 'Thanks for signing up with MedLit';
 var CONFIRMATION_BODY =
 'Hi {{name}},\n' +
 '\n' +
-'Thanks for signing up. Someone on our team actually read your form, and\n' +
-'we\'ll email you within a week about what you can jump into.\n' +
+'Thanks for signing up! Someone on our team will read your form, and we\'ll email you within a week about what you can get started on.\n' +
 '\n' +
-'Quick version of what we do: healthcare hands people documents nobody\n' +
-'explains, so we explain them. Free workshops, free plain-language guides,\n' +
-'and every guide gets checked by a licensed healthcare professional before\n' +
-'it goes out.\n' +
+'We\'re glad that you\'re here!\n' +
 '\n' +
-'Our guides live here if you want to see what you\'d be helping make:\n' +
-'{{guide}}\n' +
-'\n' +
-'Glad you\'re here.\n' +
-'\n' +
-'The MedLit team\n' +
+'MedLit\n' +
 'medliterateofficial@gmail.com\n' +
 '\n' +
-'---\n' +
-'MedLit provides general health education, not medical advice. Always talk to\n' +
-'your doctor or pharmacist about your specific medications.\n';
+'MedLit provides general health education, not medical advice. Always talk to your doctor or pharmacist about your specific medications.\n';
 
 /**
  * The weekly partner digest goes out Sundays at this hour, in the timezone you
@@ -705,6 +695,12 @@ function alertBody_(v) {
   ].join('\n');
 }
 
+/**
+ * Fills the tokens in CONFIRMATION_BODY.
+ *   {{name}}   the volunteer's first name, or "there" when they left it blank
+ *   {{guide}}  GUIDE_URL. Not in the current copy, but still substituted, so
+ *              putting the token back in the body is all it takes.
+ */
 function renderConfirmation_(v) {
   var first = String(v.name || '').trim().split(/\s+/)[0] || 'there';
   return CONFIRMATION_BODY
@@ -1678,8 +1674,7 @@ var FORM_DESCRIPTION =                                       // <<< EDIT THIS
   "translate our materials. Tell us a bit about you and we'll be in touch.";
 
 var FORM_CONFIRMATION =                                      // <<< EDIT THIS
-  "Thanks for signing up. Check your email — we've sent you a confirmation " +
-  "and a link to our guide.";
+  'Thanks for signing up! Please check your email for confirmation.';
 
 var FORM_ROLE_CHOICES = [                                    // <<< EDIT THIS
   'Writing guides',
@@ -1761,12 +1756,6 @@ function createVolunteerForm() {
   log.push('     FORM_URL — it appears three times.');
   log.push('  2. Submit the form once yourself. You should get the alert email,');
   log.push('     the confirmation email, and a row on the Volunteers tab.');
-
-  if (GUIDE_URL.indexOf('PASTE_') === 0) {
-    log.push('');
-    log.push('WARN GUIDE_URL at the top of this file is still a placeholder, so the');
-    log.push('     confirmation email promises a guide link it cannot show.');
-  }
 
   var out = log.join('\n');
   Logger.log(out);

@@ -67,11 +67,25 @@ feed match. All defined as CSS variables at the top of `styles.css`.
   wordmark.
 - **IBM Plex Mono** for the prescription label and the small signpost labels.
 
-**Writing.** All copy follows the MedLit style guide: short declarative
-sentences, second person, concrete nouns over abstractions, periods instead of
-em dashes, headings that state something rather than label it, and no claim the
-organisation hasn't earned. If you edit copy, read it aloud first — if you
-wouldn't say it to someone's face, rewrite it.
+**Writing.** Every piece of text a person reads follows the MedLit style guide.
+That means the website, the emails and form copy in `automation/MedLit.gs`, the
+logging dialogs, and error messages — not just the page.
+
+- Short declarative sentences. Vary the rhythm. Fragments are fine for emphasis.
+- Second person. "Your prescription label", not "the patient's medication".
+- Concrete nouns. "Prescription labels, lab results, insurance letters", not
+  "health information".
+- Blame the system, not the person. The documents were badly designed and
+  nobody explained them.
+- Periods instead of em dashes.
+- Headings state something rather than label it.
+- No "empower", "leverage", "impact" as a verb, "solutions", "innovative". No
+  "not because X, but because Y".
+- No claim we haven't earned. Comprehension scores get reported with their
+  denominator, as "16 of 23", never as a bare percentage.
+
+If you edit copy, read it aloud first. If you wouldn't say it to someone's
+face, rewrite it.
 
 **The label in the hero.** The wording comes straight out of the prescription
 guide. It's a stack of `<details>` elements, so it opens and closes with no
