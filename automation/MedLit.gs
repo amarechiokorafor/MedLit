@@ -13,6 +13,9 @@
  *   5. Keeps a "Workshop Data" tab for pre/post quiz results, with a column
  *      that writes your results as "16 of 23 ..." so you can paste a real
  *      number and its denominator straight into a report.
+ *   6. Adds a "MedLit" menu to the spreadsheet with three logging forms, so
+ *      you can enter a workshop, a partner update, or volunteer hours without
+ *      typing into the right cells by hand.
  *
  * ----------------------------------------------------------------------------
  * SETUP — about five minutes, once
@@ -34,7 +37,10 @@
  *      as you. Approve it. When it finishes, open the Execution log; it prints
  *      a checklist of everything it created.
  *
- *   6. Test it. Submit your own form once. You should get two emails (the
+ *   6. Reload the spreadsheet tab. A "MedLit" menu appears next to Help, with
+ *      "Log a workshop", "Log a partner update" and "Log volunteer hours".
+ *
+ *   7. Test it. Submit your own form once. You should get two emails (the
  *      alert to you, the confirmation to whatever address you used) and a new
  *      row in the Volunteers tab.
  *
@@ -48,6 +54,9 @@
  *   there with its error. A failed email never stops a form submission from
  *   being recorded — the row is written first, and the emails are attempted
  *   afterwards inside their own error handlers.
+ *
+ *   No "MedLit" menu? Reload the spreadsheet tab. The menu is added when the
+ *   spreadsheet opens, so a tab that was already open won't have it.
  * ============================================================================
  */
 
@@ -146,7 +155,8 @@ var TAB = {
   volunteers: 'Volunteers',
   dashboard:  'Dashboard',
   partners:   'Partners',
-  workshops:  'Workshop Data'
+  workshops:  'Workshop Data',
+  hours:      'Volunteer Hours'
 };
 
 var VOLUNTEER_HEADERS = [
@@ -166,6 +176,13 @@ var PARTNER_STATUSES = [
   'Not contacted', 'Emailed', 'Followed up', 'Call made',
   'Replied', 'Meeting set', 'Booked', 'Declined', 'Dead'
 ];
+
+/**
+ * "Log volunteer hours" needs somewhere to put them, and there wasn't a tab
+ * for it — so setup() creates this one. "Logged at" is when the entry was
+ * made, which is not always the day the work happened.
+ */
+var HOURS_HEADERS = ['Date', 'Volunteer', 'Task', 'Hours', 'Logged at'];
 
 var WORKSHOP_HEADERS = [
   'Date', 'Partner site', 'Attendees', 'Pre-tests completed',
@@ -202,7 +219,8 @@ function dashboardMetrics_() {
     { label: 'Volunteers signed up', source: 'Counts rows in the Volunteers tab.',
       auto: '=IFERROR(COUNTA(' + V + '!A2:A),0)' },
 
-    { label: 'Volunteer hours granted', source: 'Update by hand from your hours log.', auto: null },
+    { label: 'Volunteer hours granted', source: 'Adds up the Hours column in Volunteer Hours. Log entries with MedLit > Log volunteer hours.',
+      auto: '=IFERROR(SUM(' + "'" + TAB.hours + "'" + '!D2:D),0)' },
 
     { label: 'Instagram followers', source: 'Update by hand. Note the date you checked.', auto: null },
 
@@ -239,6 +257,7 @@ function setup() {
   log.push(buildVolunteersTab_(ss));
   log.push(buildPartnersTab_(ss));
   log.push(buildWorkshopTab_(ss));
+  log.push(buildHoursTab_(ss));
   log.push(buildDashboardTab_(ss));
   log.push('');
 
@@ -269,6 +288,9 @@ function setup() {
     log.push('     read better once you paste the real link at the top of this file.');
   }
 
+  log.push('');
+  log.push('OK   Menu installed. Reload the spreadsheet tab and look for "MedLit"');
+  log.push('     in the menu bar, next to Help.');
   log.push('');
   log.push('Setup finished. Submit your form once to test it end to end.');
 
@@ -379,19 +401,34 @@ function buildWorkshopTab_(ss) {
   // The reporting string. Always a count against its denominator — a bare
   // percentage with no denominator is not something we publish.
   //
-  // Written in R1C1 so each row points at its own cells. (setFormula() with an
-  // A1 string would paste the identical text into every row, leaving all 900
-  // of them reading row 2.)
-  //   RC[-5] = column F, matched pairs
-  //   RC[-4] = column G, number improved
-  var formula =
-    '=IF(OR(RC[-5]="",RC[-4]=""),"",' +
-    'RC[-4]&" of "&RC[-5]&" matched pairs improved their comprehension scores")';
-  var reportCol = sh.getRange(2, 11, Math.max(sh.getMaxRows() - 1, 1), 1);
-  reportCol.setFormulaR1C1(formula);
-  reportCol.setBackground(C.butterSoft).setFontStyle('italic');
+  // One ARRAYFORMULA in K2 covers every row, now and later. Writing a separate
+  // formula into all 998 rows would have made getLastRow() report 999 on an
+  // empty sheet, which in turn would send appended rows to the bottom.
+  var arrayFormula =
+    '=ARRAYFORMULA(IF($F2:$F="","",' +
+    '$G2:$G&" of "&$F2:$F&" matched pairs improved their comprehension scores"))';
+  if (sh.getRange('K2').getFormula() === '') sh.getRange('K2').setFormula(arrayFormula);
+  sh.getRange(2, 11, Math.max(sh.getMaxRows() - 1, 1), 1)
+    .setBackground(C.butterSoft).setFontStyle('italic');
 
   return (existed ? 'OK   Tab checked: ' : 'OK   Tab created: ') + TAB.workshops;
+}
+
+function buildHoursTab_(ss) {
+  var existed = !!ss.getSheetByName(TAB.hours);
+  var sh = getOrCreateSheet_(ss, TAB.hours);
+  writeHeaders_(sh, HOURS_HEADERS);
+
+  sh.setColumnWidth(1, 110);   // Date
+  sh.setColumnWidth(2, 190);   // Volunteer
+  sh.setColumnWidth(3, 320);   // Task
+  sh.setColumnWidth(4, 90);    // Hours
+  sh.setColumnWidth(5, 160);   // Logged at
+  sh.getRange('A2:A').setNumberFormat('yyyy-mm-dd');
+  sh.getRange('D2:D').setNumberFormat('0.##');
+  sh.getRange('E2:E').setNumberFormat('yyyy-mm-dd hh:mm');
+
+  return (existed ? 'OK   Tab checked: ' : 'OK   Tab created: ') + TAB.hours;
 }
 
 function buildDashboardTab_(ss) {
@@ -420,7 +457,12 @@ function buildDashboardTab_(ss) {
     // setup() never clobbers a value you've typed over it.
     var autoCell = sh.getRange(row, 3);
     if (m.auto) {
-      if (autoCell.getFormula() === '' && autoCell.getValue() === '') autoCell.setFormula(m.auto);
+      // "—" is what an earlier version of this script parked in cells that had
+      // nothing to count from. If a metric has since gained a source, replace it.
+      var current = String(autoCell.getValue());
+      if (autoCell.getFormula() === '' && (current === '' || current === '—')) {
+        autoCell.setFormula(m.auto);
+      }
       autoCell.setBackground(C.butterSoft);
     } else {
       if (autoCell.getValue() === '') autoCell.setValue('—');
@@ -688,4 +730,586 @@ function sendWeeklyPartnerDigest() {
 /** Run this by hand to see this week's digest without waiting for Sunday. */
 function testWeeklyDigest() {
   sendWeeklyPartnerDigest();
+}
+
+
+/* ============================================================================
+ * THE "MedLit" MENU AND ITS THREE DIALOGS
+ * ==========================================================================
+ * onOpen is a simple trigger — Google runs any function with that name when
+ * the spreadsheet opens, so the menu needs no installation. If you don't see
+ * it, reload the spreadsheet tab.
+ *
+ * The dialogs are built in code rather than in separate .html files, so this
+ * stays one file you can paste in one go. buildDialog_() turns a list of field
+ * definitions into the form, the client-side checks, and the wiring back to
+ * the server, which means all three dialogs share one implementation.
+ *
+ * Validation runs twice on purpose. The dialog checks the obvious things
+ * (required, numeric, whole numbers) so you get an instant answer. The server
+ * re-checks everything and owns the rules that involve more than one field —
+ * it is the only side that can be trusted, since a dialog can be left open
+ * while the sheet changes underneath it.
+ * ========================================================================== */
+
+function onOpen() {
+  SpreadsheetApp.getUi()
+    .createMenu('MedLit')
+    .addItem('Log a workshop', 'openWorkshopDialog')
+    .addItem('Log a partner update', 'openPartnerDialog')
+    .addItem('Log volunteer hours', 'openHoursDialog')
+    .addToUi();
+}
+
+
+/* --- Menu item 1: log a workshop ------------------------------------------ */
+
+function openWorkshopDialog() {
+  var html = buildDialog_({
+    title: 'Log a workshop',
+    intro: 'Everything except the notes ends up in Workshop Data. Leave the test counts blank if you have not scored them yet.',
+    serverFn: 'submitWorkshopLog',
+    submitLabel: 'Save workshop',
+    width: 560,
+    height: 700,
+    fields: [
+      { key: 'date',      label: 'Date',                  type: 'date',     required: true, value: todayIso_() },
+      { key: 'site',      label: 'Partner site',          type: 'text',     required: true,
+        help: 'The organisation that hosted. Spell it the same way every time so the recurring-partners count works.' },
+      { key: 'attendees', label: 'Attendees',             type: 'number',   required: true, min: 0, integer: true },
+      { key: 'pre',       label: 'Pre-tests completed',   type: 'number',   min: 0, integer: true },
+      { key: 'post',      label: 'Post-tests completed',  type: 'number',   min: 0, integer: true },
+      { key: 'matched',   label: 'Matched pairs',         type: 'number',   min: 0, integer: true,
+        help: 'People who did both a pre-test and a post-test.' },
+      { key: 'improved',  label: 'Number improved',       type: 'number',   min: 0, integer: true },
+      { key: 'unchanged', label: 'Number unchanged',      type: 'number',   min: 0, integer: true },
+      { key: 'declined',  label: 'Number declined',       type: 'number',   min: 0, integer: true,
+        help: 'Improved, unchanged and declined have to add up to matched pairs.' },
+      { key: 'notes',     label: 'Notes',                 type: 'textarea' }
+    ]
+  });
+  SpreadsheetApp.getUi().showModalDialog(html, 'Log a workshop');
+}
+
+function submitWorkshopLog(d) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = requireSheet_(ss, TAB.workshops);
+
+    var date = parseIsoDate_(d.date);
+    if (!date) return fail_('Pick a date for the workshop.');
+
+    var site = String(d.site || '').trim();
+    if (!site) return fail_('Enter the partner site.');
+
+    var attendees = readInt_(d.attendees);
+    if (attendees === null) return fail_('Attendees has to be a whole number.');
+
+    var pre       = readInt_(d.pre);
+    var post      = readInt_(d.post);
+    var matched   = readInt_(d.matched);
+    var improved  = readInt_(d.improved);
+    var unchanged = readInt_(d.unchanged);
+    var declined  = readInt_(d.declined);
+
+    // Cross-field rules. These are the ones that keep the reported numbers
+    // honest, so they live on the server where they cannot be skipped.
+    if (pre  !== null && pre  > attendees) return fail_('Pre-tests completed (' + pre + ') is more than the number of attendees (' + attendees + ').');
+    if (post !== null && post > attendees) return fail_('Post-tests completed (' + post + ') is more than the number of attendees (' + attendees + ').');
+    if (matched !== null && pre  !== null && matched > pre)  return fail_('Matched pairs (' + matched + ') cannot be more than pre-tests completed (' + pre + ').');
+    if (matched !== null && post !== null && matched > post) return fail_('Matched pairs (' + matched + ') cannot be more than post-tests completed (' + post + ').');
+
+    var scored = [improved, unchanged, declined].filter(function (n) { return n !== null; });
+    if (scored.length) {
+      if (matched === null) return fail_('Enter the number of matched pairs as well, so the result has a denominator.');
+      var sum = (improved || 0) + (unchanged || 0) + (declined || 0);
+      if (sum !== matched) {
+        return fail_('Improved, unchanged and declined add up to ' + sum +
+                     ', but you entered ' + matched + ' matched pairs. Those have to agree.');
+      }
+    }
+
+    var row = firstEmptyRowByColumn_(sh, 1);
+    sh.getRange(row, 1, 1, 10).setValues([[
+      date, site, attendees,
+      blankIfNull_(pre), blankIfNull_(post), blankIfNull_(matched),
+      blankIfNull_(improved), blankIfNull_(unchanged), blankIfNull_(declined),
+      String(d.notes || '').trim()
+    ]]);
+
+    refreshDashboard_(ss);
+
+    var summary = (matched !== null && improved !== null)
+      ? improved + ' of ' + matched + ' improved'
+      : attendees + ' attendees';
+    ss.toast(site + ' — ' + summary + '. Row ' + row + '.', 'Workshop logged', 6);
+    return done_('Saved to ' + TAB.workshops + ', row ' + row + '.');
+
+  } catch (err) {
+    Logger.log('submitWorkshopLog failed: ' + err);
+    return fail_('Could not save it: ' + err.message);
+  }
+}
+
+
+/* --- Menu item 2: log a partner update ------------------------------------ */
+
+function openPartnerDialog() {
+  var options = partnerOptions_();
+  if (!options.length) {
+    SpreadsheetApp.getUi().alert(
+      'No organisations yet',
+      'Add an organisation to the ' + TAB.partners + ' tab first, then come back here to log updates against it.',
+      SpreadsheetApp.getUi().ButtonSet.OK);
+    return;
+  }
+
+  var html = buildDialog_({
+    title: 'Log a partner update',
+    intro: 'This updates the status, next action and next action date on the row you pick. Nothing else on that row changes.',
+    serverFn: 'submitPartnerUpdate',
+    submitLabel: 'Save update',
+    width: 560,
+    height: 620,
+    fields: [
+      { key: 'row',        label: 'Organisation', type: 'select', required: true, options: options },
+      { key: 'status',     label: 'New status',   type: 'select', required: true,
+        options: PARTNER_STATUSES.map(function (v) { return { value: v, label: v }; }) },
+      { key: 'nextAction', label: 'Next action',  type: 'text',
+        help: 'What has to happen next, and who does it. Required unless the status is ' + DIGEST_SKIP_STATUSES.join(' or ') + '.' },
+      { key: 'nextDate',   label: 'Next action date', type: 'date',
+        help: 'The Sunday digest emails you every row whose date has passed.' }
+    ]
+  });
+  SpreadsheetApp.getUi().showModalDialog(html, 'Log a partner update');
+}
+
+function submitPartnerUpdate(d) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = requireSheet_(ss, TAB.partners);
+
+    var row = readInt_(d.row);
+    if (row === null || row < 2 || row > sh.getLastRow()) {
+      return fail_('That organisation is no longer on row ' + d.row + '. Close this and open it again.');
+    }
+
+    var status = String(d.status || '').trim();
+    if (PARTNER_STATUSES.indexOf(status) === -1) return fail_('Pick a status from the list.');
+
+    var closing    = DIGEST_SKIP_STATUSES.indexOf(status) !== -1;
+    var nextAction = String(d.nextAction || '').trim();
+    var nextDate   = parseIsoDate_(d.nextDate);
+
+    if (!closing && !nextAction) {
+      return fail_('Write down the next action. Without one this row drops off the Sunday digest and goes cold.');
+    }
+    if (!closing && !nextDate) {
+      return fail_('Set a next action date, so the Sunday digest can remind you.');
+    }
+    if (d.nextDate && !nextDate) return fail_('That next action date is not a real date.');
+
+    var org = sh.getRange(row, 1).getValue();
+    sh.getRange(row, PARTNER_COL.status).setValue(status);
+    sh.getRange(row, 9).setValue(nextAction);
+    sh.getRange(row, PARTNER_COL.nextActionDate).setValue(nextDate || '');
+
+    refreshDashboard_(ss);
+
+    ss.toast(org + ' is now "' + status + '".', 'Partner updated', 6);
+    return done_('Updated ' + org + ' on row ' + row + '.');
+
+  } catch (err) {
+    Logger.log('submitPartnerUpdate failed: ' + err);
+    return fail_('Could not save it: ' + err.message);
+  }
+}
+
+/** Every organisation on the Partners tab, newest rows last. */
+function partnerOptions_() {
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB.partners);
+  if (!sh || sh.getLastRow() < 2) return [];
+  var rows = sh.getRange(2, 1, sh.getLastRow() - 1, PARTNER_HEADERS.length).getValues();
+  var out = [];
+  for (var i = 0; i < rows.length; i++) {
+    var org = String(rows[i][0] || '').trim();
+    if (!org) continue;
+    var contact = String(rows[i][1] || '').trim();
+    var status  = String(rows[i][PARTNER_COL.status - 1] || '').trim();
+    out.push({
+      value: i + 2,                                        // the sheet row
+      label: org + (contact ? ' — ' + contact : '') + (status ? '  (' + status + ')' : '')
+    });
+  }
+  return out;
+}
+
+
+/* --- Menu item 3: log volunteer hours ------------------------------------- */
+
+function openHoursDialog() {
+  var options = volunteerOptions_();
+  if (!options.length) {
+    SpreadsheetApp.getUi().alert(
+      'No volunteers yet',
+      'The ' + TAB.volunteers + ' tab is empty. It fills up on its own as people submit the form.',
+      SpreadsheetApp.getUi().ButtonSet.OK);
+    return;
+  }
+
+  var html = buildDialog_({
+    title: 'Log volunteer hours',
+    intro: 'These add up into "Volunteer hours granted" on the Dashboard.',
+    serverFn: 'submitVolunteerHours',
+    submitLabel: 'Save hours',
+    width: 520,
+    height: 560,
+    fields: [
+      { key: 'volunteer', label: 'Volunteer', type: 'select', required: true, options: options },
+      { key: 'task',      label: 'What they did', type: 'text', required: true,
+        help: 'Short and specific. "Ran the Bellaire library workshop" beats "volunteering".' },
+      { key: 'hours',     label: 'Hours', type: 'number', required: true, min: 0, max: 24, step: '0.25',
+        help: 'Quarter hours are fine. 1.5 means an hour and a half.' },
+      { key: 'date',      label: 'Date worked', type: 'date', required: true, value: todayIso_() }
+    ]
+  });
+  SpreadsheetApp.getUi().showModalDialog(html, 'Log volunteer hours');
+}
+
+function submitVolunteerHours(d) {
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sh = requireSheet_(ss, TAB.hours);
+
+    var volunteer = String(d.volunteer || '').trim();
+    if (!volunteer) return fail_('Pick a volunteer.');
+
+    var task = String(d.task || '').trim();
+    if (!task) return fail_('Write down what they did.');
+
+    var hours = Number(d.hours);
+    if (!isFinite(hours))  return fail_('Hours has to be a number.');
+    if (hours <= 0)        return fail_('Hours has to be more than zero.');
+    if (hours > 24)        return fail_('That is more than a day. Split it across the dates it happened on.');
+
+    var date = parseIsoDate_(d.date);
+    if (!date) return fail_('Pick the date the work happened.');
+
+    var row = firstEmptyRowByColumn_(sh, 1);
+    sh.getRange(row, 1, 1, 5).setValues([[date, volunteer, task, hours, new Date()]]);
+
+    refreshDashboard_(ss);
+
+    ss.toast(hours + (hours === 1 ? ' hour' : ' hours') + ' logged for ' + volunteer + '.', 'Hours logged', 6);
+    return done_('Saved to ' + TAB.hours + ', row ' + row + '.');
+
+  } catch (err) {
+    Logger.log('submitVolunteerHours failed: ' + err);
+    return fail_('Could not save it: ' + err.message);
+  }
+}
+
+/** Volunteer names, de-duplicated, alphabetical. */
+function volunteerOptions_() {
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(TAB.volunteers);
+  if (!sh || sh.getLastRow() < 2) return [];
+  var names = sh.getRange(2, 2, sh.getLastRow() - 1, 1).getValues();
+  var seen = {}, out = [];
+  for (var i = 0; i < names.length; i++) {
+    var n = String(names[i][0] || '').trim();
+    if (!n || seen[n]) continue;
+    seen[n] = true;
+    out.push({ value: n, label: n });
+  }
+  out.sort(function (a, b) { return a.label.localeCompare(b.label); });
+  return out;
+}
+
+
+/* --- Shared helpers for the three handlers -------------------------------- */
+
+function refreshDashboard_(ss) {
+  SpreadsheetApp.flush();          // commit the write so the formulas see it
+  touchDashboardStamp_(ss);
+}
+
+function requireSheet_(ss, name) {
+  var sh = ss.getSheetByName(name);
+  if (!sh) throw new Error('There is no "' + name + '" tab. Run setup() from the Apps Script editor.');
+  return sh;
+}
+
+function done_(message) { return { ok: true,  message: message }; }
+function fail_(error)   { return { ok: false, error: error }; }
+
+/** '' and null both mean "not entered". Anything else must be a whole number. */
+function readInt_(v) {
+  if (v === '' || v === null || typeof v === 'undefined') return null;
+  var n = Number(v);
+  if (!isFinite(n) || n < 0 || n % 1 !== 0) return null;
+  return n;
+}
+
+function blankIfNull_(n) { return n === null ? '' : n; }
+
+/**
+ * Turns the 'YYYY-MM-DD' an <input type="date"> produces into a local Date.
+ * new Date('2026-07-29') parses as UTC midnight, which lands on the 28th once
+ * the sheet renders it in Central time. Splitting the parts avoids that.
+ */
+function parseIsoDate_(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || '').trim());
+  if (!m) return null;
+  var d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function todayIso_() {
+  return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyy-MM-dd');
+}
+
+/**
+ * First row whose column `col` is empty, starting at row 2.
+ * Used instead of appendRow() because appendRow() goes after the last row with
+ * ANY content, and a formula sitting in a far-down cell would push new entries
+ * to the bottom of the sheet.
+ */
+function firstEmptyRowByColumn_(sh, col) {
+  var maxRows = sh.getMaxRows();
+  var values = sh.getRange(2, col, Math.max(maxRows - 1, 1), 1).getValues();
+  for (var i = 0; i < values.length; i++) {
+    if (String(values[i][0]).trim() === '') return i + 2;
+  }
+  sh.insertRowsAfter(maxRows, 20);
+  return maxRows + 1;
+}
+
+
+/* ============================================================================
+ * DIALOG BUILDER
+ * ==========================================================================
+ * One implementation behind all three menu items. Give it a list of fields and
+ * the name of a server function; it returns the dialog.
+ *
+ * Field shape:
+ *   key       name sent back to the server
+ *   label     what the person reads
+ *   type      'text' | 'number' | 'date' | 'textarea' | 'select'
+ *   required  true to block submission when empty
+ *   min, max  numbers only
+ *   integer   numbers only, true to reject 2.5
+ *   step      numbers only, e.g. '0.25'
+ *   value     prefilled value
+ *   help      small print under the field
+ *   options   selects only, [{value: ..., label: ...}]
+ * ========================================================================== */
+
+function buildDialog_(cfg) {
+  var h = [];
+  h.push('<!DOCTYPE html><html><head><base target="_top"><meta charset="utf-8">');
+  h.push('<style>' + dialogCss_() + '</style></head><body>');
+  h.push('<h1>' + escapeHtml_(cfg.title) + '</h1>');
+  if (cfg.intro) h.push('<p class="intro">' + escapeHtml_(cfg.intro) + '</p>');
+  h.push('<div id="msg" class="msg" role="alert" hidden></div>');
+  h.push('<form id="form" novalidate>');
+  for (var i = 0; i < cfg.fields.length; i++) h.push(fieldHtml_(cfg.fields[i]));
+  h.push('</form>');
+  h.push('<div class="actions">');
+  h.push('<button type="button" class="btn ghost" id="cancel">Cancel</button>');
+  h.push('<button type="button" class="btn primary" id="save">' + escapeHtml_(cfg.submitLabel) + '</button>');
+  h.push('</div>');
+  h.push('<script>');
+  h.push('var FIELDS = ' + safeJson_(cfg.fields) + ';');
+  h.push('var SERVER_FN = ' + safeJson_(cfg.serverFn) + ';');
+  h.push(dialogJs_());
+  h.push('<' + '/script></body></html>');
+
+  return HtmlService.createHtmlOutput(h.join('\n'))
+    .setWidth(cfg.width || 560)
+    .setHeight(cfg.height || 620);
+}
+
+function fieldHtml_(f) {
+  var id   = 'f_' + f.key;
+  var help = f.help ? '<p class="help" id="' + id + '_help">' + escapeHtml_(f.help) + '</p>' : '';
+  var described = f.help ? ' aria-describedby="' + id + '_help"' : '';
+  var req  = f.required ? ' <span class="req" aria-hidden="true">required</span>' : '';
+  var attrs = ' id="' + id + '" name="' + escapeHtml_(f.key) + '"' + described +
+              (f.required ? ' aria-required="true"' : '');
+  var out = ['<div class="field">'];
+  out.push('<label for="' + id + '">' + escapeHtml_(f.label) + req + '</label>');
+
+  if (f.type === 'select') {
+    var sel = ['<select' + attrs + '>'];
+    sel.push('<option value="">Choose one</option>');
+    for (var i = 0; i < (f.options || []).length; i++) {
+      var o = f.options[i];
+      sel.push('<option value="' + escapeHtml_(String(o.value)) + '">' + escapeHtml_(String(o.label)) + '</option>');
+    }
+    sel.push('</select>');
+    out.push(sel.join(''));
+
+  } else if (f.type === 'textarea') {
+    out.push('<textarea rows="3"' + attrs + '>' + escapeHtml_(f.value || '') + '</textarea>');
+
+  } else {
+    var extra = '';
+    if (f.type === 'number') {
+      extra += ' inputmode="decimal"';
+      if (typeof f.min !== 'undefined')  extra += ' min="' + f.min + '"';
+      if (typeof f.max !== 'undefined')  extra += ' max="' + f.max + '"';
+      if (f.step) extra += ' step="' + escapeHtml_(f.step) + '"';
+      else if (f.integer) extra += ' step="1"';
+    }
+    out.push('<input type="' + escapeHtml_(f.type) + '"' + attrs + extra +
+             ' value="' + escapeHtml_(f.value || '') + '">');
+  }
+
+  out.push(help);
+  out.push('</div>');
+  return out.join('');
+}
+
+function dialogCss_() {
+  return [
+    // Same palette as the website, so the tools feel like they belong to it.
+    ':root{--ink:#0E1A3C;--navy:#083795;--navy-deep:#052A75;--body:#2E4674;',
+    '--muted:#4A5C82;--paper:#FBF8F3;--line:#D3DCF0;--butter:#FFDDA3;',
+    '--butter-soft:#FFF1DA;--bad:#8C1D18;--bad-bg:#FCE9E7;--good:#0F5132;--good-bg:#E4F1E6;}',
+    '*{box-sizing:border-box;}',
+    'body{margin:0;padding:20px 22px 90px;background:var(--paper);color:var(--body);',
+    'font:16px/1.5 "Segoe UI",Roboto,-apple-system,system-ui,sans-serif;}',
+    'h1{margin:0 0 6px;font-size:20px;line-height:1.2;color:var(--ink);letter-spacing:-.01em;}',
+    '.intro{margin:0 0 18px;font-size:14px;color:var(--muted);}',
+    '.field{margin-bottom:15px;}',
+    'label{display:block;font-weight:600;font-size:14px;color:var(--ink);margin-bottom:5px;}',
+    '.req{font-weight:400;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-left:5px;}',
+    'input,select,textarea{width:100%;padding:9px 11px;font:inherit;font-size:15px;color:var(--ink);',
+    'background:#fff;border:1px solid var(--line);border-radius:8px;}',
+    'textarea{resize:vertical;min-height:64px;}',
+    'input:focus,select:focus,textarea:focus{outline:3px solid var(--ink);outline-offset:1px;border-color:var(--ink);}',
+    'input.bad,select.bad,textarea.bad{border-color:var(--bad);background:var(--bad-bg);}',
+    '.help{margin:5px 0 0;font-size:12.5px;color:var(--muted);}',
+    '.msg{margin:0 0 16px;padding:11px 13px;border-radius:8px;font-size:14px;}',
+    '.msg.bad{background:var(--bad-bg);color:var(--bad);border:1px solid #E9B7B2;}',
+    '.msg.good{background:var(--good-bg);color:var(--good);border:1px solid #B6D8BC;}',
+    '.actions{position:fixed;left:0;right:0;bottom:0;display:flex;gap:10px;justify-content:flex-end;',
+    'padding:14px 22px;background:var(--paper);border-top:1px solid var(--line);}',
+    '.btn{font:inherit;font-size:15px;font-weight:700;padding:10px 20px;border-radius:999px;',
+    'border:2px solid transparent;cursor:pointer;}',
+    '.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px;}',
+    '.primary{background:var(--navy);color:#fff;}',
+    '.primary:hover{background:var(--navy-deep);}',
+    '.primary[disabled]{background:var(--muted);cursor:progress;}',
+    '.ghost{background:transparent;color:var(--navy);border-color:var(--navy);}',
+    '.ghost:hover{background:#E6ECFA;}'
+  ].join('');
+}
+
+/**
+ * The client half. Deliberately does only the checks it can do instantly —
+ * required, numeric, whole numbers, ranges. Everything that depends on more
+ * than one field is the server's job, and its message comes back here.
+ */
+function dialogJs_() {
+  return [
+    'var msg = document.getElementById("msg");',
+    'var saveBtn = document.getElementById("save");',
+    'saveBtn.setAttribute("data-label", saveBtn.textContent);',
+    '',
+    'function show(text, kind) {',
+    '  msg.textContent = text;',
+    '  msg.className = "msg " + kind;',
+    '  msg.hidden = false;',
+    '  msg.scrollIntoView({block:"nearest"});',
+    '}',
+    'function clearMarks() {',
+    '  var marked = document.querySelectorAll(".bad");',
+    '  for (var i = 0; i < marked.length; i++) marked[i].classList.remove("bad");',
+    '  msg.hidden = true;',
+    '}',
+    '',
+    'function collect() {',
+    '  var data = {}, problems = [], firstBad = null;',
+    '  for (var i = 0; i < FIELDS.length; i++) {',
+    '    var f = FIELDS[i];',
+    '    var el = document.getElementById("f_" + f.key);',
+    '    var v = (el.value || "").trim();',
+    '    var bad = null;',
+    '',
+    '    if (f.required && !v) {',
+    '      bad = f.label + " is required.";',
+    '    } else if (f.type === "number" && v !== "") {',
+    '      var n = Number(v);',
+    '      if (!isFinite(n)) bad = f.label + " has to be a number.";',
+    '      else if (f.integer && n % 1 !== 0) bad = f.label + " has to be a whole number.";',
+    '      else if (typeof f.min !== "undefined" && n < f.min) bad = f.label + " cannot be less than " + f.min + ".";',
+    '      else if (typeof f.max !== "undefined" && n > f.max) bad = f.label + " cannot be more than " + f.max + ".";',
+    '    }',
+    '',
+    '    if (bad) {',
+    '      problems.push(bad);',
+    '      el.classList.add("bad");',
+    '      if (!firstBad) firstBad = el;',
+    '    }',
+    '    data[f.key] = v;',
+    '  }',
+    '  return { data: data, problems: problems, firstBad: firstBad };',
+    '}',
+    '',
+    'function save() {',
+    '  clearMarks();',
+    '  var got = collect();',
+    '  if (got.problems.length) {',
+    '    show(got.problems[0], "bad");',
+    '    if (got.firstBad) got.firstBad.focus();',
+    '    return;',
+    '  }',
+    '  saveBtn.disabled = true;',
+    '  saveBtn.textContent = "Saving";',
+    '  google.script.run',
+    '    .withSuccessHandler(function (res) {',
+    '      if (res && res.ok) {',
+    '        show(res.message, "good");',
+    '        setTimeout(function () { google.script.host.close(); }, 1100);',
+    '      } else {',
+    '        show((res && res.error) || "Something went wrong. Nothing was saved.", "bad");',
+    '        reset();',
+    '      }',
+    '    })',
+    '    .withFailureHandler(function (err) {',
+    '      show(err && err.message ? err.message : String(err), "bad");',
+    '      reset();',
+    '    })',
+    '    [SERVER_FN](got.data);',
+    '}',
+    '',
+    'function reset() {',
+    '  saveBtn.disabled = false;',
+    '  saveBtn.textContent = saveBtn.getAttribute("data-label") || "Save";',
+    '}',
+    '',
+    'saveBtn.addEventListener("click", save);',
+    'document.getElementById("cancel").addEventListener("click", function () { google.script.host.close(); });',
+    '',
+    // Enter submits from any single-line field; the notes box keeps its newlines.
+    'document.getElementById("form").addEventListener("keydown", function (e) {',
+    '  if (e.key === "Enter" && e.target.tagName !== "TEXTAREA") { e.preventDefault(); save(); }',
+    '});',
+    '',
+    'var firstField = document.querySelector("input, select, textarea");',
+    'if (firstField) firstField.focus();'
+  ].join('\n');
+}
+
+function escapeHtml_(s) {
+  return String(s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+/** JSON that is safe to drop inside a <script> block. */
+function safeJson_(value) {
+  return JSON.stringify(value)
+    .replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 }
