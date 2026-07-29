@@ -29,6 +29,17 @@ Volunteer submissions are handled by `automation/MedLit.gs`: it copies each one
 to a Volunteers tab, emails you an alert, and sends the volunteer a
 confirmation. That file has its own setup notes at the top.
 
+## Installed skills
+
+`.claude/skills/ui-ux-pro-max/` is a third-party design-reference skill from
+<https://github.com/nextlevelbuilder/ui-ux-pro-max-skill> (MIT). It is a local,
+searchable database of UI styles, colour palettes, font pairings and UX
+guidelines. Nothing in it runs on its own or is published with the site —
+`.claude/` is a dot-directory, so GitHub Pages skips it.
+
+It is a reference to consult, not an authority. Where its suggestions disagree
+with the design notes below or with the MedLit style guide, the notes below win.
+
 ## Deploying
 
 **GitHub Pages** — Settings → Pages → Source: *Deploy from a branch*, pick the
