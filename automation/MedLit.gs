@@ -16,6 +16,8 @@
  *   6. Adds a "MedLit" menu to the spreadsheet with three logging forms, so
  *      you can enter a workshop, a partner update, or volunteer hours without
  *      typing into the right cells by hand.
+ *   7. Builds the volunteer form itself, with the questions named to match
+ *      what the code reads. See createVolunteerForm().
  *
  * ----------------------------------------------------------------------------
  * SETUP — about five minutes, once
@@ -55,6 +57,10 @@
  *   8. Once only, run runOneTimeMigration() to load the outreach list you had
  *      already started and set the dashboard baseline. Safe to run twice — it
  *      skips organisations that are already on the tab.
+ *
+ *   9. If you do not have the volunteer form yet, run createVolunteerForm()
+ *      once. It builds the form, points its responses at this spreadsheet, and
+ *      prints the link to share. It refuses to build a second one.
  *
  * You can re-run setup() safely at any time. It never deletes data — it only
  * creates tabs that are missing and reinstalls the triggers.
@@ -1594,4 +1600,144 @@ function runOneTimeMigration() {
     ss.toast(toWrite.length + ' organisations added, ' + skipped.length + ' skipped.', 'Migration finished', 8);
   } catch (ignore) {}
   return out;
+}
+
+
+/* ============================================================================
+ * BUILD THE VOLUNTEER FORM
+ * ==========================================================================
+ * Creates the form, wires its responses into this spreadsheet, and prints the
+ * two links you need. Run it once from the editor: pick createVolunteerForm()
+ * in the function dropdown and press Run.
+ *
+ * The question titles come from FORM_FIELDS at the top of this file, the same
+ * constant onVolunteerFormSubmit reads answers by. Building the form from that
+ * one source is the point: a form built here can never disagree with the code
+ * that files the answers.
+ *
+ * Two things to expect the first time:
+ *   - Google asks for permission again. This function needs to see your Drive
+ *     to check whether the form already exists, which the rest of the script
+ *     never needed.
+ *   - Linking the form adds a "Form Responses 1" tab to this spreadsheet. That
+ *     is Google's own tab, separate from the Volunteers tab this script keeps.
+ *     Leave it alone.
+ * ========================================================================== */
+
+var FORM_TITLE = 'Volunteer with MedLit';                    // <<< EDIT THIS
+
+var FORM_DESCRIPTION =                                       // <<< EDIT THIS
+  "We're looking for students to write guides, teach workshops, and " +
+  "translate our materials. Tell us a bit about you and we'll be in touch.";
+
+var FORM_CONFIRMATION =                                      // <<< EDIT THIS
+  "Thanks for signing up. Check your email — we've sent you a confirmation " +
+  "and a link to our guide.";
+
+var FORM_ROLE_CHOICES = [                                    // <<< EDIT THIS
+  'Writing guides',
+  'Teaching workshops',
+  'Translation',
+  'Design & graphics',
+  'Not sure yet'
+];
+
+
+function createVolunteerForm() {
+  var ss  = getSpreadsheet_();
+  var log = [];
+  log.push('MedLit form builder — ' + new Date());
+  log.push('');
+
+  // --- don't build a second one --------------------------------------------
+  var existing = findFormByName_(FORM_TITLE);
+  if (existing) {
+    log.push('WARN A form called "' + FORM_TITLE + '" already exists. Nothing was created.');
+    log.push('');
+    log.push('     Edit it:  ' + existing.getUrl());
+    log.push('');
+    log.push('     If that one is wrong and you want a fresh form, move it to the');
+    log.push('     Drive trash first, then run this again. Deleting it does not');
+    log.push('     delete responses already sitting in this spreadsheet.');
+    var warn = log.join('\n');
+    Logger.log(warn);
+    return warn;
+  }
+
+  // --- build it -------------------------------------------------------------
+  var form = FormApp.create(FORM_TITLE);
+  form.setDescription(FORM_DESCRIPTION);
+  form.setConfirmationMessage(FORM_CONFIRMATION);
+
+  form.addTextItem().setTitle(FORM_FIELDS.name).setRequired(true);
+  form.addTextItem().setTitle(FORM_FIELDS.school).setRequired(true);
+  form.addTextItem().setTitle(FORM_FIELDS.city).setRequired(true);
+
+  // The one field the confirmation email cannot do without, so the form checks
+  // it rather than letting a typo through to a bounce.
+  form.addTextItem()
+    .setTitle(FORM_FIELDS.email)
+    .setRequired(true)
+    .setValidation(FormApp.createTextValidation()
+      .requireTextIsEmail()
+      .setHelpText('Enter an email address we can reach you at.')
+      .build());
+
+  form.addCheckboxItem()
+    .setTitle(FORM_FIELDS.role)
+    .setChoiceValues(FORM_ROLE_CHOICES)
+    .setRequired(false);
+
+  // --- send responses here --------------------------------------------------
+  form.setDestination(FormApp.DestinationType.SPREADSHEET, ss.getId());
+
+  // --- report ---------------------------------------------------------------
+  var publishedUrl = form.getPublishedUrl();
+  var editUrl      = form.getEditUrl();
+  var shortUrl     = '';
+  try { shortUrl = form.shortenFormUrl(publishedUrl); } catch (ignore) {}
+
+  log.push('OK   Created "' + FORM_TITLE + '" with ' + form.getItems().length + ' questions.');
+  log.push('OK   Responses now land in this spreadsheet.');
+  log.push('');
+  log.push('SHARE THIS ONE — the link volunteers open:');
+  log.push('  ' + publishedUrl);
+  if (shortUrl) {
+    log.push('  ' + shortUrl + '   (shorter, same form)');
+  }
+  log.push('');
+  log.push('EDIT THE FORM HERE — keep this one to yourself:');
+  log.push('  ' + editUrl);
+  log.push('');
+  log.push('Next:');
+  log.push('  1. Paste the share link into index.html on the website. Search for');
+  log.push('     FORM_URL — it appears three times.');
+  log.push('  2. Submit the form once yourself. You should get the alert email,');
+  log.push('     the confirmation email, and a row on the Volunteers tab.');
+
+  if (GUIDE_URL.indexOf('PASTE_') === 0) {
+    log.push('');
+    log.push('WARN GUIDE_URL at the top of this file is still a placeholder, so the');
+    log.push('     confirmation email promises a guide link it cannot show.');
+  }
+
+  var out = log.join('\n');
+  Logger.log(out);
+  try { ss.toast('Form created. The links are in the execution log.', 'Volunteer form', 8); } catch (ignore) {}
+  return out;
+}
+
+/**
+ * An untrashed Google Form in Drive with this exact name, or null.
+ * Trashed files are skipped on purpose: if you threw the old form away, you
+ * meant it, and a run afterwards should build you a new one.
+ */
+function findFormByName_(name) {
+  var files = DriveApp.getFilesByName(name);
+  while (files.hasNext()) {
+    var file = files.next();
+    if (file.isTrashed()) continue;
+    if (file.getMimeType() === MimeType.GOOGLE_FORMS) return file;
+  }
+  return null;
 }
