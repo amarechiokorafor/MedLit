@@ -6,9 +6,9 @@
   <title>MedLit — health made understandable.</title>
   <meta name="description" content="MedLit is a student-led nonprofit that makes health information understandable — free workshops and free plain-language guides.">
 
-  <!-- FAVICON: swap assets/favicon.svg for the official logo mark when you have it exported. -->
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="assets/favicon.svg">
+  <!-- Favicon: the pill bottle, cropped from the official logo. -->
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,21 +18,21 @@
 
   <!-- ============================================================
        1. HEADER — logo, tagline, section nav
-       LOGO: assets/medlit-mark.svg is a vector rebuild of the pill-bottle
-       mark. To use the official artwork instead, drop the file in /assets
-       and change the src below (keep the alt text as-is).
-       The word "MedLit" and the tagline are real HTML text, not baked into
-       the image, so they stay searchable and screen-reader friendly.
+       LOGO ASSETS (all cropped from the official artwork):
+         assets/medlit-logo.png           primary stacked lockup — header
+         assets/medlit-logo-vertical.png  full lockup with tagline — hero
+         assets/medlit-bottle.png         bottle only — footer
+         assets/favicon.png               bottle only, square — browser tab
+       The tagline beside the header logo is real HTML text as well as being
+       part of the artwork, so screen readers and search engines get it.
        ============================================================ -->
   <header class="site-header">
     <div class="container header-inner">
 
       <a class="brand" href="#top">
-        <img class="brand__mark" src="assets/medlit-mark.svg" alt="" width="64" height="64">
-        <span class="brand__text">
-          <span class="brand__name">Med<span class="brand__name-light">Lit</span></span>
-          <span class="brand__tagline">health made understandable.</span>
-        </span>
+        <img class="brand__logo" src="assets/medlit-logo.png"
+             alt="MedLit" width="341" height="360">
+        <span class="brand__tagline">health made understandable.</span>
       </a>
 
       <nav class="site-nav" aria-label="Main">
@@ -55,16 +55,24 @@
          ============================================================ -->
     <section class="hero" id="top">
       <div class="container hero__inner">
-        <h1>Understanding your own health shouldn&rsquo;t be a privilege.</h1>
-        <p class="hero__sub">
-          MedLit is a student-led nonprofit that makes health information understandable
-          &mdash; free workshops and free plain-language guides.
-        </p>
-        <div class="btn-row">
-          <!-- FORM_URL PLACEHOLDER #1 of 2 — replace with your Google Form link -->
-          <a class="btn btn--primary" href="FORM_URL">Get involved</a>
-          <a class="btn btn--ghost" href="#guides">See our guides</a>
+
+        <div class="hero__copy">
+          <h1>Understanding your own health shouldn&rsquo;t be a privilege.</h1>
+          <p class="hero__sub">
+            MedLit is a student-led nonprofit that makes health information understandable
+            &mdash; free workshops and free plain-language guides.
+          </p>
+          <div class="btn-row">
+            <!-- FORM_URL PLACEHOLDER #1 of 2 — replace with your Google Form link -->
+            <a class="btn btn--primary" href="FORM_URL">Get involved</a>
+            <a class="btn btn--ghost" href="#guides">See our guides</a>
+          </div>
         </div>
+
+        <img class="hero__logo" src="assets/medlit-logo-vertical.png"
+             alt="The MedLit logo: a prescription pill bottle filled with a stack of books."
+             width="694" height="900">
+
       </div>
     </section>
 
@@ -221,9 +229,12 @@
     <div class="container footer-inner">
 
       <div class="footer__brand">
-        <img class="footer__mark" src="assets/medlit-mark.svg" alt="" width="48" height="48">
-        <p class="footer__name">MedLit</p>
-        <p class="footer__tagline">health made understandable.</p>
+        <img class="footer__mark" src="assets/medlit-bottle.png"
+             alt="" width="308" height="400">
+        <div>
+          <p class="footer__name">MedLit</p>
+          <p class="footer__tagline">health made understandable.</p>
+        </div>
       </div>
 
       <div class="footer__contact">

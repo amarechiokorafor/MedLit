@@ -4,22 +4,23 @@ Single-page static site for MedLit. Plain HTML + CSS, no frameworks and no build
 step, so it deploys as-is.
 
 ```
-index.html                 the whole page
-styles.css                 the whole stylesheet
-assets/medlit-mark.svg     logo mark (header + footer)
-assets/favicon.svg         browser tab icon
-assets/guides/             guide PDFs
+index.html                       the whole page
+styles.css                       the whole stylesheet
+assets/medlit-logo.png           stacked lockup — header
+assets/medlit-logo-vertical.png  full lockup with tagline — hero
+assets/medlit-bottle.png         pill bottle only — footer
+assets/favicon.png               browser tab icon
+assets/apple-touch-icon.png      iOS home-screen icon
+assets/guides/                   guide PDFs
 ```
 
-## Before you publish — two things to swap
+All four logo images were cut from the official artwork at print resolution
+with transparent backgrounds, so they sit on any background.
 
-1. **The volunteer form.** Search `index.html` for `FORM_URL` (two places, both
-   flagged with a comment) and replace it with your Google Form link.
-2. **The logo.** `assets/medlit-mark.svg` is a vector rebuild of the pill-bottle
-   mark. Drop the official export into `assets/` and point the two `<img>` tags
-   in `index.html` at it — the header one is marked with a comment. The word
-   "MedLit" and the tagline are real HTML text, not part of the image, so they
-   stay readable by screen readers and search engines.
+## Before you publish — one thing to swap
+
+**The volunteer form.** Search `index.html` for `FORM_URL` (two places, both
+flagged with a comment) and replace it with your Google Form link.
 
 ## Deploying
 
@@ -45,14 +46,29 @@ matching link to the header nav. Alternate `section--tint` on and off so the
 background stripes keep their rhythm. There's an `<!-- ADD NEW SECTIONS HERE -->`
 marker near the bottom of `<main>`.
 
+## Brand colours
+
+Sampled pixel-for-pixel from the logo and the Instagram posts, so the site and
+the feed match. They're CSS variables at the top of `styles.css`.
+
+| | | |
+|---|---|---|
+| `#083795` | brand navy | the wordmark — links, primary buttons |
+| `#162044` | deep navy | headings, footer background |
+| `#2E4674` | post navy | body copy |
+| `#FFDDA3` | butter yellow | accent panels and the volunteer button |
+| `#F7C56B` | bottle amber | hairlines, card edges |
+| `#FB8645` | cap orange | reserved for decorative use |
+| `#EEF1F7` | blue-gray | alternating section backgrounds |
+
 ## Accessibility notes
 
 These aren't decoration — please keep them when editing:
 
 - Body text is 18px minimum (`html { font-size: 18px }`); everything else scales
   from it in `rem`.
-- Every text/background pair in the stylesheet meets WCAG AA. Orange never
-  carries white text — it doesn't have the contrast. It uses dark navy ink.
+- Every text/background pair in the stylesheet meets WCAG AA. Butter yellow and
+  amber are light, so they always carry dark navy ink, never white.
 - No text is baked into images, and every meaningful image has alt text.
 - Fully keyboard navigable, with a skip link and a visible focus ring.
 - Responsive down to a 360px-wide screen.

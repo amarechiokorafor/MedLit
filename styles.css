@@ -17,29 +17,35 @@
    ========================================================================== */
 
 /* ---------- 1. Design tokens ---------------------------------------------
-   Colours sampled from the MedLit logo. Every text/background pair used in
-   this file meets WCAG AA (4.5:1 body, 3:1 large text & UI borders).
-   Orange is deliberately never used behind white text — it does not have the
-   contrast for it. It carries dark navy ink instead.
+   Colours sampled pixel-for-pixel from the logo artwork and the Instagram
+   posts, so the site and the feed read as one brand:
+     #083795  logo wordmark navy      #FFDDA3  butter yellow panels (posts)
+     #162044  deep navy (banner)      #F7C56B  pill-bottle amber
+     #2E4674  post body navy          #FB8645  pill-bottle cap orange
+
+   Every text/background pair in this file meets WCAG AA (4.5:1 body,
+   3:1 large text & UI borders). Butter yellow and amber are light, so they
+   always carry dark navy ink — never white.
    -------------------------------------------------------------------------- */
 :root {
-  --navy:        #1433a0;  /* brand blue, from the wordmark */
-  --navy-deep:   #0f2578;  /* hover / pressed */
-  --ink:         #0b1b4d;  /* headings, and text on orange */
-  --body:        #34405a;  /* body copy */
-  --muted:       #46536b;  /* meta text */
+  --navy:        #083795;  /* brand blue, straight from the wordmark */
+  --navy-deep:   #052a75;  /* hover / pressed */
+  --ink:         #162044;  /* headings, and text on butter yellow */
+  --body:        #2e4674;  /* body copy — the navy used in the posts */
+  --muted:       #4a5c82;  /* meta text */
 
-  --orange:      #f58220;  /* pill-bottle cap */
-  --orange-soft: #fde3c9;  /* icon wells, tints */
-  --amber:       #f9c56a;  /* pill-bottle body */
+  --butter:      #ffdda3;  /* the yellow that carries the posts */
+  --butter-soft: #fff1d8;  /* icon wells, soft tints */
+  --amber:       #f7c56b;  /* pill-bottle body */
+  --orange:      #fb8645;  /* pill-bottle cap — decorative accents only */
 
   --white:       #ffffff;
-  --tint:        #eef3fa;  /* light blue-gray section background */
-  --line:        #d3ddec;
+  --tint:        #eef1f7;  /* light blue-gray section background */
+  --line:        #d5dced;
 
   --radius:      14px;
   --radius-lg:   20px;
-  --shadow:      0 2px 4px rgba(11, 27, 77, .05), 0 10px 24px rgba(11, 27, 77, .07);
+  --shadow:      0 2px 4px rgba(22, 32, 68, .05), 0 10px 24px rgba(22, 32, 68, .08);
 
   --measure:     34rem;    /* comfortable reading width */
   --gutter:      clamp(1.25rem, 4vw, 2.5rem);
@@ -123,8 +129,8 @@ ul { padding: 0; }
   outline-offset: 3px;
   border-radius: 4px;
 }
-/* …except inside the navy footer, where amber is the readable ring. */
-.site-footer :focus-visible { outline-color: var(--amber); }
+/* …except inside the navy footer, where butter yellow is the readable ring. */
+.site-footer :focus-visible { outline-color: var(--butter); }
 
 .visually-hidden {
   position: absolute;
@@ -175,8 +181,8 @@ ul { padding: 0; }
   z-index: 50;
   background: var(--white);
   border-bottom: 1px solid var(--line);
-  /* the orange cap of the pill bottle, as a hairline */
-  box-shadow: inset 0 4px 0 var(--orange);
+  /* the pill-bottle amber, as a hairline */
+  box-shadow: inset 0 4px 0 var(--amber);
 }
 
 .header-inner {
@@ -191,26 +197,23 @@ ul { padding: 0; }
 .brand {
   display: flex;
   align-items: center;
-  gap: .7rem;
+  gap: .85rem;
   text-decoration: none;
   color: inherit;
 }
-.brand__mark { width: 2.6rem; height: 2.6rem; flex: none; }
-.brand__text { display: flex; flex-direction: column; }
-
-.brand__name {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--navy);
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+.brand__logo {
+  width: auto;
+  height: 3.4rem;   /* the stacked "Med / Lit" lockup */
+  flex: none;
 }
-.brand__name-light { font-weight: 400; }
-
 .brand__tagline {
-  font-size: .8rem;
-  color: var(--muted);
+  font-size: .88rem;
+  color: var(--body);
   letter-spacing: .01em;
+  max-width: 9rem;
+  line-height: 1.3;
+  border-left: 2px solid var(--butter);
+  padding-left: .85rem;
 }
 
 .site-nav ul {
@@ -230,18 +233,28 @@ ul { padding: 0; }
   border-bottom: 3px solid transparent;
 }
 .site-nav a:hover,
-.site-nav a:focus-visible { border-bottom-color: var(--orange); }
+.site-nav a:focus-visible { border-bottom-color: var(--ink); }
 
 /* ---------- 6. Hero ------------------------------------------------------- */
 .hero {
   background:
-    radial-gradient(58rem 26rem at 12% -18%, #fdf1e3 0%, rgba(253, 241, 227, 0) 62%),
+    radial-gradient(52rem 30rem at 88% 8%, #fff3dc 0%, rgba(255, 243, 220, 0) 62%),
     linear-gradient(180deg, var(--white) 0%, var(--tint) 100%);
   border-bottom: 1px solid var(--line);
 }
 .hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(2rem, 6vw, 4.5rem);
   padding-block: clamp(3rem, 9vw, 6.25rem);
-  max-width: 52rem;
+}
+.hero__copy { max-width: 36rem; }
+.hero__logo {
+  flex: 0 1 20rem;
+  width: 20rem;
+  height: auto;
+  align-self: center;
 }
 .hero h1 { margin-bottom: .45em; }
 .hero__sub {
@@ -283,11 +296,12 @@ ul { padding: 0; }
   color: var(--navy);
   border-color: var(--navy);
 }
-.btn--ghost:hover { background: #e9eefb; color: var(--navy-deep); }
+.btn--ghost:hover { background: #e6ecfa; color: var(--navy-deep); }
 
-/* Orange carries dark navy ink, never white — that is what keeps it AA. */
-.btn--accent { background: var(--orange); color: var(--ink); }
-.btn--accent:hover { background: #dd6f12; color: var(--ink); }
+/* Butter yellow carries dark navy ink, never white — same as the posts,
+   and that is what keeps it AA. */
+.btn--accent { background: var(--butter); color: var(--ink); border-color: var(--ink); }
+.btn--accent:hover { background: var(--amber); color: var(--ink); }
 
 .btn--lg { font-size: 1.1rem; padding: .95rem 2.2rem; min-height: 3.4rem; }
 .btn--sm { font-size: .98rem; padding: .6rem 1.3rem; min-height: 2.75rem; }
@@ -329,8 +343,8 @@ ul { padding: 0; }
   height: 3.1rem;
   margin-bottom: 1rem;
   border-radius: 50%;
-  background: var(--orange-soft);
-  color: #9a3f06;               /* dark orange — AA on the soft orange well */
+  background: var(--butter-soft);
+  color: var(--navy);           /* brand navy — 9:1 on the butter well */
 }
 
 /* ---------- 9. Guides ----------------------------------------------------- */
@@ -342,7 +356,7 @@ ul { padding: 0; }
   align-items: flex-start;
   background: var(--white);
   border: 1px solid var(--line);
-  border-top: 6px solid var(--orange);
+  border-top: 6px solid var(--amber);
   border-radius: var(--radius-lg);
   padding: 1.7rem 1.6rem;
   box-shadow: var(--shadow);
@@ -361,9 +375,9 @@ ul { padding: 0; }
 /* ---------- 10. Footer ---------------------------------------------------- */
 .site-footer {
   background: var(--ink);
-  color: #e7ecf7;
+  color: #e8ecf8;
   padding-block: clamp(2.5rem, 6vw, 3.75rem) 2rem;
-  border-top: 6px solid var(--orange);
+  border-top: 6px solid var(--amber);
 }
 
 .footer-inner {
@@ -374,21 +388,22 @@ ul { padding: 0; }
   align-items: flex-start;
 }
 
-.footer__mark { width: 2.5rem; height: 2.5rem; }
+.footer__brand { display: flex; align-items: center; gap: 1.1rem; }
+.footer__mark { width: auto; height: 4rem; flex: none; }
 .footer__name {
   font-size: 1.4rem;
   font-weight: 800;
   color: var(--white);
-  margin: .5rem 0 .1rem;
+  margin: 0 0 .1rem;
 }
-.footer__tagline { color: #b9c6e2; font-size: .95rem; }
+.footer__tagline { color: #bcc8e4; font-size: .95rem; }
 
 .footer__heading {
   font-size: .87rem;
   font-weight: 700;
   letter-spacing: .09em;
   text-transform: uppercase;
-  color: var(--amber);
+  color: var(--butter);
   margin-bottom: .8rem;
 }
 .footer__contact ul { list-style: none; margin: 0; display: grid; gap: .55rem; }
@@ -398,13 +413,13 @@ ul { padding: 0; }
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, .45);
 }
-.footer__contact a:hover { color: var(--amber); text-decoration-color: var(--amber); }
+.footer__contact a:hover { color: var(--butter); text-decoration-color: var(--butter); }
 
 .disclaimer {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, .22);
-  color: #d5deef;               /* AA on the navy footer */
+  color: #d7dfef;               /* AA on the navy footer */
   font-size: .95rem;
   max-width: 46rem;
 }
@@ -413,6 +428,19 @@ ul { padding: 0; }
    The layout is fluid by default; these are the few places that need help.
    Verified down to a 360px-wide viewport.
    -------------------------------------------------------------------------- */
+/* Hero goes single-column before the two columns get cramped. */
+@media (max-width: 60rem) {
+  .hero__inner { flex-direction: column; align-items: flex-start; }
+  .hero__copy { max-width: none; }
+  .hero__logo {
+    flex: none;
+    width: min(15rem, 55vw);
+    align-self: center;
+    order: -1;                         /* logo above the headline on narrow screens */
+    margin-bottom: .5rem;
+  }
+}
+
 @media (max-width: 52rem) {
   .site-header { position: static; }   /* give small screens their height back */
   .header-inner { justify-content: center; text-align: center; }
@@ -423,10 +451,11 @@ ul { padding: 0; }
 
 @media (max-width: 30rem) {
   :root { --gutter: 1.15rem; }
-  .brand__mark { width: 2.3rem; height: 2.3rem; }
-  .brand__name { font-size: 1.45rem; }
+  .brand__logo { height: 2.7rem; }
+  .brand__tagline { font-size: .82rem; padding-left: .7rem; max-width: 8rem; }
   .card-grid, .guide-grid { grid-template-columns: 1fr; }
   .btn { width: 100%; }               /* full-width, easy to hit */
   .btn-row { flex-direction: column; align-items: stretch; }
   .footer-inner { gap: 2rem; }
+  .footer__mark { height: 3.2rem; }
 }
