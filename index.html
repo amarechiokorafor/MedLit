@@ -10,6 +10,8 @@
   <link rel="icon" href="assets/favicon.png" type="image/png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
+  <link rel="preload" href="assets/fonts/atkinson-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/outfit-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -21,27 +23,28 @@
        LOGO ASSETS — the two official lockups, cut out with transparent
        backgrounds. Nothing here is redrawn or recoloured.
          assets/medlit-logo.png           stacked lockup — header and footer
-         assets/medlit-logo-vertical.png  full lockup with tagline — hero,
-                                          and squared off for the favicon
+         assets/medlit-logo-vertical.png  full lockup with tagline —
+                                          squared off for the favicon
        The tagline beside the header logo is real HTML text as well as being
        part of the artwork, so screen readers and search engines get it.
        ============================================================ -->
-  <header class="site-header">
-    <div class="container header-inner">
+  <header class="site-header" id="top">
+    <div class="shell header__inner">
 
       <a class="brand" href="#top">
         <img class="brand__logo" src="assets/medlit-logo.png"
              alt="MedLit" width="398" height="420">
-        <span class="brand__tagline">health made understandable.</span>
+        <span class="brand__tagline">health made<br>understandable.</span>
       </a>
 
-      <nav class="site-nav" aria-label="Main">
+      <nav class="nav" aria-label="Main">
         <ul>
           <li><a href="#problem">The problem</a></li>
           <li><a href="#what-we-do">What we do</a></li>
           <li><a href="#guides">Guides</a></li>
-          <li><a href="#get-involved">Get involved</a></li>
-          <li><a href="#partner">Partner with us</a></li>
+          <li><a href="#partner">Partner</a></li>
+          <!-- FORM_URL PLACEHOLDER #1 of 2 — replace with your Google Form link -->
+          <li><a class="nav__cta" href="FORM_URL">Get involved</a></li>
         </ul>
       </nav>
 
@@ -52,26 +55,80 @@
 
     <!-- ============================================================
          2. HERO
+         The right-hand panel is a working prescription label. Every line
+         opens to its plain-language meaning — the wording comes straight
+         out of the guide in assets/guides/. It's a <details> element, so
+         it works with no JavaScript at all; the script at the bottom of
+         this file only adds the progress counter.
          ============================================================ -->
-    <section class="hero" id="top">
-      <div class="container hero__inner">
+    <section class="hero">
+      <div class="shell hero__inner">
 
-        <div class="hero__copy">
-          <h1>Understanding your own health shouldn&rsquo;t be a privilege.</h1>
+        <div class="hero__copy reveal">
+          <p class="eyebrow">Student-led nonprofit</p>
+          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a&nbsp;privilege.</h1>
           <p class="hero__sub">
             MedLit is a student-led nonprofit that makes health information understandable
             &mdash; free workshops and free plain-language guides.
           </p>
           <div class="btn-row">
-            <!-- FORM_URL PLACEHOLDER #1 of 2 — replace with your Google Form link -->
+            <!-- FORM_URL PLACEHOLDER #2 of 2 — replace with your Google Form link -->
             <a class="btn btn--primary" href="FORM_URL">Get involved</a>
             <a class="btn btn--ghost" href="#guides">See our guides</a>
           </div>
         </div>
 
-        <img class="hero__logo" src="assets/medlit-logo-vertical.png"
-             alt="The MedLit logo: a prescription pill bottle filled with a stack of books."
-             width="780" height="1011">
+        <div class="hero__demo reveal">
+          <div class="rx">
+            <div class="rx__cap" aria-hidden="true"></div>
+            <div class="rx__body">
+
+              <p class="rx__prompt">
+                <span class="rx__prompt-lead">A real label, in real size.</span>
+                Open any line to see what it actually means.
+              </p>
+
+              <div class="rx__paper">
+                <p class="rx__pharmacy">Community Care Pharmacy<span>(281) 555-0142</span></p>
+
+                <details class="rx__row">
+                  <summary><span class="rx__key">Rx #</span><span class="rx__val">4827193</span></summary>
+                  <p>The number you give the pharmacy when you call to ask for a refill.</p>
+                </details>
+
+                <details class="rx__row">
+                  <summary><span class="rx__key">Drug</span><span class="rx__val">Lisinopril 10&nbsp;mg tablets<br><em>Generic for Zestril</em></span></summary>
+                  <p>The medicine, and how much is in each tablet. &ldquo;Zestril&rdquo; is a brand
+                     name for the very same drug.</p>
+                </details>
+
+                <details class="rx__row rx__row--key">
+                  <summary><span class="rx__key">Sig</span><span class="rx__val">Take 1 tablet by mouth once daily</span></summary>
+                  <p>The most important line. One dose every day &mdash; pick a time and keep
+                     it the same.</p>
+                </details>
+
+                <details class="rx__row">
+                  <summary><span class="rx__key">Qty</span><span class="rx__val">30 tablets</span></summary>
+                  <p>How many are in the bottle.</p>
+                </details>
+
+                <details class="rx__row">
+                  <summary><span class="rx__key">Refills</span><span class="rx__val">2</span></summary>
+                  <p>You can get it filled twice more before you need a new prescription
+                     from your doctor.</p>
+                </details>
+
+                <details class="rx__row">
+                  <summary><span class="rx__key">Discard after</span><span class="rx__val">07/24/2027</span></summary>
+                  <p>Don&rsquo;t take it after this date without asking your pharmacist first.</p>
+                </details>
+              </div>
+
+              <p class="rx__foot" id="rx-count">Six lines off one bottle. Open any of them.</p>
+            </div>
+          </div>
+        </div>
 
       </div>
     </section>
@@ -79,69 +136,68 @@
     <!-- ============================================================
          3. THE PROBLEM
          ============================================================ -->
-    <section class="section section--tint" id="problem">
-      <div class="container narrow">
-        <h2>The problem</h2>
-        <p class="lead">
+    <section class="section panel panel--ink" id="problem">
+      <div class="shell">
+        <p class="eyebrow eyebrow--onink reveal">The problem</p>
+        <p class="statement reveal">
           Every day, people struggle with prescription labels, lab results, and insurance
           letters. The print is small, the words are hard to understand, and the person who
-          could explain it has already moved on to the next patient. So people guess. And
-          guessing about your own health is a risk no one should have to take.
+          could explain it has already moved on to the next patient.
+        </p>
+        <p class="statement statement--turn reveal">
+          So people guess. And guessing about your own health is a risk no one should have
+          to take.
         </p>
       </div>
     </section>
 
     <!-- ============================================================
-         4. WHAT WE DO — card grid
+         4. WHAT WE DO
          TO ADD A CARD: copy one <li class="card"> … </li> block below.
          The grid reflows on its own; no other changes needed.
          ============================================================ -->
     <section class="section" id="what-we-do">
-      <div class="container">
-        <h2>What we do</h2>
-        <ul class="card-grid" role="list">
+      <div class="shell">
+        <div class="section__head reveal">
+          <p class="eyebrow">What we do</p>
+          <h2>Three things, done properly.</h2>
+        </div>
 
-          <li class="card">
-            <span class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 7a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM1 21v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/>
-                <path d="M21 7a3 3 0 1 0-6 0 3 3 0 0 0 6 0zM13 21v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/>
-              </svg>
-            </span>
+        <ul class="cards" role="list">
+
+          <li class="card card--butter reveal">
+            <p class="card__tag">Workshops</p>
             <h3>Free workshops</h3>
             <p>
               45-minute interactive sessions at senior communities, libraries, and community
               organizations, covering how to read prescription labels, lab results, and
               insurance letters.
             </p>
+            <ul class="chips" role="list">
+              <li>Prescription labels</li>
+              <li>Lab results</li>
+              <li>Insurance letters</li>
+            </ul>
           </li>
 
-          <li class="card">
-            <span class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h11a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4z"/>
-                <path d="M8 8h6M8 12h6"/>
-              </svg>
-            </span>
+          <li class="card reveal">
+            <p class="card__tag">Guides</p>
             <h3>Free guides</h3>
             <p>
               One-page plain-language guides in English and Spanish, reviewed by a licensed
               healthcare professional before release.
             </p>
+            <p class="card__note">Reviewed before release. Free to print and hand out.</p>
           </li>
 
-          <li class="card">
-            <span class="card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 21h18"/>
-                <path d="M6 21V12M12 21V5M18 21v-6"/>
-              </svg>
-            </span>
+          <li class="card reveal">
+            <p class="card__tag">Evaluation</p>
             <h3>Measured results</h3>
             <p>
               We test comprehension before and after every workshop, so we can show people
               actually learned something.
             </p>
+            <p class="card__note">Before and after, every single session.</p>
           </li>
 
         </ul>
@@ -150,32 +206,39 @@
 
     <!-- ============================================================
          5. GUIDES
-         TO ADD A GUIDE: put the PDF in assets/guides/ and copy one
-         <li class="guide"> … </li> block below. Update the title, the
-         one-line description, the file size, and both href values.
+         TO ADD A GUIDE: put the PDF in assets/guides/, render its first
+         page to a .jpg alongside it, then copy one <li class="guide"> …
+         </li> block below and update the title, description, meta line,
+         cover image and both hrefs.
          ============================================================ -->
     <section class="section section--tint" id="guides">
-      <div class="container">
-        <h2>Guides</h2>
-        <p class="section-intro">
-          Free to read, download, print, and hand out. No sign-up, no email required.
-        </p>
+      <div class="shell">
+        <div class="section__head reveal">
+          <p class="eyebrow">Guides</p>
+          <h2>Free to read, print, and hand out.</h2>
+          <p class="section__lede">No sign-up. No email address. No catch.</p>
+        </div>
 
-        <ul class="guide-grid" role="list">
+        <ul class="guides" role="list">
 
-          <li class="guide">
-            <h3 class="guide__title">What Does My Prescription Label Say?</h3>
-            <p class="guide__desc">
-              A one-page walkthrough of every part of a prescription label &mdash; drug name,
-              dose, directions, refills, and dates &mdash; in plain language.
-            </p>
-            <p class="guide__meta">PDF &middot; 1 page &middot; English</p>
-            <a class="btn btn--primary btn--sm"
-               href="assets/guides/what-does-my-prescription-label-say.pdf"
-               download>
-              Download guide
-              <span class="visually-hidden">: What Does My Prescription Label Say? (PDF)</span>
+          <li class="guide reveal">
+            <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf" tabindex="-1" aria-hidden="true">
+              <img src="assets/guides/what-does-my-prescription-label-say.jpg"
+                   alt="" width="620" height="802" loading="lazy">
             </a>
+            <div class="guide__text">
+              <h3><a href="assets/guides/what-does-my-prescription-label-say.pdf">What Does My Prescription Label Say?</a></h3>
+              <p>
+                Every part of a prescription label &mdash; drug name, dose, directions,
+                refills, and dates &mdash; explained one piece at a time.
+              </p>
+              <p class="guide__meta">PDF &middot; 1 page &middot; English</p>
+              <a class="btn btn--primary btn--sm"
+                 href="assets/guides/what-does-my-prescription-label-say.pdf" download>
+                Download guide
+                <span class="visually-hidden">: What Does My Prescription Label Say? (PDF)</span>
+              </a>
+            </div>
           </li>
 
           <!-- ADD NEW GUIDE CARDS HERE -->
@@ -187,34 +250,50 @@
     <!-- ============================================================
          6. GET INVOLVED
          ============================================================ -->
-    <section class="section" id="get-involved">
-      <div class="container narrow center">
-        <h2>Get involved</h2>
-        <p class="lead">
-          We&rsquo;re looking for our first volunteers to run workshops, write guides, and
-          translate them. If you can explain things clearly, or speak a second language,
-          there is a place for you here.
-        </p>
-        <!-- FORM_URL PLACEHOLDER #2 of 2 — replace with your Google Form link -->
-        <a class="btn btn--accent btn--lg" href="FORM_URL">Volunteer with MedLit</a>
+    <section class="section panel panel--butter" id="get-involved">
+      <div class="shell cta">
+        <div class="cta__text reveal">
+          <p class="eyebrow">Get involved</p>
+          <h2>We&rsquo;re looking for our first volunteers.</h2>
+          <p class="cta__lede">
+            People to run workshops, write guides, and translate them. If you can explain
+            things clearly, or you speak a second language, there is a place for you here.
+          </p>
+          <ul class="chips chips--lg" role="list">
+            <li>Run workshops</li>
+            <li>Write guides</li>
+            <li>Translate</li>
+          </ul>
+        </div>
+        <div class="cta__action reveal">
+          <!-- FORM_URL PLACEHOLDER — this is the same link as the two above -->
+          <a class="btn btn--ink btn--lg" href="FORM_URL">Volunteer with MedLit</a>
+          <p class="cta__fine">Takes about two minutes.</p>
+        </div>
       </div>
     </section>
 
     <!-- ============================================================
          7. PARTNER WITH US
          ============================================================ -->
-    <section class="section section--tint" id="partner">
-      <div class="container narrow center">
-        <h2>Partner with us</h2>
-        <p class="lead">
-          If you run a senior community, a library, or a community organization, we would love
-          to bring a free workshop to your space. We handle the materials and the facilitators
-          &mdash; you bring the room and the people. Tell us a little about your group and
-          we&rsquo;ll follow up with dates.
-        </p>
-        <a class="btn btn--primary btn--lg" href="mailto:medliterateofficial@gmail.com?subject=Hosting%20a%20free%20MedLit%20workshop">
-          Email us about hosting
-        </a>
+    <section class="section panel panel--ink" id="partner">
+      <div class="shell cta">
+        <div class="cta__text reveal">
+          <p class="eyebrow eyebrow--onink">Partner with us</p>
+          <h2 class="onink">Bring a free workshop to your space.</h2>
+          <p class="cta__lede onink">
+            If you run a senior community, a library, or a community organization, we would
+            love to visit. We handle the materials and the facilitators &mdash; you bring the
+            room and the people. Tell us a little about your group and we&rsquo;ll follow up
+            with dates.
+          </p>
+        </div>
+        <div class="cta__action reveal">
+          <a class="btn btn--butter btn--lg" href="mailto:medliterateofficial@gmail.com?subject=Hosting%20a%20free%20MedLit%20workshop">
+            Email us about hosting
+          </a>
+          <p class="cta__fine onink">medliterateofficial@gmail.com</p>
+        </div>
       </div>
     </section>
 
@@ -226,7 +305,7 @@
        8. FOOTER
        ============================================================ -->
   <footer class="site-footer">
-    <div class="container footer-inner">
+    <div class="shell footer__inner">
 
       <div class="footer__brand">
         <!-- The wordmark is navy, so it sits on a white chip rather than
@@ -248,13 +327,58 @@
 
     </div>
 
-    <div class="container">
+    <div class="shell">
       <p class="disclaimer">
         MedLit provides general health education, not medical advice. Always talk to your
         doctor or pharmacist about your specific medications.
       </p>
     </div>
   </footer>
+
+  <script>
+    // Progressive enhancement only. Everything above works without this file.
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 1. Label counter — reports how much of the prescription is decoded.
+      var rows  = document.querySelectorAll('.rx__row');
+      var count = document.getElementById('rx-count');
+      if (rows.length && count) {
+        var total = rows.length;
+        var tally = function () {
+          var open = document.querySelectorAll('.rx__row[open]').length;
+          count.textContent = open === 0
+            ? 'Six lines off one bottle. Open any of them.'
+            : open === total
+              ? 'That’s the whole label, in plain English.'
+              : open + ' of ' + total + ' lines decoded.';
+        };
+        rows.forEach(function (r) { r.addEventListener('toggle', tally); });
+      }
+
+      // 2. Reveal on scroll. Without IntersectionObserver, everything just shows.
+      var items = document.querySelectorAll('.reveal');
+      if (reduce || !('IntersectionObserver' in window)) {
+        items.forEach(function (el) { el.classList.add('is-in'); });
+      } else {
+        document.documentElement.classList.add('has-reveal');
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        items.forEach(function (el) { io.observe(el); });
+      }
+
+      // 3. Header gets a shadow once the page has moved.
+      var header = document.querySelector('.site-header');
+      var onScroll = function () {
+        header.classList.toggle('is-stuck', window.scrollY > 8);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    })();
+  </script>
 
 </body>
 </html>
