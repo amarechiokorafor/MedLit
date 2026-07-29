@@ -40,6 +40,13 @@ guidelines. Nothing in it runs on its own or is published with the site —
 It is a reference to consult, not an authority. Where its suggestions disagree
 with the design notes below or with the MedLit style guide, the notes below win.
 
+## MCP servers
+
+`.mcp.json` registers the 21st.dev MCP server for anyone who opens this repo in
+Claude Code. It reads the key from `API_KEY_21ST` in your environment rather
+than storing it, so nothing secret is committed. Set the variable, then restart
+Claude Code and approve the server when prompted.
+
 ## Deploying
 
 **GitHub Pages** — Settings → Pages → Source: *Deploy from a branch*, pick the
