@@ -52,6 +52,10 @@
  *      alert to you, the confirmation to whatever address you used) and a new
  *      row in the Volunteers tab.
  *
+ *   8. Once only, run runOneTimeMigration() to load the outreach list you had
+ *      already started and set the dashboard baseline. Safe to run twice — it
+ *      skips organisations that are already on the tab.
+ *
  * You can re-run setup() safely at any time. It never deletes data — it only
  * creates tabs that are missing and reinstalls the triggers.
  *
@@ -394,6 +398,7 @@ function buildPartnersTab_(ss) {
   sh.setColumnWidth(5, 130);   // Phone
   sh.setColumnWidth(7, 110);   // Method
   sh.setColumnWidth(9, 280);   // Next action
+  sh.getRange('E2:E').setNumberFormat('@');            // phone stays text
   sh.getRange('F2:F').setNumberFormat('yyyy-mm-dd');
   sh.getRange('J2:J').setNumberFormat('yyyy-mm-dd');
 
@@ -480,7 +485,8 @@ function buildDashboardTab_(ss) {
     .setFontWeight('bold').setFontColor(C.ink);
   sh.getRange(DASH.stampRow, DASH.stampCol).setNumberFormat('yyyy-mm-dd hh:mm');
 
-  var headers = ['Metric', 'Current value (you update)', 'Auto-calculated', 'Where the number comes from'];
+  var headers = ['Metric', 'Current value (you update)', 'Auto-calculated',
+                 'Where the number comes from', 'Note'];
   sh.getRange(DASH.headerRow, 1, 1, headers.length).setValues([headers])
     .setFontWeight('bold').setFontColor(C.white).setBackground(C.ink);
 
@@ -513,7 +519,8 @@ function buildDashboardTab_(ss) {
   sh.setColumnWidth(1, 210);
   sh.setColumnWidth(2, 190);
   sh.setColumnWidth(3, 150);
-  sh.setColumnWidth(4, 360);
+  sh.setColumnWidth(4, 330);
+  sh.setColumnWidth(5, 320);
   sh.setFrozenRows(DASH.headerRow);
 
   touchDashboardStamp_(ss);
@@ -1386,4 +1393,205 @@ function escapeHtml_(s) {
 function safeJson_(value) {
   return JSON.stringify(value)
     .replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+}
+
+
+/* ============================================================================
+ * ONE-TIME MIGRATION
+ * ==========================================================================
+ * Loads the outreach list that existed before this spreadsheet did, and sets
+ * the dashboard to where things actually stand today.
+ *
+ * Run it once, by hand, from the editor: pick runOneTimeMigration() in the
+ * function dropdown and press Run. It is safe to run again — it matches on
+ * organisation name and skips any that are already on the tab, so you get
+ * a report rather than eleven duplicates.
+ *
+ * The rows are written straight from the table below. Edit the table if a
+ * detail is wrong, then re-run; anything already there stays put, so fix
+ * mistakes on the tab itself rather than here.
+ * ========================================================================== */
+
+/** Every "Next action date" is set to the day you run this. */
+var MIGRATION_CONTACTED_ON = '2026-07-20';
+
+/**
+ * Organization, Contact name, Title, Email, Phone, Method, Status, Next action.
+ * Date contacted is MIGRATION_CONTACTED_ON unless contacted is false.
+ */
+function migrationPartnerRows_() {
+  var FOLLOW_UP = 'Follow up';
+  var CALL_ACT  = 'Call, ask for Activity Director';
+  return [
+    { org: 'Harris County Public Library – LSC-CyFair Branch', contact: 'Melanie Wachsmann',
+      title: 'Library Director', email: 'cyf@hcpl.net', phone: '',
+      contacted: true, method: 'Email', status: 'Replied',
+      next: 'Follow up with Melanie re: program review' },
+
+    { org: 'Cy-Fair Helping Hands', contact: 'Janet Ryan',
+      title: 'Executive Director', email: 'janet@cyfairhelpinghands.org', phone: '',
+      contacted: true, method: 'Email', status: 'Replied',
+      next: 'Send guide + overview, confirm Aug 15 tabling' },
+
+    { org: 'Avanti Senior Living at Towne Lake', contact: 'Mike Tanner',
+      title: 'Executive Director', email: 'hellotownelake@avanti-sl.com', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    { org: 'Bristol Park at Cypress', contact: 'Kimberly Pera',
+      title: 'Executive Director', email: 'bristolparkcypress@sagora.com', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    { org: 'Cy-Hope', contact: 'Jennifer Herrera',
+      title: 'Executive Director', email: 'cy-hope@cy-hope.org', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    { org: 'Cypress Assistance Ministries', contact: 'Martha Burnes',
+      title: 'Executive Director', email: 'marthab@cypressassistance.org', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    { org: 'Reach Unlimited', contact: 'Lauren Black, EdD',
+      title: 'Executive Director', email: 'lblack@reachunlimited.org', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    { org: 'Harris County Precinct One community centers', contact: 'Rodney Ellis',
+      title: 'Commissioner, Precinct One', email: 'Comm_Ellis@cp1.hctx.net', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    { org: 'HCPL Northwest Branch', contact: 'Cathy Clark',
+      title: 'Branch Manager', email: 'nw@hcpl.net', phone: '',
+      contacted: true, method: 'Email', status: 'Emailed', next: FOLLOW_UP },
+
+    // No email address for these two, so they have not been contacted yet.
+    { org: 'Parsons House Cypress', contact: 'Stacy Arceneaux',
+      title: 'Executive Director', email: '', phone: '281-374-8002',
+      contacted: false, method: '', status: 'Not contacted', next: CALL_ACT },
+
+    { org: 'Spring Cypress Senior Living', contact: 'Sierra Johannessen',
+      title: 'Director of Sales', email: '', phone: '281-519-7050',
+      contacted: false, method: '', status: 'Not contacted', next: CALL_ACT }
+  ];
+}
+
+/** The dashboard baseline. Everything is zero except the guide that is out. */
+var MIGRATION_DASHBOARD = {
+  values: {
+    'Workshops held': 0,
+    'Total attendees': 0,
+    'Recurring partners': 0,
+    'Guides published': 1,
+    'Languages': 0,
+    'Volunteers signed up': 0,
+    'Volunteer hours granted': 0,
+    'Instagram followers': 0,
+    'Press mentions': 0
+  },
+  notes: {
+    'Guides published': 'Guide #1 published and professionally reviewed.'
+  }
+};
+
+
+function runOneTimeMigration() {
+  var ss  = getSpreadsheet_();
+  var log = [];
+  log.push('MedLit migration — ' + new Date());
+  log.push('');
+
+  // --- Partners -------------------------------------------------------------
+  var sh = ss.getSheetByName(TAB.partners);
+  if (!sh) {
+    buildPartnersTab_(ss);
+    sh = ss.getSheetByName(TAB.partners);
+    log.push('Created the ' + TAB.partners + ' tab first.');
+  }
+
+  var contactedOn = parseIsoDate_(MIGRATION_CONTACTED_ON);
+  if (!contactedOn) {
+    throw new Error('MIGRATION_CONTACTED_ON must look like 2026-07-20, not "' + MIGRATION_CONTACTED_ON + '".');
+  }
+  var today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // What is already there, so a second run doesn't duplicate anyone.
+  var existing = {};
+  if (sh.getLastRow() >= 2) {
+    var current = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
+    for (var c = 0; c < current.length; c++) {
+      var name = String(current[c][0] || '').trim().toLowerCase();
+      if (name) existing[name] = true;
+    }
+  }
+
+  var rows = migrationPartnerRows_();
+  var toWrite = [], skipped = [];
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if (existing[r.org.trim().toLowerCase()]) { skipped.push(r.org); continue; }
+    toWrite.push([
+      r.org, r.contact, r.title, r.email, r.phone,
+      r.contacted ? contactedOn : '',
+      r.method,
+      r.status,
+      r.next,
+      today                                  // every one of these is due now
+    ]);
+  }
+
+  if (toWrite.length) {
+    var startRow = firstEmptyRowByColumn_(sh, 1);
+    sh.getRange(startRow, 1, toWrite.length, PARTNER_HEADERS.length).setValues(toWrite);
+    log.push('OK   Wrote ' + toWrite.length + ' organisation' + (toWrite.length === 1 ? '' : 's') +
+             ' to ' + TAB.partners + ', rows ' + startRow + '–' + (startRow + toWrite.length - 1) + '.');
+    for (var w = 0; w < toWrite.length; w++) log.push('       ' + toWrite[w][0] + '  (' + toWrite[w][7] + ')');
+  } else {
+    log.push('OK   Nothing new to write.');
+  }
+
+  if (skipped.length) {
+    log.push('');
+    log.push('SKIP ' + skipped.length + ' already on the tab, left untouched:');
+    for (var k = 0; k < skipped.length; k++) log.push('       ' + skipped[k]);
+  }
+
+  // --- Dashboard ------------------------------------------------------------
+  log.push('');
+  var dash = ss.getSheetByName(TAB.dashboard);
+  if (!dash) {
+    buildDashboardTab_(ss);
+    dash = ss.getSheetByName(TAB.dashboard);
+    log.push('Created the ' + TAB.dashboard + ' tab first.');
+  }
+
+  var metrics = dashboardMetrics_();
+  var setCount = 0;
+  for (var m = 0; m < metrics.length; m++) {
+    var label = metrics[m].label;
+    var row   = DASH.firstMetricRow + m;
+    if (MIGRATION_DASHBOARD.values.hasOwnProperty(label)) {
+      dash.getRange(row, 2).setValue(MIGRATION_DASHBOARD.values[label]);
+      setCount++;
+    }
+    if (MIGRATION_DASHBOARD.notes.hasOwnProperty(label)) {
+      dash.getRange(row, 5).setValue(MIGRATION_DASHBOARD.notes[label]);
+    }
+  }
+  log.push('OK   Set ' + setCount + ' dashboard metrics. Guides published = 1, the rest 0.');
+  log.push('     Note on Guides published: "' + MIGRATION_DASHBOARD.notes['Guides published'] + '"');
+
+  refreshDashboard_(ss);
+
+  // --- Wrap up --------------------------------------------------------------
+  log.push('');
+  log.push('Every next action date is set to today, so all ' +
+           (toWrite.length + skipped.length) + ' rows are due now. The Sunday digest will');
+  log.push('list them until you push the dates out or close the rows.');
+  log.push('');
+  log.push('Migration finished. You should not need to run this again.');
+
+  var out = log.join('\n');
+  Logger.log(out);
+  try {
+    ss.toast(toWrite.length + ' organisations added, ' + skipped.length + ' skipped.', 'Migration finished', 8);
+  } catch (ignore) {}
+  return out;
 }
