@@ -72,8 +72,8 @@ wouldn't say it to someone's face, rewrite it.
 **The label in the hero.** The wording comes straight out of the prescription
 guide. It's a stack of `<details>` elements, so it opens and closes with no
 JavaScript and is keyboard-operable for free. The inline script only adds the
-"3 of 6 lines decoded" counter and the scroll reveals — turn JavaScript off and
-the page still works completely, with nothing hidden.
+"3 of 6 lines explained" counter and a shadow on the header once you scroll.
+Turn JavaScript off and the page still works completely, with nothing hidden.
 
 ## Adding a guide
 
@@ -107,6 +107,8 @@ These aren't decoration — please keep them when editing:
   ink, never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
   to butter on the dark panels.
-- Scroll reveals and hover lifts are disabled under `prefers-reduced-motion`.
+- Hover lifts and transitions are disabled under `prefers-reduced-motion`.
+- The label decoder is the only interactive element on the page, and it is a
+  native `<details>` — no custom keyboard handling to get wrong.
 - Responsive down to a 360px-wide screen, checked for horizontal overflow at
   360, 414, 768, 1024, 1440 and 1920px.
