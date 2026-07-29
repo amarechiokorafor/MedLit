@@ -63,6 +63,12 @@ feed match. All defined as CSS variables at the top of `styles.css`.
   wordmark.
 - **IBM Plex Mono** for the prescription label and the small signpost labels.
 
+**Writing.** All copy follows the MedLit style guide: short declarative
+sentences, second person, concrete nouns over abstractions, periods instead of
+em dashes, headings that state something rather than label it, and no claim the
+organisation hasn't earned. If you edit copy, read it aloud first — if you
+wouldn't say it to someone's face, rewrite it.
+
 **The label in the hero.** The wording comes straight out of the prescription
 guide. It's a stack of `<details>` elements, so it opens and closes with no
 JavaScript and is keyboard-operable for free. The inline script only adds the
@@ -102,4 +108,5 @@ These aren't decoration — please keep them when editing:
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
   to butter on the dark panels.
 - Scroll reveals and hover lifts are disabled under `prefers-reduced-motion`.
-- Responsive down to a 360px-wide screen, checked for horizontal overflow.
+- Responsive down to a 360px-wide screen, checked for horizontal overflow at
+  360, 414, 768, 1024, 1440 and 1920px.
