@@ -131,6 +131,17 @@ matching link to the header nav. Alternate the backgrounds — plain, then
 keeps its rhythm. There's an `<!-- ADD NEW SECTIONS HERE -->` marker near the
 bottom of `<main>`.
 
+## Sharing
+
+`assets/og-image.jpg` is the card that appears when the link is pasted into a
+message, an email, or a social post. It is rendered from this site's own
+stylesheet, so it can never drift from the page. To regenerate it after a
+copy change, rebuild the 1200x630 card and screenshot it at that size.
+
+The `og:` and `canonical` URLs in `index.html` all point at
+`https://amarechiokorafor.github.io/MedLit/`. If the site ever moves to its own
+domain, those four URLs change with it.
+
 ## Accessibility notes
 
 These aren't decoration — please keep them when editing:
@@ -148,3 +159,5 @@ These aren't decoration — please keep them when editing:
   native `<details>` — no custom keyboard handling to get wrong.
 - Responsive down to a 360px-wide screen, checked for horizontal overflow at
   360, 414, 768, 1024, 1440 and 1920px.
+- Every link and button is at least 44px tall on a phone. Measured, not
+  assumed — the nav and the footer contact links both used to fall short.

@@ -320,6 +320,9 @@ a:hover { color: var(--navy-deep); }
   list-style: none;
 }
 .nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;              /* a thumb needs 44px, and ours is a hurried one */
   font-family: var(--display);
   font-size: .95rem;
   font-weight: 600;
@@ -718,8 +721,11 @@ a:hover { color: var(--navy-deep); }
   color: var(--amber);
   margin: 0 0 .9rem;
 }
-.footer__contact ul { list-style: none; display: grid; gap: .6rem; }
+.footer__contact ul { list-style: none; display: grid; gap: .25rem; }
 .footer__contact a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;              /* same reason as the nav */
   color: var(--white);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, .4);
