@@ -8,14 +8,15 @@ index.html                       the whole page
 styles.css                       the whole stylesheet
 assets/medlit-logo.png           stacked lockup — header
 assets/medlit-logo-vertical.png  full lockup with tagline — hero
-assets/medlit-bottle.png         pill bottle only — footer
+assets/medlit-bottle.png         bottle detail from the lockup — footer
 assets/favicon.png               browser tab icon
 assets/apple-touch-icon.png      iOS home-screen icon
 assets/guides/                   guide PDFs
 ```
 
-All four logo images were cut from the official artwork at print resolution
-with transparent backgrounds, so they sit on any background.
+All four are cut from the two official lockups at print resolution with
+transparent backgrounds, so they sit on any background. The footer mark and
+the favicon are the pill bottle taken out of the stacked lockup.
 
 ## Before you publish — one thing to swap
 
