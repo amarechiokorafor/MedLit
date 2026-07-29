@@ -45,7 +45,8 @@
  *      dropdown and press Run. Google will ask you to authorise the script —
  *      that is expected; it needs permission to edit the sheet and send mail
  *      as you. Approve it. When it finishes, open the Execution log; it prints
- *      a checklist of everything it created.
+ *      a checklist of everything it created, including whether it can send
+ *      mail as medliterateofficial@gmail.com.
  *
  *   6. Reload the spreadsheet tab. A "MedLit" menu appears next to Help, with
  *      "Log a workshop", "Log a partner update" and "Log volunteer hours".
@@ -102,18 +103,29 @@
  */
 var SPREADSHEET_ID = '';                                     // <<< EDIT THIS
 
-/** Where volunteer alerts and the weekly partner digest are sent. */
+/**
+ * Where volunteer alerts and the weekly partner digest are sent, and the
+ * address all three emails are sent FROM.
+ *
+ * Sending as this address only works if the Google account running the script
+ * has it verified under Gmail > Settings > Accounts and Import > "Send mail
+ * as". If the script runs under this account already, there is nothing to set
+ * up. If it does not, and the alias is missing, mail still goes out — just
+ * under the running account's own address. setup() tells you which it is.
+ */
 var ALERT_EMAIL = 'medliterateofficial@gmail.com';          // <<< EDIT THIS
 
 /** The name volunteers see in the "From" line of the confirmation email. */
 var FROM_NAME = 'MedLit';                                    // <<< EDIT THIS
 
 /**
- * Link to the guide, used in the confirmation email.
- * Paste the direct PDF link, or your site's #guides link once it is live.
- * e.g. https://amarechiokorafor.github.io/MedLit/#guides
+ * Where the confirmation email sends people to read the guides.
+ *
+ * This points at the guides section of the site rather than at one PDF, so it
+ * keeps working as the library grows. Publish a second guide and this link
+ * already covers it — no edit here, ever.
  */
-var GUIDE_URL = 'PASTE_YOUR_GUIDE_URL_HERE';                 // <<< EDIT THIS
+var GUIDE_URL = 'https://amarechiokorafor.github.io/MedLit/#guides';   // <<< EDIT THIS
 
 /**
  * Your form's question titles, spelled EXACTLY as they appear on the form —
@@ -141,18 +153,18 @@ var CONFIRMATION_SUBJECT = 'Thanks for signing up with MedLit';
 var CONFIRMATION_BODY =
 'Hi {{name}},\n' +
 '\n' +
-'Thanks for signing up. We have your form, and a real person is reading it.\n' +
+'Thanks for signing up. Someone on our team actually read your form, and\n' +
+'we\'ll email you within a week about what you can jump into.\n' +
 '\n' +
-'MedLit runs free workshops on how to read prescription labels, lab results,\n' +
-'and insurance letters. We also write free one-page guides in plain language,\n' +
-'and a licensed healthcare professional reviews every one before we publish it.\n' +
+'Quick version of what we do: healthcare hands people documents nobody\n' +
+'explains, so we explain them. Free workshops, free plain-language guides,\n' +
+'and every guide gets checked by a licensed healthcare professional before\n' +
+'it goes out.\n' +
 '\n' +
-'Someone from our team will email you within a week about next steps. If you\n' +
-'want to see what our materials look like first, this is our guide to reading\n' +
-'a prescription label:\n' +
+'Our guides live here if you want to see what you\'d be helping make:\n' +
 '{{guide}}\n' +
 '\n' +
-'Thanks again for saying yes to this.\n' +
+'Glad you\'re here.\n' +
 '\n' +
 'The MedLit team\n' +
 'medliterateofficial@gmail.com\n' +
@@ -319,10 +331,15 @@ function setup() {
     log.push('     Fix: Project Settings > Time zone > Central Time - Chicago, then re-run setup().');
   }
 
-  // Settings you may not have filled in yet.
-  if (GUIDE_URL.indexOf('PASTE_') === 0) {
-    log.push('WARN GUIDE_URL is still a placeholder. The confirmation email will');
-    log.push('     read better once you paste the real link at the top of this file.');
+  // Sending identity.
+  if (canSendAsAlertEmail_()) {
+    log.push('OK   Mail will be sent as ' + ALERT_EMAIL + '.');
+  } else {
+    log.push('NOTE ' + ALERT_EMAIL + ' is not a verified alias on this account, so');
+    log.push('     mail goes out under the account running the script. That is fine');
+    log.push('     if this IS that account. If it is not, and you want mail to come');
+    log.push('     from MedLit, add it in Gmail > Settings > Accounts and Import >');
+    log.push('     "Send mail as", verify it, then re-run setup().');
   }
 
   log.push('');
@@ -615,12 +632,9 @@ function onVolunteerFormSubmit(e) {
 
   // --- alert you ------------------------------------------------------------
   try {
-    MailApp.sendEmail({
-      to: ALERT_EMAIL,
-      subject: 'New MedLit volunteer signup: ' + (v.name || 'name not given'),
-      body: alertBody_(v),
-      name: FROM_NAME
-    });
+    sendMail_(ALERT_EMAIL,
+              'New MedLit volunteer signup: ' + (v.name || 'name not given'),
+              alertBody_(v));
   } catch (err) {
     noteParts.push('Alert email failed: ' + err.message);
     Logger.log('Alert email failed: ' + err);
@@ -629,13 +643,7 @@ function onVolunteerFormSubmit(e) {
   // --- confirm to the volunteer --------------------------------------------
   if (looksLikeEmail_(v.email)) {
     try {
-      MailApp.sendEmail({
-        to: v.email,
-        subject: CONFIRMATION_SUBJECT,
-        body: renderConfirmation_(v),
-        name: FROM_NAME,
-        replyTo: ALERT_EMAIL
-      });
+      sendMail_(v.email, CONFIRMATION_SUBJECT, renderConfirmation_(v), ALERT_EMAIL);
     } catch (err) {
       noteParts.push('Confirmation email failed: ' + err.message);
       Logger.log('Confirmation email to ' + v.email + ' failed: ' + err);
@@ -802,12 +810,10 @@ function sendWeeklyPartnerDigest() {
   lines.push(ss.getUrl());
 
   try {
-    MailApp.sendEmail({
-      to: ALERT_EMAIL,
-      subject: 'MedLit: ' + due.length + ' partner follow-ups due',
-      body: lines.join('\n'),
-      name: FROM_NAME
-    });
+    // Routed through the same sender, so all three emails come from one place.
+    sendMail_(ALERT_EMAIL,
+              'MedLit: ' + due.length + ' partner follow-ups due',
+              lines.join('\n'));
     Logger.log('Digest sent. ' + due.length + ' follow-up(s) due.');
   } catch (err) {
     Logger.log('Digest email failed: ' + err);
@@ -1124,6 +1130,47 @@ function requireSheet_(ss, name) {
   var sh = ss.getSheetByName(name);
   if (!sh) throw new Error('There is no "' + name + '" tab. Run setup() from the Apps Script editor.');
   return sh;
+}
+
+/**
+ * Sends mail as ALERT_EMAIL.
+ *
+ * This uses GmailApp rather than MailApp on purpose. MailApp.sendEmail has no
+ * "from" option at all — passing one is quietly ignored, and the mail goes out
+ * under whichever account is running the script. GmailApp does support it, but
+ * only for an address the sending account has verified under
+ * Gmail > Settings > Accounts and Import > "Send mail as".
+ *
+ * So: if ALERT_EMAIL is a verified alias on the account running this script,
+ * mail is sent from it. If it is not, the mail still goes out under the
+ * account's own address rather than failing. Nobody loses a volunteer signup
+ * because an alias was not set up.
+ *
+ * If the script is already running under medliterateofficial@gmail.com, there
+ * is nothing to do — an account's own address is not listed as an alias, and
+ * mail comes from it either way.
+ */
+function sendMail_(to, subject, body, replyTo) {
+  var options = { name: FROM_NAME };
+  if (replyTo) options.replyTo = replyTo;
+  if (canSendAsAlertEmail_()) options.from = ALERT_EMAIL;
+  GmailApp.sendEmail(to, subject, body, options);
+}
+
+/** Checked once per run, since the answer cannot change mid-execution. */
+var ALIAS_CHECKED_ = false;
+var ALIAS_USABLE_  = false;
+function canSendAsAlertEmail_() {
+  if (!ALIAS_CHECKED_) {
+    ALIAS_CHECKED_ = true;
+    try {
+      ALIAS_USABLE_ = GmailApp.getAliases().indexOf(ALERT_EMAIL) !== -1;
+    } catch (err) {
+      ALIAS_USABLE_ = false;
+      Logger.log('Could not read Gmail aliases, sending under the script owner: ' + err.message);
+    }
+  }
+  return ALIAS_USABLE_;
 }
 
 function done_(message) { return { ok: true,  message: message }; }
