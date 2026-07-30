@@ -58,22 +58,27 @@
 <!-- ==============================================================
      THE IDEA, so that edits keep it intact.
 
-     The best-designed thing this organisation has made is the guide in
-     assets/guides/. It works by annotating a real document: numbered
-     callouts in the margin, pointing at the thing itself, in plain
-     language, with the one line that matters most swiped in amber.
+     The best-designed thing this organisation owns is the guide in
+     assets/guides/. It annotates a real document: numbered callouts
+     pointing at the thing itself, plain language beside each one, the one
+     line that matters swiped in amber. That is the visual vocabulary here.
 
-     This page is built as that same annotated document. Every section
-     carries a numbered badge in a left margin column, exactly as every
-     part of the label carries one in the guide. Structure is drawn with
-     hairline blue rules, never with drop shadows. The palette is sampled
-     from the logo and the guide, nothing invented.
+     But it is a vocabulary, not a template. The previous version applied
+     the same numbered-badge-plus-heading-plus-table frame to six sections
+     in a row, and the repetition read as machinery. So the callouts now
+     appear only where they mean something — on the label and on the
+     guide — and every section gets the width, alignment and scale that
+     its own job needs.
 
-     Three rules worth keeping:
-       1. No shadows, no gradients. Depth comes from rules and fills.
-       2. The amber highlight appears at most once in a section. It means
-          "this is the line that matters", not "this is decorative".
-       3. Nothing here needs JavaScript to be read.
+     Rules worth keeping:
+       1. The label is the hero. It is the whole mission in one object a
+          person can click. Never shrink it into a corner again.
+       2. One accent word on the page, in the h1. Repeated, it is a tic.
+       3. Three type sizes, far apart. Something should be genuinely large.
+       4. No shadows, no gradients. Structure is rules and flat fills.
+       5. Monospace is only for transcribed documents — the label sheet and
+          the jargon column. It is the artefact's voice, not decoration.
+       6. Nothing needs JavaScript to be read.
      ============================================================== -->
 <body>
 
@@ -81,21 +86,18 @@
 
   <!-- ============================================================
        MASTHEAD
-       LOGO ASSETS — the two official lockups, cut out with transparent
-       backgrounds. Nothing here is redrawn or recoloured.
+       LOGO ASSETS — the two official lockups, cut from the official logo
+       PDF with transparent backgrounds. Nothing is redrawn or recoloured.
          assets/medlit-logo.png           stacked lockup — masthead, footer
          assets/medlit-logo-vertical.png  full lockup with tagline
        ============================================================ -->
   <header class="masthead">
-    <div class="frame masthead__inner">
+    <div class="wide masthead__inner">
 
       <a class="brand" href="#top">
         <img class="brand__mark" src="assets/medlit-logo.png"
              alt="MedLit" width="398" height="420">
-        <span class="brand__text">
-          <span class="brand__name">MedLit</span>
-          <span class="brand__tagline">health made understandable.</span>
-        </span>
+        <span class="brand__tagline">health made understandable.</span>
       </a>
 
       <nav class="topnav" aria-label="Sections">
@@ -113,43 +115,46 @@
   <main id="main">
 
     <!-- ============================================================
-         THE MISSION, and the annotated label that proves it.
-         The label is the guide's centrepiece rebuilt for the web: each
-         line is numbered in the margin and opens to its plain-language
-         meaning. It is a stack of <details> elements, so it works with
-         no JavaScript at all.
+         THE HERO IS THE LABEL.
+         A real prescription label, at the top, at full width, that a
+         person can open line by line. It demonstrates the entire mission
+         without a word of explanation, which is why it leads.
+
+         It is a stack of <details> elements, so it opens and closes with
+         no JavaScript and needs no custom keyboard handling. The callout
+         numbers are CSS counters — add, remove or reorder lines and they
+         renumber themselves.
          ============================================================ -->
-    <section class="opening" id="top">
-      <div class="frame opening__inner">
+    <section class="hero" id="top">
 
-        <div class="opening__copy">
-          <p class="kicker">Student-led nonprofit</p>
-          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a&nbsp;<em>privilege</em>.</h1>
-          <p class="lede">
-            MedLit is a student-led nonprofit that makes health information
-            understandable. Free workshops and free plain-language guides.
-          </p>
-        </div>
+      <div class="wide hero__head">
+        <p class="eyebrow">Student-led nonprofit</p>
+        <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a&nbsp;<em>privilege</em>.</h1>
+        <p class="hero__lede">
+          MedLit is a student-led nonprofit that makes health information
+          understandable. Free workshops and free plain-language guides.
+        </p>
+      </div>
 
-        <figure class="label">
-          <figcaption class="label__caption">
-            <span class="label__caption-lead">A real label, in real size.</span>
+      <div class="wide">
+        <figure class="rx">
+          <figcaption class="rx__caption">
+            <span class="rx__caption-lead">A real label, in real size.</span>
             Open any line to see what it actually means.
           </figcaption>
 
-          <div class="label__sheet">
-            <p class="label__pharmacy">
+          <div class="rx__sheet">
+            <p class="rx__pharmacy">
               Community Care Pharmacy <span>(281)&nbsp;555-0142</span>
             </p>
 
-            <!-- ADD OR REORDER LINES FREELY — the callout numbers are CSS
-                 counters, so they renumber themselves. -->
-            <ol class="label__rows">
+            <!-- ADD OR REORDER LINES FREELY — the numbers renumber themselves. -->
+            <ol class="rx__rows">
               <li>
                 <details>
                   <summary>
-                    <span class="label__key">Rx #</span>
-                    <span class="label__val">4827193</span>
+                    <span class="rx__key">Rx #</span>
+                    <span class="rx__val">4827193</span>
                   </summary>
                   <p>The number you give the pharmacy when you call to ask for a refill.</p>
                 </details>
@@ -157,9 +162,9 @@
               <li>
                 <details>
                   <summary>
-                    <span class="label__key">Drug</span>
-                    <span class="label__val">Lisinopril 10&nbsp;mg tablets
-                      <span class="label__sub">Generic for Zestril</span></span>
+                    <span class="rx__key">Drug</span>
+                    <span class="rx__val">Lisinopril 10&nbsp;mg tablets
+                      <span class="rx__sub">Generic for Zestril</span></span>
                   </summary>
                   <p>The medicine, and how much is in each tablet. &ldquo;Zestril&rdquo; is a
                      brand name for the very same drug.</p>
@@ -170,8 +175,8 @@
               <li class="is-key">
                 <details>
                   <summary>
-                    <span class="label__key">Sig</span>
-                    <span class="label__val">Take 1 tablet by mouth once daily</span>
+                    <span class="rx__key">Sig</span>
+                    <span class="rx__val">Take 1 tablet by mouth once daily</span>
                   </summary>
                   <p>The most important line. One dose every day. Pick a time and keep it
                      the same.</p>
@@ -180,8 +185,8 @@
               <li>
                 <details>
                   <summary>
-                    <span class="label__key">Qty</span>
-                    <span class="label__val">30 tablets</span>
+                    <span class="rx__key">Qty</span>
+                    <span class="rx__val">30 tablets</span>
                   </summary>
                   <p>How many are in the bottle.</p>
                 </details>
@@ -189,8 +194,8 @@
               <li>
                 <details>
                   <summary>
-                    <span class="label__key">Refills</span>
-                    <span class="label__val">2</span>
+                    <span class="rx__key">Refills</span>
+                    <span class="rx__val">2</span>
                   </summary>
                   <p>You can get it filled twice more before you need a new prescription
                      from your doctor.</p>
@@ -199,8 +204,8 @@
               <li>
                 <details>
                   <summary>
-                    <span class="label__key">Discard after</span>
-                    <span class="label__val">07/24/2027</span>
+                    <span class="rx__key">Discard after</span>
+                    <span class="rx__val">07/24/2027</span>
                   </summary>
                   <p>Don&rsquo;t take it after this date without asking your pharmacist first.</p>
                 </details>
@@ -208,215 +213,206 @@
             </ol>
           </div>
         </figure>
-
-        <!-- Three doors, spanning the full width beneath the mission and the
-             label. Three different people arrive on this page and each should
-             reach their own thing in about five seconds, without reading it.
-             Placed last in the source so that the reading and focus order
-             match what the eye sees. -->
-        <nav class="doors" aria-label="Start here">
-          <p class="doors__label" id="doors-label">Start here</p>
-          <ul aria-labelledby="doors-label">
-            <li>
-              <a href="#guides">
-                <span class="doors__what">I need a guide</span>
-                <span class="doors__who">Free to read, print, and hand out</span>
-              </a>
-            </li>
-            <li>
-              <a href="#host">
-                <span class="doors__what">I want a workshop for my group</span>
-                <span class="doors__who">Senior communities, libraries, food pantries</span>
-              </a>
-            </li>
-            <li>
-              <a href="#volunteer">
-                <span class="doors__what">I want to volunteer</span>
-                <span class="doors__who">Teach, write, or translate</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-
       </div>
     </section>
 
     <!-- ============================================================
-         01 — THE PROBLEM
-         Set as a plain statement across the measure. No panel, no card.
+         THREE DOORS — a thin strip, not a section. Three different people
+         arrive on this page and each should reach their own thing in about
+         five seconds without reading it.
          ============================================================ -->
-    <section class="chapter chapter--statement" id="problem">
-      <div class="frame chapter__inner">
-        <div class="chapter__margin">
-          <!-- This chapter's headline IS its margin label — it has no separate
-               h2 — so the label carries the heading. That keeps exactly one
-               h2 per chapter in the document outline, which is what a screen
-               reader navigating by headings actually walks. -->
-          <h2 class="chapter__label">The problem</h2>
-        </div>
-        <div class="chapter__body">
-          <p class="statement">
-            Every day, people struggle with prescription labels, lab results, and
-            insurance letters. The print is small, the words are hard to understand,
-            and the person who could explain it has already moved on to the next
-            patient.
+    <nav class="doors" aria-label="Start here">
+      <ul class="wide">
+        <li>
+          <a href="#guides">
+            <span class="doors__what">I need a guide</span>
+            <span class="doors__who">Free to read, print, and hand out</span>
+          </a>
+        </li>
+        <li>
+          <a href="#host">
+            <span class="doors__what">I want a workshop for my group</span>
+            <span class="doors__who">Senior communities, libraries, food pantries</span>
+          </a>
+        </li>
+        <li>
+          <a href="#volunteer">
+            <span class="doors__what">I want to volunteer</span>
+            <span class="doors__who">Teach, write, or translate</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ============================================================
+         THE TRANSLATION — full bleed, the two halves set against each
+         other. This is the actual product, so it is shown rather than
+         described. The jargon is set in the label's monospace because
+         that is what it is: a transcribed document. The plain version is
+         set in the reading face, large, on white.
+
+         The column headings borrow the printed guide's own words.
+         ============================================================ -->
+    <section class="translate" aria-labelledby="translate-h">
+      <h2 class="hidden" id="translate-h">The same instruction, twice</h2>
+      <div class="translate__grid">
+
+        <div class="translate__side translate__side--before">
+          <p class="translate__label">What it says</p>
+          <p class="translate__jargon">
+            Take 1 tab PO BID PRN for pain, not to exceed 6 tabs in 24h
           </p>
-          <p class="statement statement--turn">
-            So people guess. And guessing about your own health is a risk no one
-            should have to take.
+        </div>
+
+        <div class="translate__side translate__side--after">
+          <p class="translate__label">What it really means</p>
+          <p class="translate__plain">
+            Take one tablet by mouth twice a day when you have pain.
+            <span class="swipe">Never more than 6 tablets in one day.</span>
           </p>
         </div>
+
       </div>
     </section>
 
     <!-- ============================================================
-         02 — THE GUIDES
-         The most prominent thing on the page after the mission, because
-         they are the only real proof of work.
+         THE PROBLEM — one enormous statement and nothing else on screen.
+         The largest type on the page after the h1, deliberately alone.
+         ============================================================ -->
+    <section class="problem" aria-labelledby="problem-h">
+      <div class="read">
+        <h2 class="hidden" id="problem-h">The problem</h2>
+        <p class="problem__statement">
+          Every day, people struggle with prescription labels, lab results, and
+          insurance letters. The print is small, the words are hard to understand,
+          and the person who could explain it has already moved on to the next
+          patient.
+        </p>
+        <p class="problem__turn">
+          So people guess. And guessing about your own health is a risk no one
+          should have to take.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE GUIDES — asymmetric. The artwork leads at size, because the
+         guide is the only real proof of work here and it is the
+         best-designed thing the organisation owns.
 
          TO ADD A GUIDE: drop the PDF in assets/guides/, render its first
          page to a .jpg alongside it, then copy one <li class="guide">
-         block below and change the title, the description, the meta line,
-         the cover image, and both hrefs. Nothing else needs touching —
-         the shelf reflows and the guides renumber themselves.
+         block and change the title, the alt text, the description, the
+         three facts, the cover src and both hrefs. No CSS, ever. While
+         there is one guide it runs full width with a large cover; add a
+         second and both fall back to an even grid; add ten and they wrap.
          ============================================================ -->
-    <section class="chapter chapter--guides" id="guides">
-      <div class="frame chapter__inner">
-        <div class="chapter__margin">
-          <p class="chapter__label">The guides</p>
+    <section class="guides" id="guides" aria-labelledby="guides-h">
+      <div class="wide">
+        <div class="guides__head">
+          <h2 id="guides-h">Free to read, print, and hand out.</h2>
+          <p class="guides__lede">No sign-up. No email address. No catch.</p>
         </div>
-        <div class="chapter__body">
-          <h2>Free to read, print, and <em>hand out</em>.</h2>
-          <p class="chapter__lede">No sign-up. No email address. No catch.</p>
 
-          <ul class="shelf" role="list">
+        <ul class="shelf" role="list">
 
-            <li class="guide">
-              <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf">
-                <img src="assets/guides/what-does-my-prescription-label-say.jpg"
-                     alt="First page of the guide: a prescription label with eleven
-                          numbered callouts, each explaining one part of it."
-                     width="620" height="802" loading="lazy">
+          <li class="guide">
+            <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf">
+              <img src="assets/guides/what-does-my-prescription-label-say.jpg"
+                   alt="First page of the guide: a prescription label with eleven
+                        numbered callouts, each explaining one part of it."
+                   width="620" height="802" loading="lazy">
+            </a>
+            <div class="guide__text">
+              <h3><a href="assets/guides/what-does-my-prescription-label-say.pdf">What Does My Prescription Label Say?</a></h3>
+              <p class="guide__blurb">
+                Every part of a prescription label, explained one piece at a time.
+                Drug name, dose, directions, refills, dates.
+              </p>
+              <dl class="facts">
+                <div><dt>Format</dt><dd>PDF, 1 page</dd></div>
+                <div><dt>Language</dt><dd>English</dd></div>
+                <div><dt>Reviewed</dt><dd>Licensed healthcare professional</dd></div>
+              </dl>
+              <a class="action action--solid"
+                 href="assets/guides/what-does-my-prescription-label-say.pdf" download>
+                Download the guide
+                <span class="hidden">: What Does My Prescription Label Say? (PDF)</span>
               </a>
-              <div class="guide__text">
-                <h3><a href="assets/guides/what-does-my-prescription-label-say.pdf">What Does My Prescription Label Say?</a></h3>
-                <p>
-                  Every part of a prescription label, explained one piece at a time.
-                  Drug name, dose, directions, refills, dates.
-                </p>
-                <dl class="guide__facts">
-                  <div><dt>Format</dt><dd>PDF, 1 page</dd></div>
-                  <div><dt>Language</dt><dd>English</dd></div>
-                  <div><dt>Reviewed</dt><dd>Licensed healthcare professional</dd></div>
-                </dl>
-                <a class="action action--solid"
-                   href="assets/guides/what-does-my-prescription-label-say.pdf" download>
-                  Download the guide
-                  <span class="hidden">: What Does My Prescription Label Say? (PDF)</span>
-                </a>
-              </div>
-            </li>
+            </div>
+          </li>
 
-            <!-- ADD NEW GUIDE CARDS HERE -->
+          <!-- ADD NEW GUIDE CARDS HERE -->
 
-          </ul>
-        </div>
+        </ul>
       </div>
     </section>
 
     <!-- ============================================================
-         03 — THE WORKSHOPS
-         What a session actually involves, for the activity director or
-         librarian deciding whether to trust us with their residents.
+         THE WORKSHOPS — two columns. What a session actually involves,
+         for the activity director or librarian deciding whether to trust
+         students with their residents.
          ============================================================ -->
-    <section class="chapter chapter--tint" id="workshops">
-      <div class="frame chapter__inner">
-        <div class="chapter__margin">
-          <p class="chapter__label">The workshops</p>
-        </div>
-        <div class="chapter__body">
-          <h2>So we teach people to <em>read them</em>.</h2>
-          <p class="chapter__lede">
+    <section class="workshops" id="workshops" aria-labelledby="workshops-h">
+      <div class="wide workshops__grid">
+
+        <div class="workshops__say">
+          <h2 id="workshops-h">So we teach people to read them.</h2>
+          <p class="workshops__lede">
             45-minute interactive sessions at senior communities, libraries, and food
             pantries, covering how to read prescription labels, lab results, and
             insurance letters.
           </p>
-
-          <dl class="spec">
-            <div class="spec__row">
-              <dt>How long</dt>
-              <dd>45 minutes, interactive.</dd>
-            </div>
-            <div class="spec__row">
-              <dt>Where</dt>
-              <dd>Senior communities, libraries, food pantries, community organizations.</dd>
-            </div>
-            <div class="spec__row">
-              <dt>What we cover</dt>
-              <dd>Prescription labels, lab results, insurance letters.</dd>
-            </div>
-            <div class="spec__row">
-              <dt>What we bring</dt>
-              <dd>The materials and the facilitators.</dd>
-            </div>
-            <div class="spec__row">
-              <dt>What you bring</dt>
-              <dd>The room and the people.</dd>
-            </div>
-            <div class="spec__row">
-              <dt>Cost</dt>
-              <dd><span class="swipe">Free. Always.</span></dd>
-            </div>
-          </dl>
         </div>
+
+        <dl class="facts facts--wide">
+          <div><dt>How long</dt><dd>45 minutes, interactive.</dd></div>
+          <div><dt>Where</dt><dd>Senior communities, libraries, food pantries, community organizations.</dd></div>
+          <div><dt>What we cover</dt><dd>Prescription labels, lab results, insurance letters.</dd></div>
+          <div><dt>What we bring</dt><dd>The materials and the facilitators.</dd></div>
+          <div><dt>What you bring</dt><dd>The room and the people.</dd></div>
+          <div><dt>Cost</dt><dd><strong>Free. Always.</strong></dd></div>
+        </dl>
+
       </div>
     </section>
 
     <!-- ============================================================
-         04 — HOW WE CHECK IT
-         The legitimacy block. Two claims, both of which we can stand
-         behind, set as plainly as possible.
+         HOW WE CHECK IT — deliberately quiet and narrow, right after the
+         widest section. Two claims we can stand behind, numbered because
+         that is the guide's habit and here it earns it.
          ============================================================ -->
-    <section class="chapter" id="review">
-      <div class="frame chapter__inner">
-        <div class="chapter__margin">
-          <p class="chapter__label">How we check it</p>
-        </div>
-        <div class="chapter__body">
-          <h2>We check the work, and we <em>measure it</em>.</h2>
-
-          <ol class="checks" role="list">
-            <li>
-              <h3>Reviewed before release</h3>
-              <p>
-                One-page plain-language guides in English and Spanish, reviewed by a
-                licensed healthcare professional before release.
-              </p>
-            </li>
-            <li>
-              <h3>Measured every session</h3>
-              <p>
-                We test comprehension before and after every workshop, so we can show
-                people actually learned something.
-              </p>
-            </li>
-          </ol>
-        </div>
+    <section class="review" id="review" aria-labelledby="review-h">
+      <div class="read">
+        <h2 id="review-h">We check the work, and we measure it.</h2>
+        <ol class="checks" role="list">
+          <li>
+            <h3>Reviewed before release</h3>
+            <p>
+              One-page plain-language guides in English and Spanish, reviewed by a
+              licensed healthcare professional before release.
+            </p>
+          </li>
+          <li>
+            <h3>Measured every session</h3>
+            <p>
+              We test comprehension before and after every workshop, so we can show
+              people actually learned something.
+            </p>
+          </li>
+        </ol>
       </div>
     </section>
 
     <!-- ============================================================
-         05 — HOST A WORKSHOP
-         The primary conversion for the first audience. Plain email, no form.
+         HOST A WORKSHOP — full bleed, reversed. The primary conversion for
+         the first audience. Plain email, no form.
          ============================================================ -->
-    <section class="chapter chapter--invert" id="host">
-      <div class="frame chapter__inner">
-        <div class="chapter__margin">
-          <p class="chapter__label">Host a workshop</p>
-        </div>
-        <div class="chapter__body">
-          <h2>Bring a <em>free workshop</em> to your space.</h2>
-          <p class="chapter__lede">
+    <section class="host" id="host" aria-labelledby="host-h">
+      <div class="wide host__grid">
+        <h2 id="host-h">Bring a free workshop to your space.</h2>
+        <div class="host__body">
+          <p>
             If you run a senior community, a library, or a community organization, we
             would love to visit. We handle the materials and the facilitators. You
             bring the room and the people. Tell us a little about your group and
@@ -433,41 +429,40 @@
     </section>
 
     <!-- ============================================================
-         06 — VOLUNTEER
+         VOLUNTEER
          Volunteer form. This same link appears twice: here and in the
-         three doors at the top. Change both together.
+         three doors near the top. Change both together.
          ============================================================ -->
-    <section class="chapter" id="volunteer">
-      <div class="frame chapter__inner">
-        <div class="chapter__margin">
-          <p class="chapter__label">Volunteer</p>
-        </div>
-        <div class="chapter__body">
-          <h2>We&rsquo;re looking for our <em>first volunteers</em>.</h2>
-          <p class="chapter__lede">
+    <section class="volunteer" id="volunteer" aria-labelledby="volunteer-h">
+      <div class="wide volunteer__grid">
+
+        <div class="volunteer__say">
+          <h2 id="volunteer-h">We&rsquo;re looking for our first volunteers.</h2>
+          <p class="volunteer__lede">
             People to run workshops, write guides, and translate them. If you can
             explain things clearly, or you speak a second language, there is a place
             for you here.
           </p>
-
-          <ul class="roles" role="list">
-            <li><span class="roles__name">Run workshops</span> <span class="roles__note">Teach a 45-minute session.</span></li>
-            <li><span class="roles__name">Write guides</span> <span class="roles__note">Turn one confusing document into one clear page.</span></li>
-            <li><span class="roles__name">Translate</span> <span class="roles__note">Carry a guide into another language.</span></li>
-          </ul>
-
           <p class="act">
             <a class="action action--solid" href="https://docs.google.com/forms/d/e/1FAIpQLSfiFyv2s3vsLOwoBu9zVPn5o7HKVHfSNGqbgufhjphpZy_h0g/viewform">
               Volunteer with MedLit
             </a>
           </p>
         </div>
+
+        <dl class="facts">
+          <div><dt>Run workshops</dt><dd>Teach a 45-minute session.</dd></div>
+          <div><dt>Write guides</dt><dd>Turn one confusing document into one clear page.</dd></div>
+          <div><dt>Translate</dt><dd>Carry a guide into another language.</dd></div>
+        </dl>
+
       </div>
     </section>
 
-    <!-- ADD NEW SECTIONS HERE. Copy a <section class="chapter"> block; the
-         numbered badge in the margin is a CSS counter, so it takes care of
-         itself. Remember to add a matching link to the masthead nav. -->
+    <!-- ADD NEW SECTIONS HERE. Give it a unique id, a matching link in the
+         masthead nav, and a width that earns it: .wide to use the page,
+         .read for a narrow measure. Do not give every new section the same
+         frame — the rhythm down the page is the design. -->
 
   </main>
 
@@ -475,7 +470,7 @@
        FOOTER
        ============================================================ -->
   <footer class="foot">
-    <div class="frame foot__inner">
+    <div class="wide foot__inner">
 
       <div class="foot__brand">
         <!-- The wordmark is navy, so it sits on a white chip rather than
@@ -489,9 +484,9 @@
       <div class="foot__contact">
         <h2>Contact</h2>
         <!-- The marks are decorative — every link still carries its full text
-             label, so nothing here depends on reading an icon. They are drawn
-             in currentColor rather than as the brands' own colour artwork,
-             which would fight the navy. -->
+             label, so nothing depends on reading an icon. They are drawn in
+             currentColor rather than as the brands' own colour artwork, which
+             would fight the navy. -->
         <ul role="list">
           <li>
             <a href="mailto:medliterateofficial@gmail.com">
@@ -532,7 +527,7 @@
 
     </div>
 
-    <div class="frame">
+    <div class="wide">
       <p class="foot__note">
         MedLit provides general health education, not medical advice. Always talk to
         your doctor or pharmacist about your specific medications.
@@ -542,17 +537,15 @@
 
   <script>
     // Progressive enhancement only. Every word above is readable, and every
-    // link works, with this file deleted.
+    // link works, with this file deleted. The script only APPENDS a readout —
+    // it never hides anything, so there is nothing to strand.
     (function () {
-      // The label's callouts report how much of the prescription is decoded.
-      // This is the page's one interactive mechanic; everything else is static
-      // on purpose, because type and structure carry the design.
-      var rows = document.querySelectorAll('.label__rows > li');
-      var sheet = document.querySelector('.label__sheet');
+      var rows  = document.querySelectorAll('.rx__rows > li');
+      var sheet = document.querySelector('.rx__sheet');
       if (!rows.length || !sheet) return;
 
       var readout = document.createElement('p');
-      readout.className = 'label__readout';
+      readout.className = 'rx__readout';
       var total = rows.length;
 
       var tally = function () {

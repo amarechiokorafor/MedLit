@@ -62,20 +62,40 @@ but the browser blocks the font preload over `file://`.
 ## Design notes
 
 **The idea.** The best-designed thing this organisation has made is the guide in
-`assets/guides/`. It works by annotating a real document: numbered callouts in
-the margin pointing at the thing itself, plain language beside each one, and the
-single line that matters most swiped in amber.
+`assets/guides/`. It annotates a real document: numbered callouts pointing at
+the thing itself, plain language beside each one, and the single line that
+matters most swiped in amber. That is the visual vocabulary here.
 
-The page is built as that same annotated document. Every chapter carries a
-numbered badge in a left margin column, exactly as every part of the label
-carries one in the guide. Three rules hold it together:
+It is a vocabulary, not a template. An earlier version of this site applied the
+same numbered-badge + heading + definition-table frame to six sections in a row,
+and the repetition read as machinery rather than as design. So the callouts now
+appear only where they mean something — the label and the guide — and each
+section gets the width, alignment and scale its own job needs.
 
-1. **No shadows and no gradients.** Depth comes from hairline rules and flat
-   fills. The guide has no shadows; a `box-shadow` is the tell of a page laid
-   out by default rather than designed.
-2. **The amber swipe appears at most once per chapter.** It means "this is the
-   line that matters", not "this is decorative".
-3. **Nothing needs JavaScript to be read.**
+Six rules hold it together:
+
+1. **The label is the hero.** It is the whole mission in one object a person can
+   click, at the top of the page, at full width. It was once a small box in the
+   corner. Don't put it back there.
+2. **One accent word on the page**, in the `h1`. The blue-highlighted word is a
+   device; used six times it is a tic.
+3. **Three type sizes, far apart.** `--t1` is about six times body and `--t2`
+   about two and a third. Nothing sits between them, and something on the page
+   is genuinely large.
+4. **Two widths, used with intent.** `.wide` fills the page, `.read` commits to
+   a narrow measure. Content floating in the middle of a mid-size container with
+   dead margins either side is what "unfinished" looks like.
+5. **No shadows and no gradients.** Depth is hairline rules and flat fills. The
+   guide has none; a `box-shadow` is the tell of a page laid out by default.
+6. **Nothing needs JavaScript to be read.**
+
+**Rhythm.** The variation down the page is deliberate, and it is the part
+easiest to destroy by adding one more section in the "house style". In order:
+wide hero, thin routing strip, full-bleed two-tone translation, one enormous
+statement alone on the screen, asymmetric guides on a tint, two-column
+workshops, a deliberately narrow and quiet checks list, full-bleed reversed
+host, asymmetric volunteer. If everything becomes the same frame again, the
+design is gone even if every colour is still correct.
 
 **Colour.** Read off the logo file and the printed guide with a colour picker.
 Nothing here is invented. All defined as CSS variables at the top of
@@ -110,13 +130,22 @@ exists as a deepened version of it.
   typeface. Don't swap it out.
 - **Outfit** for headlines. Geometric, so it sits naturally beside the logo
   wordmark.
-- **IBM Plex Mono** for the prescription label, the numbered badges, and the
-  small structural labels.
+- **IBM Plex Mono** for transcribed documents only — the label sheet and the
+  jargon column in the translation. It is the artefact's own voice.
 
-The printed guide sets its title in capitals. The page deliberately does not.
-A wall of capitals is measurably harder to read, and the people this page is
-for are exactly who pays for that. Capitals are kept for the small mono labels,
-where there is nothing to read.
+Two typographic rules that are easy to undo by accident:
+
+**Monospace is not a label style.** Small uppercase letter-spaced monospace
+eyebrows (`STUDENT-LED NONPROFIT`, `THE PROBLEM`, `HOW LONG`) read as a stock
+design tic, and they were removed. Where a label is needed it is the same
+typeface as everything else at a lighter weight, in sentence case — see
+`.eyebrow`, `.facts dt`, `.translate__label`. The only uppercase left on the
+page is the pharmacy line on the label, which is how labels actually print.
+
+**The scale is three steps, not a ramp.** `--t1` / `--t2` / `--t3`. The
+previous version had the hero and the section headings within 1.4× of each
+other, which is why it read flat. Add a new size only if you genuinely need a
+fourth, and then add it to the token block rather than inline.
 
 **Writing.** Every piece of text a person reads follows the MedLit style guide.
 That means the website, the emails and form copy in `automation/MedLit.gs`, the
@@ -138,13 +167,30 @@ logging dialogs, and error messages — not just the page.
 If you edit copy, read it aloud first. If you wouldn't say it to someone's
 face, rewrite it.
 
-**The annotated label.** The guide's centrepiece, rebuilt for the web. The
-wording comes straight out of the printed guide. It's a stack of `<details>`
-elements, so it opens and closes with no JavaScript and is keyboard-operable for
-free. The callout numbers are CSS counters, so lines can be added, removed or
-reordered in the HTML and they renumber themselves. The inline script does one
-thing: it *appends* the "3 of 6 lines explained" readout. Delete the script and
-you lose that line and nothing else — the page hides nothing.
+**The label is the hero.** The guide's centrepiece, rebuilt for the web and put
+at the top of the page at full width, because one real label a person can open
+argues the mission better than any paragraph. The wording comes straight out of
+the printed guide. It's a stack of `<details>` elements, so it opens and closes
+with no JavaScript and is keyboard-operable for free. The callout numbers are
+CSS counters — add, remove or reorder lines and they renumber themselves.
+
+The rows run in **two columns**, which is how the printed guide arranges its
+callouts around the bottle, and it means the wide measure carries content rather
+than air. The `Sig` line spans both columns because it is the line that matters
+most, which is the same emphasis the guide gives it — that is the `.is-key`
+class, and there should only ever be one.
+
+The inline script does one thing: it *appends* the "3 of 6 lines explained"
+readout. Delete the script and you lose that line and nothing else — the page
+hides nothing.
+
+**The translation.** The before/after section is the actual product, shown
+rather than described, and it is the most persuasive thing on the page. The
+jargon is set in the label's monospace on navy because that is what it is: a
+transcribed document. The plain version is large, in the reading face, on white,
+with the dose ceiling swiped. The column headings borrow the printed guide's own
+words. Keep the two halves the same instruction — if they ever drift apart the
+section stops being an argument.
 
 There is no scroll animation anywhere, on purpose. The first audience for this
 page is an activity director deciding whether to trust students with their
@@ -166,16 +212,24 @@ lone one shouldn't sit in a half-empty row. Add a second and both fall back to a
 even grid; add ten and they wrap. That switch is a single `:has()` rule in
 `styles.css` under "The guide shelf".
 
-## Adding a chapter
+## Adding a section
 
-Copy a `<section class="chapter">` block, give it a unique `id`, and add a
-matching link to the masthead nav. The numbered badge in the margin is a CSS
-counter, so it takes care of itself — you never renumber anything by hand.
 There's an `<!-- ADD NEW SECTIONS HERE -->` marker near the bottom of `<main>`.
+Give the section a unique `id`, a heading, and a matching link in the masthead
+nav.
 
-Two optional grounds: `chapter--tint` for the faint wash, and `chapter--invert`
-for the navy field. Keep `chapter--invert` to one per page — it is what gives
-the Host a workshop chapter its weight, and a second one would spend it.
+Then make a real decision about its width and weight, because there is no
+house frame to drop it into and that is on purpose:
+
+- `.wide` if it uses the page — a grid, artwork, a table of facts.
+- `.read` if it is something to read. Two columns of prose at 84rem is not.
+- Reverse it (navy ground, `--on-navy` text) only if it deserves the weight.
+  There is one reversed section and one full-bleed two-tone section already;
+  a third would spend what they buy.
+
+Do not give a new section a numbered badge and a definition table just because
+other sections have them. That sameness is the thing this design was rebuilt to
+get rid of.
 
 ## Sharing
 
@@ -206,23 +260,22 @@ These aren't decoration — please keep them when editing:
 - Body text is 18px minimum (`html { font-size: 18px }`); everything else scales
   from it in `rem`. The only type below that is the small mono structural labels
   (kickers, keys, meta lines), which never go under 14px.
-- Every text/background pair in the stylesheet meets WCAG AA — 23 pairs checked,
-  the lowest at 4.65:1 and most above 9:1. Amber and the swipe are light, so they
+- Every text/background pair in the stylesheet meets WCAG AA — 43 pairs checked,
+  the lowest at 5.28:1 and most above 9:1. Amber and the swipe are light, so they
   always carry dark navy ink, never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
-  to amber on the navy chapter and the footer.
-- Every chapter contributes exactly one `<h2>` to the document outline. The
-  Problem chapter has no separate headline, so its margin label *is* its `h2` —
-  that is why one `.chapter__label` is an `h2` and the rest are `<p>`.
-- The three doors sit last in the source order of the opening section even though
-  they appear beneath both columns, so reading and focus order match the eye.
+  to amber on the reversed sections and the footer.
+- Every section contributes exactly one `<h2>` to the document outline. The
+  translation and the problem statement have no visible heading — their content
+  *is* the statement — so each carries a visually hidden `<h2>` instead. That is
+  what the two `class="hidden"` headings are for; don't delete them to tidy up.
 - The label decoder is the only interactive element on the page, and it is a
   native `<details>` — no custom keyboard handling to get wrong.
 - Responsive down to a 360px-wide screen. Overflow is measured, not eyeballed:
-  `scrollWidth` compared against `innerWidth` at 360, 390, 414, 768, 1024 and
-  1440px. Watch for `minmax()` grid tracks — a bare `minmax(24rem, 1fr)` cannot
-  shrink below its own minimum and will force a 432px column onto a 360px
-  screen. The guide shelf uses `minmax(min(24rem, 100%), 1fr)` for exactly that
+  `scrollWidth` compared against `innerWidth` at 360, 390, 414, 768, 1024, 1440
+  and 1920px. Watch for `minmax()` grid tracks — a bare `minmax(26rem, 1fr)`
+  cannot shrink below its own minimum and will force a 468px column onto a 360px
+  screen. The guide shelf uses `minmax(min(26rem, 100%), 1fr)` for exactly that
   reason.
 - Every link and button is at least 44px tall on a phone. Measured, not
   assumed — the nav and the footer contact links both used to fall short.
