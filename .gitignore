@@ -1,0 +1,7 @@
+# macOS writes these into every folder you open in Finder. They are machine
+# noise, not part of the site.
+.DS_Store
+**/.DS_Store
+
+# Scratch files from rendering the social card or probing layout locally.
+__*.html

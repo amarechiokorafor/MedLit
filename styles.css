@@ -1,29 +1,44 @@
 /* ==========================================================================
    MedLit — health made understandable.
-   One stylesheet. No frameworks, no build step.
+   One stylesheet. No frameworks, no build step, no JavaScript required to
+   read anything on the page.
+
+   THE IDEA
+   The best-designed thing this organisation has made is the one-page guide
+   in assets/guides/. It works by annotating a real document: numbered
+   callouts in the margin pointing at the thing itself, plain language
+   beside each one, and the single line that matters most swiped in amber.
+
+   This page is built as that same annotated document. Every chapter carries
+   a numbered badge in a left margin column, exactly as every part of the
+   label carries one in the guide. Structure is drawn with hairline blue
+   rules and flat fills — never with a drop shadow, because the guide has
+   none and shadows are the tell of a page designed by default.
 
    Contents
    1.  Fonts
-   2.  Design tokens
+   2.  Tokens, sampled from the artwork
    3.  Base
-   4.  Accessibility helpers
-   5.  Layout primitives (shell, section, panel, eyebrow)
-   6.  Header & nav
-   7.  Hero
-   8.  The prescription label
-   9.  Statement panel
-   10. Cards & chips
-   11. Guides
-   12. Call-to-action panels
-   13. Buttons
-   14. Footer
-   15. Scroll reveal
-   16. Responsive
+   4.  Accessibility
+   5.  Frame
+   6.  Masthead
+   7.  The opening — mission, three doors
+   8.  The annotated label
+   9.  The chapter system — margin column, numbered badges
+   10. Statement
+   11. The guide shelf
+   12. Spec table
+   13. Checks
+   14. Roles
+   15. Actions
+   16. Footer
+   17. Responsive
    ========================================================================== */
 
 /* ---------- 1. Fonts ------------------------------------------------------
    Self-hosted so there's no CDN dependency and no render-blocking third
-   party. Latin subsets only — the whole set is under 100 KB.
+   party. Latin subsets only — the whole set is under 100 KB, which matters
+   because this may load on an old phone on library wifi.
 
    Atkinson Hyperlegible is the body face on purpose: the Braille Institute
    drew it for low-vision readers, disambiguating the character pairs that
@@ -56,51 +71,51 @@
   font-weight: 600; font-style: normal; font-display: swap;
 }
 
-/* ---------- 2. Design tokens ---------------------------------------------
-   Colours sampled from the logo artwork and the Instagram posts, so the
-   site and the feed read as one brand:
-     #083795  logo wordmark navy      #FFDDA3  butter yellow panels
-     #F7C56B  pill-bottle amber       #FB8645  pill-bottle cap orange
+/* ---------- 2. Tokens, sampled from the artwork --------------------------
+   Nothing here is invented. Every value was read off the logo file or the
+   printed guide with a colour picker:
 
-   The neutrals are chosen, not inherited: a warm paper white that leans
-   toward the butter accent, and a cool blue-gray that leans toward the
-   navy. Every text/background pair below meets WCAG AA.
+     #063690  the wordmark navy — 98% of the lockup's letterforms
+     #0c3ca2  the navy of the guide's numbered callout badges
+     #b4d8f6  the fill of the guide's callout panels
+     #f6c66c  the pill bottle body
+     #fc8442  the pill bottle cap
+     #fcf0cc  the amber swipe on the guide's most important line
+
+   Contrast is measured, not assumed. Two pairs failed and are ruled out by
+   construction rather than by care: white text never sits on the cap
+   orange (2.5:1), and the guide's light accent blue is never used as text
+   on white (2.9:1) — it appears only as a fill or a rule. --accent is a
+   deepened version of it that clears AA as text.
    -------------------------------------------------------------------------- */
 :root {
   color-scheme: light;
 
-  --paper:       #fbf8f3;   /* warm ground — the colour of a printed handout */
-  --white:       #ffffff;
-  --tint:        #eaeff9;   /* cool blue-gray */
+  --white:      #ffffff;
+  --navy:       #063690;   /* the wordmark — primary */
+  --navy-mid:   #0c3ca2;   /* the guide's callout badges */
+  --navy-deep:  #041d5c;   /* inverted chapters, footer */
+  --accent:     #1f6fb2;   /* the guide's accent blue, deepened to AA */
 
-  --ink:         #0e1a3c;   /* darkest navy — panels, headings */
-  --ink-deep:    #0a1430;   /* one step darker — footer, so it separates
-                               from the ink panel that sits above it */
-  --navy:        #083795;   /* the wordmark blue — links, buttons */
-  --navy-deep:   #052a75;
-  --body:        #2e4674;   /* body copy */
-  --muted:       #4a5c82;
+  --ink:        #0d1a3d;   /* headings */
+  --body:       #26365f;   /* reading copy */
+  --muted:      #4a5a80;   /* meta and small print */
 
-  --butter:      #ffdda3;
-  --butter-soft: #fff1da;
-  --amber:       #f7c56b;
-  --orange:      #fb8645;
+  --panel:      #b4d8f6;   /* the guide's callout fill */
+  --tint:       #eaf1fc;   /* the faintest wash */
+  --rule:       #c9dcf4;   /* hairline */
+  --rule-firm:  #9dc2ea;   /* a rule that needs to be seen */
 
-  --on-ink:      #e4eafa;   /* body copy on the dark panels */
-  --on-ink-dim:  #b9c6e6;
+  --amber:      #f6c66c;   /* the bottle */
+  --orange:     #fc8442;   /* the cap — decorative only, never behind text */
+  --swipe:      #fcf0cc;   /* the highlight, used at most once per chapter */
 
-  --line:        #e6dfd2;   /* hairline on paper */
-  --line-cool:   #d3dcf0;
+  --on-navy:    #dfe8fa;
+  --on-navy-dim:#adc0e4;
 
-  --r-sm: 10px;
-  --r:    16px;
-  --r-lg: 24px;
-
-  --shadow-sm: 0 1px 2px rgba(14, 26, 60, .06), 0 4px 12px rgba(14, 26, 60, .06);
-  --shadow:    0 2px 6px rgba(14, 26, 60, .06), 0 18px 44px rgba(14, 26, 60, .10);
-
-  --measure: 36rem;
-  --gutter:  clamp(1.15rem, 4vw, 2.75rem);
+  --measure:    34rem;     /* comfortable reading width */
+  --gutter:     clamp(1.25rem, 4vw, 3rem);
+  --margin-col: 11rem;     /* the callout margin */
 
   --display: 'Outfit', 'Segoe UI', Roboto, system-ui, sans-serif;
   --text:    'Atkinson', 'Segoe UI', Roboto, system-ui, sans-serif;
@@ -111,20 +126,16 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  /* 18px minimum body text — our readers include older adults. Everything
-     scales from here in rem. Only micro-labels (eyebrows, meta lines) go
-     below it, and never under 14px. */
+  /* 18px minimum body text — our readers include older adults, and this is
+     a hard floor. Everything scales from here in rem. Only structural
+     micro-labels go below it, and never under 14px. */
   font-size: 18px;
-  scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  /* A faint grain on the paper ground — the page should feel printed, not
-     rendered. One inline SVG, no network request, invisible on its own. */
-  background-color: var(--paper);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
+  background: var(--white);
   color: var(--body);
   font-family: var(--text);
   font-size: 1rem;
@@ -132,763 +143,862 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Display type is set tight and large but stays sentence case. The printed
+   guide sets its title in uppercase; that is the one thing here deliberately
+   not copied from it, because a wall of capitals is measurably harder to
+   read and this audience is exactly who pays for that. Capitals are kept for
+   the small structural labels, where there is nothing to read. */
 h1, h2, h3 {
   font-family: var(--display);
   color: var(--ink);
-  margin: 0 0 .5em;
+  margin: 0;
   text-wrap: balance;
 }
 h1 {
-  font-size: clamp(2.6rem, 1.1rem + 5.4vw, 5rem);
+  font-size: clamp(2.4rem, 1rem + 4.6vw, 4rem);
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.035em;
+  line-height: 1.02;
+  letter-spacing: -0.032em;
 }
 h2 {
-  font-size: clamp(2.05rem, 1.35rem + 2.7vw, 3.4rem);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.9rem, 1.1rem + 2.4vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.06;
+  letter-spacing: -0.028em;
 }
 h3 {
-  font-size: 1.42rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
-/* ---------- The highlighter ------------------------------------------------
-   Lifted from the guides themselves, where the line that matters most on a
-   prescription label is swiped in yellow. It is the page's one graphic
-   device: exactly one phrase per heading, never two.
-   -------------------------------------------------------------------------- */
-.mark {
-  background-image: linear-gradient(180deg,
-    transparent 8%, var(--butter) 8%, var(--butter) 92%, transparent 92%);
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  padding-inline: .12em;
-  margin-inline: -.12em;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+/* The accent word. In the guide, one word of the title is set in the light
+   blue — that is the device, and this is it, deepened until it passes AA as
+   text. On the inverted chapter it flips to amber. */
+em {
+  font-style: normal;
+  color: var(--accent);
 }
-.mark--onink { color: var(--ink); }
-.panel--butter .mark {
-  background-image: linear-gradient(180deg,
-    transparent 8%, var(--white) 8%, var(--white) 92%, transparent 92%);
-}
+.chapter--invert em { color: var(--amber); }
 
-p { margin: 0 0 1.05em; }
+p { margin: 0 0 1.1em; }
 p:last-child { margin-bottom: 0; }
 
 img { max-width: 100%; height: auto; display: block; }
-ul  { padding: 0; margin: 0; }
+ul, ol { padding: 0; margin: 0; }
 
-a { color: var(--navy); text-underline-offset: .2em; }
-a:hover { color: var(--navy-deep); }
+a { color: var(--navy); text-underline-offset: .18em; }
+a:hover { color: var(--accent); }
 
-::selection { background: var(--butter); color: var(--ink); }
+dl, dd { margin: 0; }
 
-/* ---------- 4. Accessibility helpers ------------------------------------- */
-.skip-link {
+::selection { background: var(--swipe); color: var(--ink); }
+
+/* ---------- 4. Accessibility ---------------------------------------------- */
+.skip {
   position: absolute;
   left: 50%; top: 0;
-  transform: translate(-50%, -130%);
+  transform: translate(-50%, -140%);
   z-index: 200;
-  background: var(--ink);
+  background: var(--navy);
   color: var(--white);
-  padding: .75rem 1.4rem;
-  border-radius: 0 0 var(--r) var(--r);
-  font-family: var(--display);
-  font-weight: 700;
+  padding: .8rem 1.5rem;
+  font-family: var(--mono);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
   text-decoration: none;
 }
-.skip-link:focus { transform: translate(-50%, 0); color: var(--white); }
+.skip:focus { transform: translate(-50%, 0); color: var(--white); }
 
-/* One high-contrast focus ring. The offset gap shows the page behind it,
-   so ink reads on every light ground; the dark panels flip it to butter. */
+/* One focus ring, high contrast, offset so the page shows behind it. The
+   navy chapters and the footer flip it to amber. */
 :focus-visible {
-  outline: 3px solid var(--ink);
+  outline: 3px solid var(--navy);
   outline-offset: 3px;
-  border-radius: 6px;
 }
-.panel--ink :focus-visible,
-.site-footer :focus-visible { outline-color: var(--butter); }
+.chapter--invert :focus-visible,
+.foot :focus-visible { outline-color: var(--amber); }
 
-.visually-hidden {
+.hidden {
   position: absolute;
   width: 1px; height: 1px;
   margin: -1px; padding: 0;
   overflow: hidden;
-  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }
 
+/* There is no scroll animation on this page — the first audience is a
+   activity director deciding whether to trust students with their
+   residents, and they are not here to watch things fade in. This block
+   covers the few colour transitions that remain. */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   *, *::before, *::after {
     animation-duration: .01ms !important;
     transition-duration: .01ms !important;
   }
 }
 
-/* ---------- 5. Layout primitives ------------------------------------------ */
-.shell {
+/* ---------- 5. Frame ------------------------------------------------------ */
+.frame {
   width: 100%;
-  max-width: 68rem;
+  max-width: 74rem;
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
-.section {
-  padding-block: clamp(3.5rem, 8vw, 6.5rem);
-  scroll-margin-top: 5rem;
+/* ---------- 6. Masthead --------------------------------------------------
+   Not sticky. A sticky bar costs a strip of a small screen permanently and
+   buys very little on a page this short.
+   -------------------------------------------------------------------------- */
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background: var(--white);
 }
-.section--tint { background: var(--tint); }
-
-.panel--ink    { background: var(--ink);    color: var(--on-ink); }
-.panel--butter { background: var(--butter); color: var(--ink); }
-.panel--ink h2, .panel--ink h3, .onink { color: var(--white); }
-
-/* The rule runs the full width of the shell — it reads as a deliberate
-   editorial rule anchoring the section, rather than a line that stops
-   halfway across for no reason. The text under it stays at a readable
-   measure. */
-.section__head {
-  margin-bottom: clamp(2.25rem, 4vw, 3.25rem);
-  padding-top: 1.1rem;
-  border-top: 2px solid var(--ink);
-}
-.section__head > * { max-width: 44rem; }
-.panel--ink .section__head { border-top-color: rgba(255, 255, 255, .3); }
-.section__lede {
-  font-size: 1.12rem;
-  color: var(--muted);
-  max-width: var(--measure);
-  margin-top: 1.1rem;
-}
-
-/* Small mono labels. These are signposts, not reading copy — the one place
-   type drops below 18px, and never below 14px. */
-.eyebrow {
-  font-family: var(--mono);
-  font-size: .8rem;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--navy);
-  margin: 0 0 .9rem;
-}
-.eyebrow--onink { color: var(--amber); }
-
-/* ---------- 6. Header & nav ----------------------------------------------- */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(251, 248, 243, .92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid transparent;
-  transition: border-color .2s ease, box-shadow .2s ease;
-}
-.site-header.is-stuck {
-  border-bottom-color: var(--line);
-  box-shadow: 0 6px 24px rgba(14, 26, 60, .06);
-}
-
-.header__inner {
+.masthead__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: .6rem 1.5rem;
-  padding-block: .75rem;
+  gap: .75rem 2rem;
+  padding-block: 1rem;
 }
 
-.brand { display: flex; align-items: center; gap: .8rem; text-decoration: none; }
-.brand__logo { width: auto; height: 3.2rem; flex: none; }
+.brand { display: flex; align-items: center; gap: .85rem; text-decoration: none; }
+.brand__mark { width: auto; height: 3rem; flex: none; }
+.brand__text { display: flex; flex-direction: column; }
+/* The wordmark is in the artwork; this is the accessible text twin of it. */
+.brand__name {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
 .brand__tagline {
   font-family: var(--mono);
-  font-size: .74rem;
-  line-height: 1.35;
-  letter-spacing: .04em;
+  font-size: .78rem;
+  letter-spacing: .02em;
   color: var(--muted);
   border-left: 2px solid var(--amber);
   padding-left: .8rem;
 }
 
-.nav ul {
+.topnav ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .4rem 1.4rem;
+  gap: 0 1.6rem;
   list-style: none;
 }
-.nav a {
+.topnav a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;              /* a thumb needs 44px, and ours is a hurried one */
+  min-height: 44px;             /* a thumb needs 44px, and ours is a hurried one */
   font-family: var(--display);
-  font-size: .95rem;
+  font-size: .96rem;
   font-weight: 600;
   color: var(--ink);
   text-decoration: none;
-  padding: .35rem 0;
   border-bottom: 2px solid transparent;
+  transition: color .12s linear, border-color .12s linear;
 }
-.nav a:hover, .nav a:focus-visible { border-bottom-color: var(--orange); color: var(--ink); }
-/* The section currently in view, marked in the nav. Set by the script at the
-   foot of index.html — with no JavaScript the nav simply never marks one,
-   which is the behaviour the page had before. */
-.nav a[aria-current="true"] { border-bottom-color: var(--orange); }
+.topnav a:hover, .topnav a:focus-visible {
+  color: var(--navy);
+  border-bottom-color: var(--orange);
+}
 
-.nav__cta {
-  background: var(--navy);
-  color: var(--white) !important;
-  border-radius: 999px;
-  padding: .55rem 1.15rem !important;
-  border-bottom: 0 !important;
-}
-.nav__cta:hover { background: var(--navy-deep); }
-
-/* ---------- 7. Hero -------------------------------------------------------- */
-.hero {
-  position: relative;
-  overflow: hidden;
-  padding-block: clamp(2.75rem, 6vw, 5.5rem) clamp(4rem, 8vw, 6.5rem);
-  background:
-    radial-gradient(40rem 26rem at 82% -8%, var(--butter-soft) 0%, rgba(255, 241, 218, 0) 68%),
-    var(--paper);
-}
-.hero__inner {
+/* ---------- 7. The opening ----------------------------------------------- */
+.opening { padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5rem); }
+.opening__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
-  align-items: center;
-  gap: clamp(2.5rem, 4.5vw, 4rem);
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, .98fr);
+  align-items: start;
+  gap: clamp(2.25rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 4.5rem);
 }
-.hero__copy { max-width: 34rem; }
-.hero h1 { margin-bottom: .42em; }
-.hero__sub {
-  font-size: clamp(1.1rem, 1rem + .55vw, 1.32rem);
-  color: var(--body);
-  max-width: 30rem;
-  margin-bottom: 1.9rem;
-}
-.btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+.opening__copy { grid-column: 1; grid-row: 1; max-width: 32rem; }
+.label        { grid-column: 2; grid-row: 1; }
 
-/* ---------- 8. The prescription label -------------------------------------
-   The hero's argument, made in type: the label is set in cramped monospace,
-   the plain-language answer in the readable body face. It is a stack of
-   <details> elements, so it works with no JavaScript.
-   -------------------------------------------------------------------------- */
-.rx {
-  position: relative;
-  max-width: 27rem;
-  margin-inline: auto;
-  transform: rotate(-1.1deg);
-}
-.rx__cap {
-  height: 1.5rem;
-  margin: 0 1.6rem;
-  border-radius: 8px 8px 3px 3px;
-  background: linear-gradient(180deg, var(--orange) 0%, #f4934f 100%);
-  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .07);
-}
-.rx__body {
-  background: linear-gradient(180deg, var(--amber) 0%, #f9d283 100%);
-  border-radius: 6px 6px var(--r-lg) var(--r-lg);
-  padding: 1.1rem;
-  box-shadow: var(--shadow);
-}
-.rx__prompt {
-  font-family: var(--mono);
-  font-size: .82rem;
-  line-height: 1.5;
-  color: #5b3d10;                 /* deep amber-brown — 7:1 on the bottle */
-  margin: 0 .25rem .85rem;
-}
-.rx__prompt-lead { display: block; font-weight: 600; color: #3f2a06; }
-
-.rx__paper {
-  background: var(--white);
-  border-radius: var(--r-sm);
-  padding: .9rem 1rem 1rem;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
-}
-.rx__pharmacy {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: .2rem .75rem;
+.kicker {
   font-family: var(--mono);
   font-size: .8rem;
   font-weight: 600;
-  letter-spacing: .04em;
+  letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--navy);
+  margin: 0 0 1.1rem;
+  padding-bottom: .7rem;
   border-bottom: 2px solid var(--ink);
-  padding-bottom: .5rem;
-  margin: 0 0 .3rem;
+  display: inline-block;
 }
-.rx__pharmacy span { font-weight: 400; color: var(--muted); }
-
-.rx__row { border-bottom: 1px dashed var(--line-cool); }
-.rx__row:last-of-type { border-bottom: 0; }
-
-.rx__row summary {
-  display: flex;
-  gap: .6rem;
-  align-items: baseline;
-  cursor: pointer;
-  list-style: none;
-  padding: .62rem .4rem .62rem .2rem;
-  font-family: var(--mono);
-  font-size: 1rem;               /* 18px — the label stays readable */
-  line-height: 1.35;
-  color: var(--ink);
-  position: relative;
-  border-radius: 6px;
-}
-.rx__row summary::-webkit-details-marker { display: none; }
-.rx__row summary::after {
-  content: '+';
-  margin-left: auto;
-  font-weight: 600;
-  color: var(--navy);
-  transition: transform .18s ease;
-}
-.rx__row[open] summary::after { content: '−'; }
-.rx__row summary:hover { background: var(--butter-soft); }
-.rx__row summary em { font-style: normal; color: var(--muted); }
-
-.rx__val { flex: 1 1 auto; min-width: 0; }
-.rx__key {
-  flex: none;
-  width: 5.1rem;
-  font-size: .78rem;
-  font-weight: 600;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--navy);
-}
-.rx__row--key summary { background: var(--butter-soft); }
-
-.rx__row p {
-  font-family: var(--text);
-  font-size: .98rem;
-  line-height: 1.55;
+.lede {
+  font-size: 1.16rem;
   color: var(--body);
-  margin: 0 .4rem .8rem 5.8rem;
-  padding-left: .9rem;
-  border-left: 3px solid var(--amber);
-}
-.rx__foot {
-  font-family: var(--mono);
-  font-size: .8rem;
-  letter-spacing: .03em;
-  color: #3f2a06;
-  text-align: center;
-  margin: .9rem 0 .15rem;
+  max-width: var(--measure);
+  margin-top: 1.3rem;
 }
 
-/* ---------- 9. Statement panel --------------------------------------------- */
-.statement {
-  font-family: var(--display);
-  font-weight: 600;
-  font-size: clamp(1.6rem, 1.05rem + 2.35vw, 2.9rem);
-  line-height: 1.18;
-  letter-spacing: -0.026em;
-  color: var(--on-ink);
-  max-width: 48rem;
-  text-wrap: pretty;
+/* Three doors. Three different people arrive on this page and each should
+   reach their own thing without having to read it. Set as a list of ruled
+   rows, not as three cards — a card would say "feature", and these are
+   directions. */
+.doors {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  border-top: 2px solid var(--ink);
+  padding-top: .85rem;
 }
-.statement--turn {
-  color: var(--butter);
-  margin-top: 1.1em;
-  padding-left: 1.15rem;
-  border-left: 4px solid var(--orange);
-}
-
-/* ---------- 10. Cards & chips ---------------------------------------------- */
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
-  gap: 1.35rem;
-  list-style: none;
-}
-
-/* Three cards get an editorial arrangement rather than three identical
-   rectangles: the workshops card leads across the full width, the other two
-   sit side by side underneath. The lead card splits internally — heading on
-   the left, copy on the right — so a wide card stays a comfortable measure
-   instead of one long line, and no column is left holding empty space. Any
-   other number of cards falls back to the even grid above, so the "copy a
-   card" instruction in index.html stays true. Narrow screens keep the simple
-   stack — two columns need the room. */
-@media (min-width: 58rem) {
- @supports selector(:has(*)) {
-  .cards:has(> li:nth-child(3):last-child) {
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-
-  /* Lead card — full width, split into heading / copy. */
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(1) {
-    grid-column: 1 / -1;
-    grid-row: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
-    column-gap: clamp(2rem, 5vw, 4rem);
-    align-content: start;
-    padding: 2.25rem 2rem;
-  }
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(1) > .card__tag {
-    grid-column: 1; grid-row: 1;
-  }
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(1) > h3 {
-    grid-column: 1; grid-row: 2;
-    font-size: 2rem;
-    margin-bottom: 0;
-  }
-  /* Row 2 in both columns, so the heading and the first line of copy start
-     level with each other. */
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(1) > p {
-    grid-column: 2; grid-row: 2;
-    font-size: 1.08rem;
-    margin-bottom: 0;
-  }
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(1) > .chips {
-    grid-column: 2; grid-row: 3;
-    margin-top: 1.35rem;
-  }
-
-  /* The two supporting cards, side by side. */
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(2) { grid-column: 1 / span 6; grid-row: 2; }
-  .cards:has(> li:nth-child(3):last-child) > li:nth-child(3) { grid-column: 7 / span 6; grid-row: 2; }
- }
-}
-.card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  border-radius: var(--r-lg);
-  padding: 2rem 1.75rem;
-  box-shadow: var(--shadow-sm);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.card--butter { background: var(--butter-soft); border-color: #f0dcbb; }
-.card h3 { margin-bottom: .45em; }
-.card p  { font-size: .99rem; }
-
-.card__tag {
+.doors__label {
   font-family: var(--mono);
   font-size: .74rem;
   font-weight: 600;
   letter-spacing: .16em;
   text-transform: uppercase;
-  color: var(--navy);
-  margin: 0 0 1.5rem;
-  padding-bottom: .75rem;
-  border-bottom: 1px dashed var(--line);
+  color: var(--muted);
+  margin: 0 0 .35rem;
 }
-.card--butter .card__tag { border-bottom-color: #e8cfa4; }
+/* Three columns divided by rules, like a set of routing instructions rather
+   than three feature cards. */
+.doors ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.doors li { border-top: 1px solid var(--rule); }
+.doors li + li { border-left: 1px solid var(--rule); }
+.doors a {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: .15rem 1rem;
+  min-height: 48px;
+  padding: .85rem 1.1rem .95rem 0;
+  text-decoration: none;
+  transition: background-color .12s linear;
+}
+.doors li + li a { padding-left: 1.1rem; }
+.doors a:hover, .doors a:focus-visible { background: var(--tint); }
+.doors__what {
+  font-family: var(--display);
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+.doors a:hover .doors__what { color: var(--accent); }
+/* The arrow is drawn, not typed, so it can't be read out as a word. */
+.doors a::after {
+  content: '';
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: .7rem; height: .7rem;
+  border-right: 2px solid var(--orange);
+  border-bottom: 2px solid var(--orange);
+  transform: rotate(-45deg);
+}
+.doors__who {
+  grid-column: 1;
+  font-size: .92rem;
+  color: var(--muted);
+}
 
-.card__note {
+/* ---------- 8. The annotated label --------------------------------------
+   The guide's centrepiece, rebuilt for the web. Each line of the label is
+   numbered in the margin and opens to its plain-language meaning. A stack
+   of <details> elements, so it works with no JavaScript and needs no
+   custom keyboard handling.
+   -------------------------------------------------------------------------- */
+.label { margin: 0; }
+.label__caption {
   font-family: var(--mono);
-  font-size: .8rem !important;
+  font-size: .8rem;
   line-height: 1.5;
   color: var(--muted);
-  margin-top: 1.1rem;
+  margin: 0 0 .85rem;
+}
+.label__caption-lead {
+  display: block;
+  font-weight: 600;
+  color: var(--navy);
 }
 
-.chips { display: flex; flex-wrap: wrap; gap: .45rem; list-style: none; margin-top: 1.2rem; }
-.chips li {
+/* Flat, ruled, no shadow. The amber edge is the one nod to the pill bottle
+   in the logo — a strip of the cap colour down the side of the sheet. */
+.label__sheet {
+  background: var(--white);
+  border: 1px solid var(--rule-firm);
+  border-left: 4px solid var(--orange);
+  padding: 1.1rem 1.2rem 1.2rem;
+}
+.label__pharmacy {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .2rem .75rem;
+  font-family: var(--mono);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--navy);
+  border-bottom: 2px solid var(--navy);
+  padding-bottom: .55rem;
+  margin: 0 0 .2rem;
+}
+.label__pharmacy span { font-weight: 400; color: var(--muted); }
+
+/* The callout numbers are a counter, so lines can be added, removed or
+   reordered in the HTML and they renumber themselves. */
+.label__rows { counter-reset: callout; list-style: none; }
+.label__rows > li {
+  counter-increment: callout;
+  border-bottom: 1px solid var(--rule);
+}
+.label__rows > li:last-child { border-bottom: 0; }
+
+.label__rows summary {
+  display: grid;
+  grid-template-columns: 1.7rem 5.4rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: .55rem;
+  cursor: pointer;
+  list-style: none;
+  padding: .68rem .2rem;
+  font-family: var(--mono);
+  font-size: .98rem;
+  line-height: 1.4;
+  color: var(--ink);
+  transition: background-color .12s linear;
+}
+.label__rows summary::-webkit-details-marker { display: none; }
+.label__rows summary:hover { background: var(--tint); }
+
+/* The numbered badge, straight off the guide: a filled navy disc with the
+   numeral reversed out of it. */
+.label__rows summary::before {
+  content: counter(callout);
+  display: grid;
+  place-items: center;
+  width: 1.7rem; height: 1.7rem;
+  border-radius: 50%;
+  background: var(--navy-mid);
+  color: var(--white);
+  font-family: var(--mono);
+  font-size: .76rem;
+  font-weight: 600;
+  align-self: start;
+}
+.label__key {
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+.label__val { min-width: 0; }
+.label__sub { display: block; color: var(--muted); }
+
+/* The one line that matters most, swiped in amber — exactly the emphasis
+   the printed guide gives it. Only ever one per chapter. */
+.label__rows > li.is-key > details > summary { background: var(--swipe); }
+.label__rows > li.is-key > details > summary:hover { background: #f9e7b4; }
+
+/* The plain-language answer, indented under its own callout and marked with
+   an amber spine so it reads as an annotation rather than as body copy. */
+.label__rows details > p {
+  font-family: var(--text);
+  font-size: .96rem;
+  line-height: 1.55;
+  color: var(--body);
+  margin: 0 .2rem .85rem 2.25rem;
+  padding-left: .9rem;
+  border-left: 3px solid var(--amber);
+}
+.label__readout {
   font-family: var(--mono);
   font-size: .78rem;
   letter-spacing: .03em;
-  color: var(--ink);
-  background: var(--white);
-  border: 1px solid #ecd9b7;
-  border-radius: 999px;
-  padding: .3rem .7rem;
-}
-.chips--lg { margin-top: 1.5rem; }
-.chips--lg li {
-  font-size: .85rem;
-  padding: .45rem 1rem;
-  background: rgba(255, 255, 255, .72);
-  border-color: rgba(14, 26, 60, .18);
+  color: var(--muted);
+  border-top: 1px solid var(--rule);
+  margin: .3rem 0 0;
+  padding-top: .7rem;
 }
 
-/* ---------- 11. Guides ------------------------------------------------------ */
-.guides {
+/* ---------- 9. The chapter system ---------------------------------------
+   Every chapter is a numbered callout: a badge and a label in the left
+   margin, the content to the right. This is the page's spine, and it is
+   what makes the whole thing read as one annotated document.
+
+   Padding is deliberately not uniform. Chapters that carry weight get
+   room; the short ones don't, so the page has a rhythm instead of a
+   metronome.
+   -------------------------------------------------------------------------- */
+main { counter-reset: chapter; }
+
+.chapter {
+  counter-increment: chapter;
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(2.75rem, 5vw, 4.25rem);
+  scroll-margin-top: 1rem;
+}
+.chapter__inner {
   display: grid;
-  /* Capped at two columns. A single guide then fills one generous card
-     rather than a small one floating in a wide field of tint. */
-  grid-template-columns: repeat(auto-fill, minmax(24rem, 38rem));
+  grid-template-columns: var(--margin-col) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 3rem);
   align-items: start;
-  gap: 1.75rem;
-  list-style: none;
 }
-.guide {
-  display: flex;
-  gap: 1.75rem;
-  background: var(--white);
-  border: 1px solid var(--line-cool);
-  border-radius: var(--r-lg);
-  padding: 1.9rem;
-  box-shadow: var(--shadow-sm);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.guide:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.chapter__margin { position: relative; }
 
-.guide__cover {
-  flex: none;
-  width: 11rem;
-  align-self: flex-start;
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid var(--line-cool);
-  box-shadow: 0 6px 18px rgba(14, 26, 60, .14);
-  transform: rotate(-1.6deg);
-  transition: transform .25s ease;
-}
-.guide:hover .guide__cover { transform: rotate(0deg); }
-.guide__cover img { width: 100%; }
-
-.guide__text { min-width: 0; }
-.guide__text h3 { margin-bottom: .4em; }
-.guide__text h3 a { color: var(--ink); text-decoration: none; }
-.guide__text h3 a:hover { color: var(--navy); text-decoration: underline; }
-.guide__text > p { font-size: .97rem; }
-
-.guide__meta {
+/* The badge. A counter, so chapters can be added or reordered without
+   renumbering anything by hand. */
+.chapter__margin::before {
+  content: counter(chapter, decimal-leading-zero);
+  display: grid;
+  place-items: center;
+  width: 2.7rem; height: 2.7rem;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--white);
   font-family: var(--mono);
-  font-size: .76rem;
+  font-size: .88rem;
+  font-weight: 600;
+  margin-bottom: .7rem;
+}
+/* Also used as an h2 on the chapter that has no separate headline, so every
+   property an h2 would bring is overridden here rather than inherited. */
+.chapter__label {
+  font-family: var(--mono);
+  font-size: .78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin: 0;
+}
+.chapter__lede {
+  font-size: 1.1rem;
+  color: var(--body);
+  max-width: var(--measure);
+  margin-top: 1.1rem;
+}
+.chapter__body > h2 + .chapter__lede { margin-top: 1.2rem; }
+
+.chapter--tint { background: var(--tint); border-top-color: var(--rule-firm); }
+
+/* The inverted chapter. One per page, and it lands on the thing the first
+   audience came for. Reversing it is how it gets weight — not a shadow. */
+.chapter--invert {
+  background: var(--navy-deep);
+  color: var(--on-navy);
+  border-top: 0;
+}
+.chapter--invert h2, .chapter--invert h3 { color: var(--white); }
+.chapter--invert .chapter__label { color: var(--amber); }
+.chapter--invert .chapter__lede { color: var(--on-navy); }
+.chapter--invert .chapter__margin::before {
+  background: var(--amber);
+  color: var(--navy-deep);
+}
+
+/* The guides chapter gets the most room on the page, because the guides are
+   the only real proof of work here. */
+.chapter--guides { padding-block: clamp(3.25rem, 6.5vw, 5.5rem); }
+.chapter--statement { padding-block: clamp(2.5rem, 4vw, 3.5rem); }
+
+/* ---------- 10. Statement ------------------------------------------------ */
+.statement {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(1.4rem, .95rem + 1.7vw, 2.15rem);
+  line-height: 1.22;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+/* The turn in the argument, marked in the margin the way a reader would
+   mark it — a rule down the side, in the cap orange. */
+.statement--turn {
+  color: var(--navy);
+  margin-top: 1.1em;
+  padding-left: 1.1rem;
+  border-left: 4px solid var(--orange);
+}
+
+/* ---------- 11. The guide shelf ------------------------------------------
+   Built so that adding ten more guides is one copied block each and no CSS
+   at all. One guide fills the row; two sit side by side; more wrap.
+   -------------------------------------------------------------------------- */
+.shelf {
+  list-style: none;
+  display: grid;
+  /* min() is doing real work here. A bare minmax(24rem, 1fr) track cannot
+     shrink below 24rem, so on a 360px phone it forced a 432px column and
+     dragged the whole chapter wider than the screen. */
+  grid-template-columns: repeat(auto-fill, minmax(min(24rem, 100%), 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin-top: 2rem;
+}
+/* The default card stacks: cover on top, then the text. This holds at any
+   card width, which is what makes adding a tenth guide free of layout work. */
+.guide {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: start;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--navy);
+  padding: 1.5rem;
+  background: var(--white);
+}
+
+/* While there is only one guide, it gets the whole width and a large cover.
+   The guides are the only real proof of work on this page, so a lone one
+   should not sit in a half-empty row looking like an afterthought. As soon
+   as a second is added, both fall back to the even grid above. */
+@supports selector(:has(*)) {
+  @media (min-width: 56rem) {
+    .shelf:has(> li:nth-child(1):last-child) { grid-template-columns: minmax(0, 1fr); }
+    .shelf:has(> li:nth-child(1):last-child) > .guide {
+      grid-template-columns: 16rem minmax(0, 1fr);
+      gap: 2.5rem;
+      padding: 2rem;
+    }
+    .shelf:has(> li:nth-child(1):last-child) > .guide .guide__cover { max-width: none; }
+    .shelf:has(> li:nth-child(1):last-child) > .guide .guide__text > h3 { font-size: 1.6rem; }
+  }
+}
+/* The cover is the artefact. It gets a real border and sits square — no
+   tilt, no shadow. It is a document, not a sticker. */
+.guide__cover {
+  display: block;
+  max-width: 15rem;
+  border: 1px solid var(--rule-firm);
+  transition: border-color .12s linear;
+}
+.guide__cover:hover { border-color: var(--navy); }
+.guide__text > h3 { margin-bottom: .5rem; }
+.guide__text > h3 a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.guide__text > h3 a:hover { color: var(--navy); text-decoration: underline; }
+.guide__text > p { font-size: .98rem; }
+
+/* The facts, as a real definition list. This is the guide's own habit of
+   labelling everything, and it makes a new guide's metadata obvious to
+   whoever adds the next one. */
+.guide__facts {
+  display: grid;
+  gap: 0;
+  margin: 1.1rem 0 1.3rem;
+  border-top: 1px solid var(--rule);
+}
+.guide__facts > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: .75rem;
+  padding: .45rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.guide__facts dt {
+  font-family: var(--mono);
+  font-size: .72rem;
+  font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
   color: var(--muted);
-  margin: .8rem 0 1.1rem;
+  padding-top: .12em;
+}
+.guide__facts dd { font-size: .92rem; color: var(--body); }
+
+/* ---------- 12. Spec table ----------------------------------------------
+   What a session actually involves, for the activity director deciding
+   whether to trust students with their residents. A table of facts answers
+   that faster than prose does.
+   -------------------------------------------------------------------------- */
+.spec {
+  margin-top: 2rem;
+  border-top: 2px solid var(--navy);
+  max-width: 44rem;
+}
+.spec__row {
+  display: grid;
+  grid-template-columns: 10.5rem minmax(0, 1fr);
+  gap: .5rem 1.5rem;
+  padding: .85rem 0;
+  border-bottom: 1px solid var(--rule-firm);
+}
+.spec dt {
+  font-family: var(--mono);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--navy);
+  padding-top: .2em;
+}
+.spec dd { color: var(--ink); font-size: 1.02rem; }
+/* The swipe, spent on the fact that does the most work in this table. */
+.swipe {
+  background: var(--swipe);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: .1em .3em;
+  margin-inline: -.1em;
+  font-weight: 700;
 }
 
-/* ---------- 12. Call-to-action panels --------------------------------------- */
-.cta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem 3.5rem;
+/* ---------- 13. Checks --------------------------------------------------- */
+.checks {
+  list-style: none;
+  counter-reset: check;
+  display: grid;
+  gap: 0;
+  margin-top: 2rem;
+  border-top: 1px solid var(--rule);
+  max-width: 46rem;
 }
-.cta__text { flex: 1 1 26rem; max-width: 40rem; }
-.cta__lede { font-size: 1.1rem; max-width: var(--measure); }
-.panel--butter .cta__lede { color: #35405e; }
-.cta__action { flex: 0 1 auto; }
-.cta__fine {
+.checks > li {
+  counter-increment: check;
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  gap: 1.1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.checks > li::before {
+  content: counter(check);
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  place-items: center;
+  width: 2.2rem; height: 2.2rem;
+  border: 2px solid var(--navy);
+  border-radius: 50%;
+  color: var(--navy);
   font-family: var(--mono);
   font-size: .8rem;
-  letter-spacing: .03em;
-  margin-top: .85rem;
-  color: #4a4130;
-  text-align: center;
+  font-weight: 600;
 }
-.panel--ink .cta__fine { color: var(--on-ink-dim); }
+/* Both the heading and the copy belong in the second column. Without these
+   the counter occupies the first cell and the paragraph wraps into the
+   2.2rem badge column, one word per line. */
+.checks > li > h3 { grid-column: 2; grid-row: 1; margin-bottom: .35rem; }
+.checks > li > p  { grid-column: 2; grid-row: 2; font-size: 1rem; max-width: var(--measure); }
 
-/* ---------- 13. Buttons ------------------------------------------------------ */
-.btn {
+/* ---------- 14. Roles ---------------------------------------------------- */
+.roles {
+  list-style: none;
+  margin-top: 1.9rem;
+  border-top: 1px solid var(--rule);
+  max-width: 44rem;
+}
+.roles > li {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: .25rem 1.5rem;
+  padding: .8rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+.roles__name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.04rem;
+  color: var(--navy);
+}
+.roles__note { color: var(--body); font-size: .96rem; }
+
+/* ---------- 15. Actions -------------------------------------------------
+   Square, not pills. Hover inverts or deepens — nothing lifts off the page,
+   because nothing on this page is floating.
+   -------------------------------------------------------------------------- */
+.action {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: .5rem;
-  min-height: 3.1rem;
-  padding: .8rem 1.7rem;
-  border: 2px solid transparent;
-  border-radius: 999px;
+  gap: .6rem;
+  min-height: 3rem;
+  padding: .75rem 1.5rem;
+  border: 2px solid var(--navy);
   font-family: var(--display);
   font-size: 1.02rem;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
-  cursor: pointer;
-  transition: background-color .16s ease, color .16s ease,
-              border-color .16s ease, transform .16s ease, box-shadow .16s ease;
+  transition: background-color .12s linear, color .12s linear,
+              border-color .12s linear;
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(14, 26, 60, .18); }
-/* Presses back down under the finger — the press should be felt, not just
-   the hover. */
-.btn:active { transform: translateY(0); box-shadow: none; }
-
-.btn--primary { background: var(--navy);  color: var(--white); }
-.btn--primary:hover { background: var(--navy-deep); color: var(--white); }
-
-.btn--ink { background: var(--ink); color: var(--white); }
-.btn--ink:hover { background: #1c2c5c; color: var(--white); }
-
-/* Butter and amber are light: they always carry dark ink, never white. */
-.btn--butter { background: var(--butter); color: var(--ink); }
-.btn--butter:hover { background: var(--amber); color: var(--ink); }
-
-.btn--ghost { background: transparent; color: var(--navy); border-color: var(--navy); }
-.btn--ghost:hover { background: rgba(8, 55, 149, .07); color: var(--navy-deep); }
-
-.btn--lg { font-size: 1.1rem; padding: 1rem 2.3rem; min-height: 3.5rem; }
-.btn--sm { font-size: .97rem; padding: .6rem 1.35rem; min-height: 2.85rem; }
-
-/* ---------- 14. Footer ------------------------------------------------------- */
-/* The Partner panel above is also ink, so without this the two run together
-   into one undifferentiated navy block. A step darker plus a hairline reads
-   as a seam, not a gap. */
-.site-footer {
-  background: var(--ink-deep);
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  color: var(--on-ink);
-  padding-block: clamp(2.75rem, 6vw, 4rem) 2rem;
+.action::after {
+  content: '';
+  width: .45rem; height: .45rem;
+  border-right: 2px solid currentColor;
+  border-top: 2px solid currentColor;
+  transform: rotate(45deg);
 }
-.footer__inner {
+.action--solid { background: var(--navy); color: var(--white); }
+.action--solid:hover, .action--solid:focus-visible {
+  background: var(--white); color: var(--navy);
+}
+/* Amber carries dark ink, never white — white on amber is 1.7:1. */
+.action--amber {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--ink);
+}
+.action--amber:hover, .action--amber:focus-visible {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--navy-deep);
+}
+
+.act {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .9rem 1.4rem;
+  margin-top: 1.9rem;
+}
+.act__fine {
+  font-family: var(--mono);
+  font-size: .82rem;
+  color: var(--muted);
+}
+.chapter--invert .act__fine { color: var(--on-navy-dim); }
+
+/* ---------- 16. Footer --------------------------------------------------- */
+.foot {
+  background: var(--navy-deep);
+  color: var(--on-navy);
+  padding-block: clamp(2.5rem, 5vw, 3.75rem) 1.75rem;
+}
+.foot__inner {
   display: flex;
   flex-wrap: wrap;
   gap: 2.25rem 4rem;
   justify-content: space-between;
   align-items: flex-start;
 }
-.footer__brand { display: flex; flex-direction: column; align-items: flex-start; gap: .9rem; }
-.footer__chip {
+.foot__brand { display: flex; flex-direction: column; align-items: flex-start; gap: .9rem; }
+.foot__chip {
   display: inline-flex;
   background: var(--white);
-  border-radius: var(--r);
   padding: .8rem 1.1rem;
 }
-.footer__chip img { width: auto; height: 3.5rem; }
-.footer__tagline { font-family: var(--mono); font-size: .84rem; color: var(--on-ink-dim); }
+.foot__chip img { width: auto; height: 3.2rem; }
+.foot__tagline { font-family: var(--mono); font-size: .82rem; color: var(--on-navy-dim); }
 
-.footer__heading {
+.foot__contact h2 {
   font-family: var(--mono);
   font-size: .78rem;
   font-weight: 600;
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--amber);
-  margin: 0 0 .9rem;
+  margin: 0 0 .6rem;
 }
-.footer__contact ul { list-style: none; display: grid; gap: .25rem; }
-.footer__contact a {
+.foot__contact ul { list-style: none; display: grid; gap: .25rem; }
+/* min-height is 44px — a real touch target, not a line of text to aim at. */
+.foot__contact a {
   display: inline-flex;
   align-items: center;
-  gap: .7rem;                    /* space between the mark and its label */
-  min-height: 44px;              /* same reason as the nav */
+  gap: .7rem;
+  min-height: 44px;
   color: var(--white);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, .4);
 }
-.footer__contact a:hover { color: var(--butter); text-decoration-color: var(--butter); }
-.footer__icon {
+.foot__contact a:hover { color: var(--amber); text-decoration-color: var(--amber); }
+.foot__icon {
   flex: none;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.15rem; height: 1.15rem;
   color: var(--amber);
-  transition: color .16s ease, transform .16s ease;
+  transition: color .12s linear;
 }
-.footer__contact a:hover .footer__icon { color: var(--butter); transform: translateY(-1px); }
+.foot__contact a:hover .foot__icon { color: var(--white); }
 
-.disclaimer {
-  margin-top: 2.75rem;
-  padding-top: 1.5rem;
-  border-top: 1px dashed rgba(255, 255, 255, .28);
-  color: var(--on-ink-dim);
-  font-size: .93rem;
-  max-width: 48rem;
+.foot__note {
+  margin-top: 2.5rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid rgba(255, 255, 255, .22);
+  color: var(--on-navy-dim);
+  font-size: .92rem;
+  max-width: 46rem;
 }
 
-/* ---------- 15. Scroll reveal -------------------------------------------------
-   A short fade-and-rise as each block arrives. Deliberately restrained: the
-   page is a reading page, not a showreel.
-
-   Two safety rules govern it. The hiding only ever happens under .js-reveal,
-   a class the script adds to <html> at runtime — so with JavaScript off, or
-   before the script runs, nothing is hidden and nothing can be stranded
-   invisible. And the script never adds that class when the reader has asked
-   for reduced motion, so those readers get the page fully painted, instantly.
-
-   Blocks are targeted, never individual cards: .card and .guide own their
-   own :hover transform, and a reveal transform on the same element would
-   overwrite the hover lift.
+/* ---------- 17. Responsive ----------------------------------------------
+   Fluid by default; these are the places that need help. Checked for
+   horizontal overflow at 360, 390, 414, 768, 1024 and 1440px.
    -------------------------------------------------------------------------- */
-[data-reveal] { --reveal-delay: 0ms; }
 
-.js-reveal [data-reveal] {
-  opacity: 0;
-  transform: translateY(14px);
-  will-change: opacity, transform;
-}
-.js-reveal [data-reveal].is-revealed {
-  opacity: 1;
-  transform: none;
-  transition: opacity .38s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay),
-              transform .38s cubic-bezier(.22, .61, .36, 1) var(--reveal-delay);
-  will-change: auto;
-}
-[data-reveal-delay="1"] { --reveal-delay: 70ms; }
-[data-reveal-delay="2"] { --reveal-delay: 140ms; }
-
-@media (prefers-reduced-motion: reduce) {
-  .js-reveal [data-reveal] { opacity: 1; transform: none; }
+/* The margin column is the first thing to go. Below this the badge and its
+   label sit on one line above the content, which keeps the numbering
+   visible without spending a third of a narrow screen on it. */
+@media (max-width: 64rem) {
+  :root { --margin-col: 8.5rem; }
 }
 
-/* ---------- 16. Responsive ----------------------------------------------------
-   Fluid by default; these are the places that need help.
-   Verified down to a 360px viewport.
-   -------------------------------------------------------------------------- */
-@media (max-width: 62rem) {
-  .hero__inner { grid-template-columns: 1fr; }
-  .hero__copy  { max-width: 38rem; }
-  .rx { margin-inline: 0; }
+@media (max-width: 56rem) {
+  .opening__inner { grid-template-columns: 1fr; }
+  .opening__copy { grid-column: 1; grid-row: auto; max-width: 36rem; }
+  .label { grid-column: 1; grid-row: auto; }
+
+  /* The three doors become one ruled column — three cells side by side stop
+     being scannable long before the screen runs out. */
+  .doors { grid-column: 1; grid-row: auto; }
+  .doors ul { grid-template-columns: minmax(0, 1fr); }
+  .doors li + li { border-left: 0; }
+  .doors li:last-child { border-bottom: 1px solid var(--rule); }
+  .doors a, .doors li + li a { padding: .8rem 0 .85rem; }
+
+  .chapter__inner { grid-template-columns: 1fr; gap: 1.25rem; }
+  .chapter__margin {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    padding-bottom: .9rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .chapter__margin::before {
+    width: 2.2rem; height: 2.2rem;
+    font-size: .8rem;
+    margin-bottom: 0;
+  }
+  .chapter--invert .chapter__margin { border-bottom-color: rgba(255, 255, 255, .25); }
 }
 
-@media (max-width: 54rem) {
-  .site-header { position: static; backdrop-filter: none; background: var(--paper); }
-  .header__inner { justify-content: center; text-align: center; }
-  .nav { width: 100%; }
-  .nav ul { justify-content: center; gap: .35rem 1.1rem; }
-  /* Thumb targets are handled by the min-height on .nav a itself, so there is
-     nothing to add here — piling padding on top would only make the rows
-     taller than they need to be. */
-  .section { scroll-margin-top: 1rem; }
-  .cta { flex-direction: column; align-items: flex-start; }
-  .cta__action { width: 100%; }
-  .cta__fine { text-align: left; }
+@media (max-width: 40rem) {
+  .masthead__inner { padding-block: .85rem; }
+  .topnav ul { gap: 0 1.1rem; }
+  .brand__mark { height: 2.6rem; }
+  .brand__tagline { font-size: .72rem; padding-left: .65rem; }
+
+  .spec__row, .roles > li, .guide__facts > div { grid-template-columns: 1fr; }
+  .spec__row, .roles > li { gap: .15rem; }
+  .guide__facts > div { gap: 0; }
 }
 
 @media (max-width: 34rem) {
-  .brand__logo { height: 2.7rem; }
-  .brand__tagline { font-size: .68rem; padding-left: .65rem; }
+  /* The label's key column folds under its own callout number rather than
+     squeezing three columns into 320px. */
+  .label__rows summary {
+    grid-template-columns: 1.7rem minmax(0, 1fr);
+    gap: .5rem .55rem;
+  }
+  .label__key { grid-column: 2; }
+  .label__val { grid-column: 2; }
+  .label__rows details > p { margin-left: .2rem; }
 
-  /* The four section links cannot share one row at this width without
-     dropping the nav below the 18px floor this site sets itself, and left to
-     wrap they break 3 + 1, which reads as an accident. So they are set as a
-     deliberate 2 x 2 instead, with the pill on its own row underneath — it
-     would otherwise wrap up alongside the last link and crowd it. The CTA is
-     the last item in the list; see the note in index.html. */
-  .nav ul {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    justify-content: center;
-    justify-items: center;
-    gap: .35rem 1.75rem;
-  }
-  .nav ul > li:last-child {
-    grid-column: 1 / -1;
-    margin-top: .3rem;
-  }
-  .rx { transform: none; max-width: none; }
-  .rx__key { width: 100%; }
-  .rx__row summary { flex-wrap: wrap; gap: 0 .5rem; }
-  .rx__row summary::after { position: absolute; right: .4rem; top: .55rem; }
-  .rx__row p { margin-left: .4rem; }
-  .cards, .guides { grid-template-columns: 1fr; }
-  .guide { flex-direction: column; }
-  .guide__cover { width: 9rem; transform: none; }
-  .btn { width: 100%; }
-  .btn-row { flex-direction: column; align-items: stretch; }
-  .footer__inner { gap: 2rem; }
-  .footer__chip img { height: 3rem; }
+  .guide { gap: 1.2rem; padding: 1.25rem; }
+  .guide__cover { max-width: 12rem; }
+
+  .action { width: 100%; justify-content: center; }
+  .act { flex-direction: column; align-items: stretch; }
+  .act__fine { text-align: center; }
+
+  .foot__inner { gap: 2rem; }
+  .foot__chip img { height: 2.8rem; }
 }
