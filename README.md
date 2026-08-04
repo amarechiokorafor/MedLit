@@ -61,91 +61,124 @@ but the browser blocks the font preload over `file://`.
 
 ## Design notes
 
-**The idea.** The best-designed thing this organisation has made is the guide in
-`assets/guides/`. It annotates a real document: numbered callouts pointing at
-the thing itself, plain language beside each one, and the single line that
-matters most swiped in amber. That is the visual vocabulary here.
+**The idea: the small press.** MedLit's product is a plain-language *edition* of
+a document nobody can read. So the site is built as the press that publishes
+those editions — warm bone stock, a transitional serif for display, hairline
+rules, foil stamped in the logo's own navy and amber, section folios in the
+margin, and exactly one shadow on the whole page.
 
-It is a vocabulary, not a template. An earlier version of this site applied the
-same numbered-badge + heading + definition-table frame to six sections in a row,
-and the repetition read as machinery rather than as design. So the callouts now
-appear only where they mean something — the label and the guide — and each
-section gets the width, alignment and scale its own job needs.
+The register is deliberate. The two people this page has to convince are an
+activity director at a senior community and a library programming lead, both
+deciding whether to hand a room full of their people over to students. A press
+or an imprint reads as edited and accountable. A SaaS landing page does not.
+
+The printed guide in `assets/guides/` is still the source of the annotation
+vocabulary, and it survives where it earns its place: the label plate, the
+numbered callouts on it, and the amber marker on the one line that matters.
+Everything else is set as a book rather than as a document with notes on it.
 
 Six rules hold it together:
 
 1. **The label is the hero.** It is the whole mission in one object a person can
    click, at the top of the page, at full width. It was once a small box in the
    corner. Don't put it back there.
-2. **One accent word on the page**, in the `h1`. The blue-highlighted word is a
-   device; used six times it is a tic.
-3. **Three type sizes, far apart.** `--t1` is about six times body and `--t2`
-   about two and a third. Nothing sits between them, and something on the page
-   is genuinely large.
-4. **Two widths, used with intent.** `.wide` fills the page, `.read` commits to
-   a narrow measure. Content floating in the middle of a mid-size container with
-   dead margins either side is what "unfinished" looks like.
-5. **No shadows and no gradients.** Depth is hairline rules and flat fills. The
-   guide has none; a `box-shadow` is the tell of a page laid out by default.
+2. **Serif for display, Atkinson Hyperlegible for anything read at length.**
+   Never the reverse. See the type notes below — this one is not negotiable.
+3. **Amber is foil, not text.** It fills, rules and underlines. As text on bone
+   it is 1.9:1.
+4. **One shadow on the page**, under the guide, because the guide is the only
+   thing here that is a physical object. If a second appears, delete it.
+5. **Radius 0 everywhere.** Books are trimmed square.
 6. **Nothing needs JavaScript to be read.**
 
 **Rhythm.** The variation down the page is deliberate, and it is the part
 easiest to destroy by adding one more section in the "house style". In order:
-wide hero, thin routing strip, full-bleed two-tone translation, one enormous
-statement alone on the screen, asymmetric guides on a tint, two-column
-workshops, a deliberately narrow and quiet checks list, full-bleed reversed
-host, asymmetric volunteer. If everything becomes the same frame again, the
-design is gone even if every colour is still correct.
+title page, thin routing strip, full-bleed facing-page translation, one enormous
+statement alone on the screen with a drop cap, guides on a recessed band,
+two-column workshops, a deliberately narrow and quiet checks list, full-bleed
+reversed host, volunteer on a band again. If everything becomes the same frame,
+the design is gone even if every colour is still correct.
 
-**Colour.** Read off the logo file and the printed guide with a colour picker.
-Nothing here is invented. All defined as CSS variables at the top of
-`styles.css`.
+**Colour.** The navy and the amber are the logo's own — the wordmark and the
+pill bottle's cap. What changed in the redesign is the *ground*: white was
+replaced by bone stock, and body copy is set in a warm near-black instead of in
+navy. Navy is now foil. It appears on headings, rules and buttons, where it
+reads as stamped rather than as the default colour of everything.
 
 | | | |
 |---|---|---|
-| `#FFFFFF` | white | the page ground, like the guide's |
-| `#063690` | brand navy | the wordmark — 98% of the lockup's letterforms. Links, badges, primary actions |
-| `#0C3CA2` | badge navy | the navy of the guide's own numbered callouts |
-| `#041D5C` | deep navy | the inverted chapter and the footer |
-| `#1F6FB2` | accent blue | the guide's light accent blue, deepened until it passes AA as text |
-| `#0D1A3D` | ink | headings |
-| `#26365F` | body | reading copy |
-| `#B4D8F6` | panel blue | the fill of the guide's callout panels |
-| `#EAF1FC` | tint | the faintest wash — the Workshops chapter ground |
-| `#C9DCF4` | rule | the hairline that draws almost all the structure |
-| `#F6C66C` | bottle amber | the badge on the inverted chapter, the annotation spines |
-| `#FC8442` | cap orange | the strip down the label, the turn in the problem statement |
-| `#FCF0CC` | swipe | the highlight, the one that matters |
+| `#F3EEE3` | bone | the page ground |
+| `#EAE2D2` | warm bone | recessed bands — guides, volunteer |
+| `#FDFBF7` | sheet | plates and cards, the stock inside the frame |
+| `#1B1915` | ink | body copy |
+| `#57503F` | soft ink | captions and secondary copy |
+| `#093A94` | brand navy | the wordmark's own. Headings, rules, primary actions |
+| `#0F47AE` | mid navy | the lighter foil, held in reserve |
+| `#0A2050` | deep navy | the reversed chapters and the footer |
+| `#E8A33D` | bottle amber | the imprint marks, the kicker rule, the annotation spines |
+| `#F0BC6A` | foil amber | the marker under the line that matters |
+| `#F7E4BE` | pale amber | the fill on the `Sig` row and on door hovers |
+| `#D6CCB6` | rule | the hairline that draws almost all the structure |
+| `#B0A184` | firm rule | plate borders, section divisions, folios |
 
-Two pairs are ruled out by construction, not by care: **white text never sits on
-the cap orange** (2.5:1) and **the guide's light accent blue is never text on
-white** (2.9:1) — it appears only as a fill or a rule. That is why `--accent`
-exists as a deepened version of it.
+Everything used on the page was measured. The floor is AA and almost everything
+clears AAA: ink on bone 15.2, soft ink on bone 6.9, navy on bone 8.9, amber on
+deep navy 7.3, ink on pale amber 14.0.
 
-**Type.** Three faces, self-hosted, no CDN:
+Two pairs are ruled out by construction, not by care: **amber is never text on
+bone** (1.9:1) and **white is never text on amber** (1.7:1).
 
-- **Atkinson Hyperlegible** for body copy. The Braille Institute drew it for
-  low-vision readers — it pulls apart the character pairs that normally blur
-  together. Given who our workshops are for, it's the whole argument in a
-  typeface. Don't swap it out.
-- **Outfit** for headlines. Geometric, so it sits naturally beside the logo
-  wordmark.
-- **IBM Plex Mono** for transcribed documents only — the label sheet and the
+**Type.** Three faces, self-hosted, latin subsets, no CDN — about 155 KB for the
+set, which matters because this may load on an old phone on library wifi.
+
+- **Atkinson Hyperlegible** for everything read at length. The Braille Institute
+  drew it for low-vision readers — it pulls apart the character pairs that
+  normally blur together. Given who our workshops are for, it's the whole
+  argument in a typeface. **Don't swap it out.** The Stripe Press register this
+  design borrows from would normally set body copy in an old-style serif; that
+  is the one part of the recipe deliberately not followed, and legibility is why.
+- **Source Serif 4** for display only — headings, pull quotes, the drop cap,
+  captions. A transitional serif reads as an imprint, something edited. The
+  optical-size axis is pinned at 28 and the weight axis left variable, which is
+  why one 45 KB file covers 400–700.
+- **IBM Plex Mono** for transcribed documents only — the label plate and the
   jargon column in the translation. It is the artefact's own voice.
 
-Two typographic rules that are easy to undo by accident:
+Three typographic rules that are easy to undo by accident:
 
-**Monospace is not a label style.** Small uppercase letter-spaced monospace
-eyebrows (`STUDENT-LED NONPROFIT`, `THE PROBLEM`, `HOW LONG`) read as a stock
-design tic, and they were removed. Where a label is needed it is the same
-typeface as everything else at a lighter weight, in sentence case — see
-`.eyebrow`, `.facts dt`, `.translate__label`. The only uppercase left on the
-page is the pharmacy line on the label, which is how labels actually print.
+**Emphasis is italic, not a second colour.** The `h1` sets one word in the
+serif's true italic. An earlier version tinted it blue. A serif has a real
+italic and does not need the extra colour.
 
-**The scale is three steps, not a ramp.** `--t1` / `--t2` / `--t3`. The
-previous version had the hero and the section headings within 1.4× of each
-other, which is why it read flat. Add a new size only if you genuinely need a
-fourth, and then add it to the token block rather than inline.
+**Monospace is not a label style.** Where a small label is needed it is
+Atkinson, letter-spaced, uppercase, at `.78`–`.82rem` — see `.kicker`,
+`.facts dt`, `.rx__key`. Monospace on the page means "this is transcribed from
+a real document", nothing else.
+
+**The scale is three steps, not a ramp.** `--t1` / `--t2` / `--t3`. Nothing sits
+between them, and something on the page is genuinely large. Add a fourth only if
+you truly need it, and put it in the token block rather than inline.
+
+**The signature moves**, so that edits keep them:
+
+- **The imprint.** A 6px navy band across the top of the masthead with an amber
+  block stamped into its left end, repeated at the top of the footer. It opens
+  and closes the page.
+- **The kicker rule.** Every kicker is followed by a hairline with an amber head
+  — `.kicker::after`. It is the one ornament repeated across the page, which is
+  what makes it a system rather than a flourish.
+- **Section folios.** `§ 01`, `§ 02` in the margin, from a CSS counter on
+  `main > section`, so sections can be added or reordered and the numbering
+  follows. The `/ ""` in the `content` value gives the generated text an empty
+  alternative so screen readers skip it — it is a printer's mark, not something
+  anyone needs read aloud.
+- **The plate.** The label sits on sheet stock inside a double rule (a border
+  plus an `outline` with offset, so the outer line costs no layout and can never
+  push the page wide).
+- **The drop cap**, three lines deep in foil navy, on the problem statement and
+  nowhere else.
+- **The book object.** The guide cover carries a navy spine and the page's only
+  shadow.
 
 **Writing.** Every piece of text a person reads follows the MedLit style guide.
 That means the website, the emails and form copy in `automation/MedLit.gs`, the
@@ -185,12 +218,13 @@ readout. Delete the script and you lose that line and nothing else — the page
 hides nothing.
 
 **The translation.** The before/after section is the actual product, shown
-rather than described, and it is the most persuasive thing on the page. The
-jargon is set in the label's monospace on navy because that is what it is: a
-transcribed document. The plain version is large, in the reading face, on white,
-with the dose ceiling swiped. The column headings borrow the printed guide's own
-words. Keep the two halves the same instruction — if they ever drift apart the
-section stops being an argument.
+rather than described, and it is the most persuasive thing on the page. It is
+set as a verso and a recto. The jargon is on the left, in the label's monospace,
+reversed out of deep navy, because that is what it is: a transcribed document.
+The plain version is on the right on sheet stock, large, in the serif, with the
+dose ceiling marked. The two kickers borrow the printed guide's own words. Keep
+the two halves the same instruction — if they ever drift apart the section stops
+being an argument.
 
 There is no scroll animation anywhere, on purpose. The first audience for this
 page is an activity director deciding whether to trust students with their
@@ -227,9 +261,10 @@ house frame to drop it into and that is on purpose:
   There is one reversed section and one full-bleed two-tone section already;
   a third would spend what they buy.
 
-Do not give a new section a numbered badge and a definition table just because
-other sections have them. That sameness is the thing this design was rebuilt to
-get rid of.
+Do not give a new section a kicker, a folio and a definition table just because
+other sections have them. The folio arrives on its own from the counter; the
+rest should be a decision. Sameness is the thing this design was rebuilt to get
+rid of.
 
 ## Sharing
 
@@ -258,11 +293,16 @@ domain, those four URLs change with it.
 These aren't decoration — please keep them when editing:
 
 - Body text is 18px minimum (`html { font-size: 18px }`); everything else scales
-  from it in `rem`. The only type below that is the small mono structural labels
-  (kickers, keys, meta lines), which never go under 14px.
-- Every text/background pair in the stylesheet meets WCAG AA — 43 pairs checked,
-  the lowest at 5.28:1 and most above 9:1. Amber and the swipe are light, so they
-  always carry dark navy ink, never white.
+  from it in `rem`. The only type below that is structural chrome — kickers,
+  definition terms, the label's keys, the folios — which never goes under 14px
+  and is never something you read a sentence of. The masthead nav is at full
+  body size and sentence case on purpose: small letterspaced caps would have
+  suited the imprint, but the people this page is for should not have to squint
+  at the navigation.
+- Every text/background pair on the rendered page meets WCAG AA. Verified in a
+  real browser rather than by eye: 95 visible text nodes measured at 1440, 768
+  and 390px, with the `<details>` rows forced open, and none below its threshold.
+  Amber is light, so it always carries dark ink, never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
   to amber on the reversed sections and the footer.
 - Every section contributes exactly one `<h2>` to the document outline. The

@@ -3,40 +3,44 @@
    One stylesheet. No frameworks, no build step, no JavaScript required to
    read anything on the page.
 
-   THE IDEA
-   The guide in assets/guides/ is the best-designed thing this organisation
-   owns. It annotates a real document: numbered callouts pointing at the
-   thing itself, plain language beside each, the one line that matters
-   swiped in amber. That is the vocabulary here — but a vocabulary, not a
-   template. An earlier version applied the same numbered-badge + heading +
-   table frame to six sections in a row, and the repetition read as
-   machinery rather than design. So:
+   THE IDEA — "the small press"
+   MedLit's product is a plain-language *edition* of a document nobody can
+   read. So the site is built as the press that publishes those editions:
+   warm bone stock, a transitional serif for display, hairline rules, foil
+   stamped in the brand's own navy and amber, section folios in the margin,
+   and exactly one shadow on the whole page — under the guide, because the
+   guide is a physical object and everything else is printing.
 
-     - The callouts appear only where they mean something: the label, and
-       the guide itself.
-     - Every section gets the width, alignment and scale its own job needs.
-       Two widths are used with intent — .wide fills the page, .read commits
-       to a narrow measure. Nothing floats in between.
-     - Three type sizes, far apart. --t1 is roughly six times body.
-     - One accent word on the whole page, in the h1.
-     - Monospace only for transcribed documents: the label sheet and the
-       jargon column. It is the artefact's voice, not a decorative label.
+   This replaces the flat blue-and-white annotated-document language. The
+   annotation idea survives where it earns its place (the label plate, the
+   amber marker on the one line that matters); the rest is set as a book.
+
+   Rules worth keeping:
+     1. Serif for display, Atkinson Hyperlegible for everything you read at
+        length. Never the reverse — see §1.
+     2. Amber is foil, not text. It fills, rules and underlines; on bone it
+        would be 1.9:1.
+     3. One shadow on the page. If a second appears, delete it.
+     4. Radius 0 everywhere. Books are trimmed square.
+     5. Monospace is the transcribed document's own voice — the label plate
+        and the jargon column. Never a decorative label.
+     6. Nothing needs JavaScript to be read.
 
    Contents
    1.  Fonts
-   2.  Tokens, sampled from the artwork
+   2.  Tokens
    3.  Base and type scale
    4.  Accessibility
-   5.  Widths
+   5.  Widths and folios
    6.  Masthead
-   7.  Hero — the label is the hero
+   7.  Hero — the title page, and the label plate
    8.  Three doors
-   9.  The translation, full bleed
-   10. The problem, one enormous statement
-   11. The guides, asymmetric
-   12. The workshops, two columns
-   13. How we check it, narrow
-   14. Host, full bleed
+   9.  The translation, facing pages
+   10. The problem, set piece with a drop cap
+   11. The guides, as book objects
+   12. The workshops
+   13. How we check it
+   14. Host, reversed
    15. Volunteer
    16. Facts, actions
    17. Footer
@@ -44,15 +48,36 @@
    ========================================================================== */
 
 /* ---------- 1. Fonts ------------------------------------------------------
-   Self-hosted so there's no CDN dependency and no render-blocking third
-   party. Latin subsets only — the whole set is under 100 KB, which matters
-   because this may load on an old phone on library wifi.
+   Self-hosted, latin-subset, ~155 KB for the set — this may load on an old
+   phone on library wifi.
 
-   Atkinson Hyperlegible is the body face on purpose: the Braille Institute
-   drew it for low-vision readers, disambiguating the character pairs that
-   normally blur together. A site about making health information readable
-   should be set in the typeface built for exactly that.
+   The split is deliberate and is the one type decision on this site that is
+   not up for negotiation:
+
+     Source Serif 4 — DISPLAY ONLY. Headings, pull quotes, the drop cap. A
+     transitional serif reads as a press, an imprint, something edited. It
+     is what earns the trust of a library director deciding whether to hand
+     students a room full of their residents.
+
+     Atkinson Hyperlegible — EVERYTHING READ AT LENGTH. The Braille
+     Institute drew it for low-vision readers, disambiguating the character
+     pairs that normally blur together. Our readers include older adults. A
+     site about making health information readable is set in the face built
+     for exactly that, and no aesthetic argument outranks it.
+
+   The serif's optical-size axis is pinned at 28 and the weight axis is left
+   variable, which is why one 45 KB file covers 400–700.
    -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'SourceSerif';
+  src: url('assets/fonts/sourceserif-var.woff2') format('woff2');
+  font-weight: 400 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'SourceSerif';
+  src: url('assets/fonts/sourceserif-var-italic.woff2') format('woff2');
+  font-weight: 400 600; font-style: italic; font-display: swap;
+}
 @font-face {
   font-family: 'Atkinson';
   src: url('assets/fonts/atkinson-400.woff2') format('woff2');
@@ -62,11 +87,6 @@
   font-family: 'Atkinson';
   src: url('assets/fonts/atkinson-700.woff2') format('woff2');
   font-weight: 700; font-style: normal; font-display: swap;
-}
-@font-face {
-  font-family: 'Outfit';
-  src: url('assets/fonts/outfit-var.woff2') format('woff2');
-  font-weight: 600 800; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: 'PlexMono';
@@ -79,61 +99,73 @@
   font-weight: 600; font-style: normal; font-display: swap;
 }
 
-/* ---------- 2. Tokens, sampled from the artwork --------------------------
-   Nothing here is invented. Every value was read off the logo file or the
-   printed guide with a colour picker:
+/* ---------- 2. Tokens ----------------------------------------------------
+   Two brand colours, warmed paper, and one ink. Nothing else.
 
-     #063690  the wordmark navy — 98% of the lockup's letterforms
-     #0C3CA2  the navy of the guide's numbered callout badges
-     #B4D8F6  the fill of the guide's callout panels
-     #F6C66C  the pill bottle body
-     #FC8442  the pill bottle cap
-     #FCF0CC  the amber swipe on the guide's most important line
+   The navy and the amber are the logo's own — the wordmark's navy and the
+   pill bottle's cap. What changed from the previous design is the *ground*:
+   pure white has been replaced by bone stock, and body copy is set in a
+   warm near-black rather than in navy. Navy is now foil — it appears on
+   headings, rules and buttons, where it reads as stamped rather than as
+   the default colour of everything.
 
-   Two pairs are ruled out by construction rather than by care: white text
-   never sits on the cap orange (2.5:1), and the guide's light accent blue is
-   never text on white (2.9:1) — it appears only as a fill or a rule.
-   --accent is a deepened version of it that clears AA as text.
+   Every pair used on this page was measured. The floor is AA (4.5:1) and
+   almost everything clears AAA (7:1):
+
+     ink       on paper   15.2      navy      on paper       8.9
+     ink-soft  on paper    6.9      navy-deep on paper      13.6
+     amber     on navy-deep 7.3     on-navy   on navy-deep  12.1
+     ink       on amber     8.1     ink       on amber-pale 14.0
+
+   Ruled out by construction: amber is never text on bone (1.9:1), and
+   white is never text on amber (1.7:1).
    -------------------------------------------------------------------------- */
 :root {
   color-scheme: light;
 
-  --white:      #ffffff;
-  --navy:       #063690;
-  --navy-mid:   #0c3ca2;
-  --navy-deep:  #041d5c;
-  --accent:     #1f6fb2;
+  /* Stock */
+  --paper:      #f3eee3;   /* the page */
+  --paper-warm: #eae2d2;   /* recessed bands */
+  --page:       #fdfbf7;   /* sheet white — plates, cards */
 
-  --ink:        #0d1a3d;
-  --body:       #26365f;
-  --muted:      #4a5a80;
+  /* Ink */
+  --ink:        #1b1915;   /* body */
+  --ink-soft:   #57503f;   /* captions, secondary */
 
-  --panel:      #b4d8f6;
-  --tint:       #eaf1fc;
-  --rule:       #c9dcf4;
-  --rule-firm:  #9dc2ea;
+  /* Foil */
+  --navy:       #093a94;
+  --navy-mid:   #0f47ae;
+  --navy-deep:  #0a2050;
+  --amber:      #e8a33d;
+  --amber-foil: #f0bc6a;
+  --amber-pale: #f7e4be;
 
-  --amber:      #f6c66c;
-  --orange:     #fc8442;
-  --swipe:      #fcf0cc;
+  /* Rules */
+  --rule:       #d6ccb6;
+  --rule-firm:  #b0a184;
 
-  --on-navy:    #dfe8fa;
-  --on-navy-dim:#adc0e4;
+  /* Reversed */
+  --on-navy:     #e6e2d6;
+  --on-navy-dim: #bfb9a6;
 
-  /* Three sizes, far apart. --t1 is about six times body; --t2 about
-     two and a third. Nothing sits between them. */
-  --t1: clamp(2.85rem, 1rem + 7.4vw, 6.4rem);
-  --t2: clamp(1.6rem, 1.15rem + 1.9vw, 2.35rem);
-  --t3: 1.12rem;
+  /* Three sizes, far apart. Serifs need less negative tracking than the
+     geometric sans this replaced, so the letter-spacing is nearly neutral. */
+  --t1: clamp(2.6rem, .95rem + 6.4vw, 5.4rem);
+  --t2: clamp(1.7rem, 1.15rem + 2.1vw, 2.7rem);
+  --t3: 1.14rem;
 
-  /* Two widths, used with intent. */
-  --wide:   84rem;
-  --read:   46rem;
+  --wide:   82rem;
+  --read:   44rem;
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
 
-  --display: 'Outfit', 'Segoe UI', Roboto, system-ui, sans-serif;
+  --display: 'SourceSerif', Charter, 'Iowan Old Style', Georgia, serif;
   --text:    'Atkinson', 'Segoe UI', Roboto, system-ui, sans-serif;
   --mono:    'PlexMono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* The only shadow on the page. It belongs to the guide, because the guide
+     is the only thing here that is a physical object. */
+  --lift: 0 1px 1px rgba(27, 25, 21, .16),
+          0 16px 34px -16px rgba(27, 25, 21, .45);
 }
 
 /* ---------- 3. Base and type scale --------------------------------------- */
@@ -148,11 +180,11 @@ html {
 
 body {
   margin: 0;
-  background: var(--white);
-  color: var(--body);
+  background: var(--paper);
+  color: var(--ink);
   font-family: var(--text);
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -161,33 +193,31 @@ h1, h2, h3 {
   color: var(--ink);
   margin: 0;
   text-wrap: balance;
+  font-variant-numeric: oldstyle-num;
 }
 h1 {
   font-size: var(--t1);
-  font-weight: 800;
-  line-height: .98;
-  letter-spacing: -0.038em;
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.014em;
 }
 h2 {
   font-size: var(--t2);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.026em;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 h3 {
-  font-size: 1.22rem;
-  font-weight: 700;
-  line-height: 1.25;
-  letter-spacing: -0.012em;
+  font-size: 1.28rem;
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.004em;
 }
 
-/* The single accent word, in the h1 and nowhere else on the page. It is the
-   guide's device — one word of the title in the light blue — deepened until
-   it passes AA as text. Used twice it stops being a device. */
-h1 em {
-  font-style: normal;
-  color: var(--accent);
-}
+/* Emphasis is italic, the way a press sets it — not a second colour. The
+   previous design tinted one word blue; a serif has a real italic and
+   doesn't need to. */
+h1 em, h2 em, h3 em { font-style: italic; font-weight: 500; }
 
 p { margin: 0 0 1.1em; }
 p:last-child { margin-bottom: 0; }
@@ -196,29 +226,51 @@ img { max-width: 100%; height: auto; display: block; }
 ul, ol { padding: 0; margin: 0; }
 dl, dd { margin: 0; }
 
-a { color: var(--navy); text-underline-offset: .18em; }
-a:hover { color: var(--accent); }
+a { color: var(--navy); text-underline-offset: .2em; text-decoration-thickness: 1px; }
+a:hover { color: var(--navy-deep); }
 
-::selection { background: var(--swipe); color: var(--ink); }
+::selection { background: var(--amber-pale); color: var(--ink); }
 
-/* Small labels are the same typeface at a lighter weight and in sentence
-   case — not uppercase monospace, which reads as a stock design tic. */
-.eyebrow {
-  font-family: var(--display);
-  font-size: .95rem;
-  font-weight: 500;
-  color: var(--muted);
-  margin: 0 0 1.1rem;
+/* The kicker, and the foil rule that runs off it. An amber head on a
+   hairline: the stamped mark at the head of a chapter. It is the one
+   ornament repeated across the page, which is what makes it a system
+   rather than a flourish. */
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  font-family: var(--text);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 1.35rem;
+}
+.kicker::after {
+  content: '';
+  flex: 1 1 2rem;
+  height: 2px;
+  min-width: 2rem;
+  background: linear-gradient(90deg,
+    var(--amber) 0 2.75rem, var(--rule) 2.75rem);
+}
+.host .kicker, .translate__side--before .kicker { color: var(--amber); }
+.host .kicker::after, .translate__side--before .kicker::after {
+  background: linear-gradient(90deg,
+    var(--amber) 0 2.75rem, rgba(255, 255, 255, .28) 2.75rem);
 }
 
-/* The swipe, spent sparingly. It marks the line that matters, and there is
-   never more than one in a section. */
+/* The marker. In the printed guide the line that matters is swiped; here it
+   is a foil band sitting under the baseline rather than a block highlight,
+   so it marks without shouting. Never more than one in a section. */
 .swipe {
-  background: var(--swipe);
+  background-image: linear-gradient(180deg,
+    transparent 60%, var(--amber-foil) 60%, var(--amber-foil) 95%, transparent 95%);
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
-  padding: .06em .22em;
-  margin-inline: -.06em;
+  padding-inline: .1em;
+  margin-inline: -.1em;
 }
 
 /* ---------- 4. Accessibility ---------------------------------------------- */
@@ -227,14 +279,13 @@ a:hover { color: var(--accent); }
   left: 50%; top: 0;
   transform: translate(-50%, -140%);
   z-index: 200;
-  background: var(--navy);
-  color: var(--white);
-  padding: .8rem 1.5rem;
-  font-family: var(--display);
+  background: var(--navy-deep);
+  color: var(--page);
+  padding: .85rem 1.6rem;
   font-weight: 700;
   text-decoration: none;
 }
-.skip:focus { transform: translate(-50%, 0); color: var(--white); }
+.skip:focus { transform: translate(-50%, 0); color: var(--page); }
 
 /* One focus ring, high contrast, offset so the page shows behind it. The
    reversed sections flip it to amber. */
@@ -267,10 +318,9 @@ a:hover { color: var(--accent); }
   }
 }
 
-/* ---------- 5. Widths ----------------------------------------------------
-   Two, and only two. Either the section uses the page or it commits to a
-   reading measure. The old in-between — content floating in the middle of a
-   72rem container with dead margins either side — read as unfinished.
+/* ---------- 5. Widths and folios ----------------------------------------
+   Two widths, and only two. Either the section uses the page or it commits
+   to a reading measure. Nothing floats in between.
    -------------------------------------------------------------------------- */
 .wide {
   width: 100%;
@@ -285,89 +335,138 @@ a:hover { color: var(--accent); }
   padding-inline: var(--gutter);
 }
 
+/* Section folios, the way a bound document numbers its own sections. These
+   are CSS counters, so sections can be added, removed or reordered and the
+   numbering follows. The `/ ""` gives the generated text an empty
+   alternative, so assistive technology skips it — it is a printer's mark,
+   not something anyone needs read aloud. Browsers without that syntax simply
+   render no folio, which is a perfectly good outcome. */
+main { counter-reset: folio; }
+main > section {
+  counter-increment: folio;
+  position: relative;
+}
+main > section::after {
+  content: '\00A7\2009' counter(folio, decimal-leading-zero) / '';
+  position: absolute;
+  top: 1.15rem;
+  right: max(var(--gutter), (100% - var(--wide)) / 2 + var(--gutter));
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .16em;
+  color: var(--rule-firm);
+  pointer-events: none;
+}
+.host::after, .translate::after { color: var(--on-navy-dim); }
+
 /* ---------- 6. Masthead --------------------------------------------------
    Not sticky. A sticky bar costs a strip of a small screen permanently and
    buys little on a page this short.
+
+   The head rule is the imprint: a solid navy band with an amber block
+   stamped into its left end, directly above the wordmark.
    -------------------------------------------------------------------------- */
-.masthead { border-bottom: 1px solid var(--rule); }
+.masthead {
+  border-top: 6px solid var(--navy);
+  border-bottom: 1px solid var(--rule-firm);
+  background: var(--paper);
+  position: relative;
+}
+.masthead::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 0;
+  width: clamp(4rem, 12vw, 9rem);
+  height: 6px;
+  background: var(--amber);
+}
 .masthead__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: .75rem 2rem;
-  padding-block: 1rem;
+  padding-block: 1.15rem;
 }
-.brand { display: flex; align-items: center; gap: .85rem; text-decoration: none; }
+.brand { display: flex; align-items: center; gap: .9rem; text-decoration: none; }
 .brand__mark { width: auto; height: 3rem; flex: none; }
 .brand__tagline {
   font-family: var(--display);
-  font-size: .92rem;
-  font-weight: 500;
-  color: var(--muted);
-  border-left: 2px solid var(--amber);
-  padding-left: .8rem;
+  font-size: 1.02rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  border-left: 1px solid var(--rule-firm);
+  padding-left: .9rem;
 }
 .topnav ul {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0 1.6rem;
+  gap: 0 1.75rem;
   list-style: none;
 }
+/* Sentence case at full body size. Tiny letterspaced caps would have suited
+   the imprint, but the people this page is for should not have to squint at
+   the navigation. 44px minimum, because the thumb reaching for it is a
+   hurried one. */
 .topnav a {
   display: inline-flex;
   align-items: center;
-  min-height: 44px;             /* a thumb needs 44px, and ours is a hurried one */
-  font-family: var(--display);
-  font-size: .96rem;
-  font-weight: 600;
+  min-height: 44px;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--ink);
   text-decoration: none;
   border-bottom: 2px solid transparent;
-  transition: color .12s linear, border-color .12s linear;
+  transition: color .14s ease, border-color .14s ease;
 }
 .topnav a:hover, .topnav a:focus-visible {
   color: var(--navy);
-  border-bottom-color: var(--orange);
+  border-bottom-color: var(--amber);
 }
 
-/* ---------- 7. Hero — the label is the hero ------------------------------
-   A real prescription label, at the top, at the full width of the page,
-   that a person can open line by line. It demonstrates the entire mission
-   without a word of explanation, which is why it leads and why it is big.
+/* ---------- 7. Hero — the title page, and the label plate ----------------
+   A press's title page: kicker, the statement set large in the serif, a
+   short lede at a reading measure. Then the plate.
 
-   The clever part is the row layout. Each row is a <details> set as a grid:
-   the label line sits in the left column, and its plain-language meaning
-   opens into the right column, on the same line — which is exactly how the
-   printed guide flanks the bottle with its callouts. It also means the wide
-   measure is genuinely used rather than padded with air.
+   The plate is a real prescription label a person can open line by line. It
+   demonstrates the entire mission without a word of explanation, which is
+   why it leads and why it is big. It is a stack of <details>, so it opens
+   and closes with no JavaScript and needs no custom keyboard handling. The
+   callout numbers are CSS counters — add, remove or reorder lines and they
+   renumber themselves.
    -------------------------------------------------------------------------- */
-.hero { padding-block: clamp(2.5rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5rem); }
-.hero__head { max-width: 54rem; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+.hero { padding-block: clamp(2.75rem, 5vw, 4.5rem) clamp(3rem, 6vw, 5rem); }
+.hero__head { max-width: 52rem; margin-bottom: clamp(2.75rem, 5.5vw, 4.5rem); }
 .hero__lede {
   font-size: var(--t3);
-  color: var(--body);
-  max-width: 34rem;
-  margin-top: 1.5rem;
+  color: var(--ink-soft);
+  max-width: 36rem;
+  margin-top: 1.6rem;
 }
 
 .rx { margin: 0; }
+/* A figure caption, set like one: serif italic, hanging off a hairline. */
 .rx__caption {
   font-family: var(--display);
-  font-size: .95rem;
-  font-weight: 500;
-  color: var(--muted);
-  margin: 0 0 .9rem;
+  font-size: 1.02rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--rule-firm);
+  padding-top: .75rem;
+  margin: 0 0 1.6rem;
 }
-.rx__caption-lead { font-weight: 700; color: var(--navy); }
+.rx__caption-lead { font-weight: 600; color: var(--navy-deep); }
+.rx__caption em { font-style: italic; }
 
-/* Flat, ruled, no shadow. The amber edge is the one nod to the pill bottle
-   in the logo — a strip of the cap colour down the side of the sheet. */
+/* A tipped-in plate: sheet stock on the bone ground, inside a double rule.
+   The outer line is an outline rather than a second border, so it costs no
+   layout and can never push the page wide. */
 .rx__sheet {
+  background: var(--page);
   border: 1px solid var(--rule-firm);
-  border-left: 6px solid var(--orange);
-  padding: clamp(1.1rem, 2vw, 1.9rem);
+  outline: 1px solid var(--rule);
+  outline-offset: 7px;
+  padding: clamp(1.15rem, 2.2vw, 2.1rem);
 }
 .rx__pharmacy {
   display: flex;
@@ -375,22 +474,21 @@ a:hover { color: var(--accent); }
   justify-content: space-between;
   gap: .2rem .75rem;
   font-family: var(--mono);
-  font-size: .86rem;
+  font-size: .84rem;
   font-weight: 600;
-  letter-spacing: .05em;
+  letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--navy);
   border-bottom: 2px solid var(--navy);
-  padding-bottom: .7rem;
+  padding-bottom: .75rem;
   margin: 0 0 .2rem;
 }
-.rx__pharmacy span { font-weight: 400; color: var(--muted); }
+.rx__pharmacy span { font-weight: 400; color: var(--ink-soft); }
 
 /* Two columns of rows, which is how the printed guide arranges its callouts
    around the bottle — and it means the wide measure carries content instead
    of being padded with air. Reading order runs across then down, matching
-   the source. Lines can still be added or removed freely; the grid reflows
-   and the counters renumber themselves. */
+   the source. */
 .rx__rows {
   counter-reset: callout;
   list-style: none;
@@ -408,35 +506,32 @@ a:hover { color: var(--accent); }
 
 .rx__rows summary {
   display: grid;
-  grid-template-columns: 2rem 7rem minmax(0, 1fr) 1.2rem;
+  grid-template-columns: 1.9rem 7rem minmax(0, 1fr) 1.2rem;
   align-items: baseline;
   gap: .7rem;
   cursor: pointer;
   list-style: none;
-  padding: .85rem .2rem;
+  padding: .9rem .35rem;
   font-family: var(--mono);
-  font-size: 1.1rem;
-  line-height: 1.4;
+  font-size: 1.06rem;
+  line-height: 1.45;
   color: var(--ink);
-  transition: background-color .12s linear;
+  transition: background-color .14s ease;
 }
 .rx__rows summary::-webkit-details-marker { display: none; }
-.rx__rows summary:hover { background: var(--tint); }
+.rx__rows summary:hover { background: var(--paper); }
 
-/* The numbered badge, straight off the guide: a filled navy disc with the
-   numeral reversed out of it. */
+/* The callout numeral. The filled navy disc is gone — a press numbers its
+   figures in the margin, ruled, not badged. */
 .rx__rows summary::before {
-  content: counter(callout);
+  content: counter(callout, decimal-leading-zero);
   align-self: start;
-  display: grid;
-  place-items: center;
-  width: 2rem; height: 2rem;
-  border-radius: 50%;
-  background: var(--navy-mid);
-  color: var(--white);
   font-family: var(--mono);
-  font-size: .82rem;
+  font-size: .74rem;
   font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--navy);
+  padding-top: .3em;
 }
 /* A plus that becomes a minus. Drawn as text so it needs no icon file. */
 .rx__rows summary::after {
@@ -449,44 +544,49 @@ a:hover { color: var(--accent); }
 .rx__rows > li > details[open] > summary::after { content: '\2212'; }
 
 .rx__key {
-  font-family: var(--display);
-  font-size: .88rem;
+  font-family: var(--text);
+  font-size: .8rem;
   font-weight: 700;
-  color: var(--navy);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 .rx__val { min-width: 0; }
-.rx__sub { display: block; color: var(--muted); font-size: .95rem; }
+.rx__sub { display: block; color: var(--ink-soft); font-size: .92rem; }
 
-/* The one line that matters most, swiped in amber. */
-.rx__rows > li.is-key > details > summary { background: var(--swipe); }
-.rx__rows > li.is-key > details > summary:hover { background: #f9e7b4; }
+/* The one line that matters most, filled amber — the same emphasis the
+   printed guide gives it. */
+.rx__rows > li.is-key > details > summary { background: var(--amber-pale); }
+.rx__rows > li.is-key > details > summary:hover { background: #f3dcae; }
 
-/* The meaning, in the reading face, marked with an amber spine so it reads
-   as an annotation rather than as body copy. */
+/* The meaning, in the reading face, hung off an amber rule so it reads as
+   an annotation rather than as body copy. */
 .rx__rows details > p {
   font-family: var(--text);
-  font-size: 1.02rem;
-  line-height: 1.55;
-  color: var(--body);
-  margin: .1rem .2rem 1rem 2.7rem;
-  padding-left: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: .15rem .35rem 1.1rem 2.6rem;
+  padding-left: 1.05rem;
   border-left: 3px solid var(--amber);
 }
 .rx__readout {
   font-family: var(--display);
-  font-size: .92rem;
-  font-weight: 500;
-  color: var(--muted);
+  font-style: italic;
+  font-size: 1.02rem;
+  color: var(--ink-soft);
   border-top: 1px solid var(--rule);
   margin: .4rem 0 0;
-  padding-top: .85rem;
+  padding-top: .9rem;
 }
 
 /* ---------- 8. Three doors ----------------------------------------------
-   A thin strip rather than a section, so it routes without competing.
+   A thin strip rather than a section, so it routes without competing. Three
+   different people arrive on this page and each should reach their own
+   thing in about five seconds without reading it.
    -------------------------------------------------------------------------- */
 .doors {
-  background: var(--tint);
+  background: var(--page);
   border-block: 1px solid var(--rule-firm);
 }
 .doors ul {
@@ -494,135 +594,143 @@ a:hover { color: var(--accent); }
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
-.doors li + li { border-left: 1px solid var(--rule-firm); }
+.doors li + li { border-left: 1px solid var(--rule); }
 .doors a {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: .1rem 1rem;
+  gap: .15rem 1rem;
   min-height: 48px;
-  padding: 1rem 1.25rem 1rem 0;
+  padding: 1.15rem 1.35rem 1.15rem 0;
   text-decoration: none;
-  transition: background-color .12s linear;
+  transition: background-color .14s ease;
 }
-.doors li + li a { padding-left: 1.25rem; }
-.doors a:hover, .doors a:focus-visible { background: var(--white); }
+.doors li + li a { padding-left: 1.35rem; }
+.doors a:hover, .doors a:focus-visible { background: var(--amber-pale); }
 .doors__what {
   font-family: var(--display);
-  font-size: 1.02rem;
-  font-weight: 700;
-  color: var(--navy);
+  font-size: 1.14rem;
+  font-weight: 600;
+  color: var(--navy-deep);
 }
-.doors__who { grid-column: 1; font-size: .92rem; color: var(--muted); }
+.doors__who { grid-column: 1; font-size: .92rem; color: var(--ink-soft); }
 /* Drawn, not typed, so it is never read out as a word. */
 .doors a::after {
   content: '';
   grid-column: 2;
   grid-row: 1 / span 2;
-  width: .65rem; height: .65rem;
-  border-right: 2px solid var(--orange);
-  border-bottom: 2px solid var(--orange);
+  width: .6rem; height: .6rem;
+  /* The rotation is a transform, so it paints outside the box it was laid
+     out in. The margin is what keeps the tip inside the page at 320px. */
+  margin-right: .3rem;
+  border-right: 2px solid var(--navy);
+  border-bottom: 2px solid var(--navy);
   transform: rotate(-45deg);
 }
 
-/* ---------- 9. The translation, full bleed ------------------------------
-   The actual product, shown rather than described. Two halves set against
-   each other, edge to edge: the document as it arrives on the left, in the
-   label's own monospace on navy; what it means on the right, in the reading
-   face, large, on white. The contrast is the argument.
+/* ---------- 9. The translation, facing pages -----------------------------
+   The actual product, shown rather than described, set as a recto and a
+   verso. The document as it arrives on the left, in the label's own
+   monospace, reversed out of navy; what it means on the right, on sheet
+   stock, in the serif, large. The contrast is the argument.
    -------------------------------------------------------------------------- */
 .translate__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-/* flex-start, not center: centring each half independently pushed the two
-   labels out of line with each other, and the whole point of the section is
-   that the two sides are the same instruction. */
+/* flex-start, not center: centring each half independently pushes the two
+   kickers out of line with each other, and the whole point of the section
+   is that the two sides are the same instruction. */
 .translate__side {
-  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 3.5rem);
+  padding: clamp(2.75rem, 5vw, 4.75rem) clamp(1.25rem, 4vw, 3.5rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 .translate__side--before { background: var(--navy-deep); }
-.translate__side--after  { background: var(--white); }
-
-.translate__label {
-  font-family: var(--display);
-  font-size: .95rem;
-  font-weight: 500;
-  margin: 0 0 1.4rem;
-}
-.translate__side--before .translate__label { color: var(--amber); }
-.translate__side--after  .translate__label { color: var(--muted); }
+.translate__side--after  { background: var(--page); }
 
 .translate__jargon {
   font-family: var(--mono);
-  font-size: clamp(1.15rem, .85rem + 1.1vw, 1.7rem);
-  line-height: 1.45;
+  font-size: clamp(1.1rem, .85rem + 1vw, 1.6rem);
+  line-height: 1.5;
   color: var(--on-navy);
   max-width: 24ch;
   margin: 0;
 }
 .translate__plain {
   font-family: var(--display);
-  font-weight: 700;
+  font-weight: 500;
   font-size: clamp(1.45rem, 1rem + 1.9vw, 2.5rem);
-  line-height: 1.18;
-  letter-spacing: -0.022em;
+  line-height: 1.22;
+  letter-spacing: -0.008em;
   color: var(--ink);
-  max-width: 26ch;
+  max-width: 24ch;
   margin: 0;
   text-wrap: pretty;
 }
 
-/* ---------- 10. The problem, one enormous statement ---------------------
+/* ---------- 10. The problem, set piece with a drop cap ------------------
    A narrow measure, very large type, deep space above and below, and
-   nothing else on the screen. This is the page's held breath.
+   nothing else on the screen. This is the page's held breath, and the only
+   place a drop cap appears.
    -------------------------------------------------------------------------- */
-.problem {
-  border-top: 1px solid var(--rule);
-  padding-block: clamp(5rem, 13vw, 10rem);
-}
+.problem { padding-block: clamp(5rem, 12vw, 9.5rem); }
 .problem__statement {
   font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(1.7rem, 1.1rem + 2.7vw, 3.3rem);
-  line-height: 1.16;
-  letter-spacing: -0.028em;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 1.1rem + 2.4vw, 3rem);
+  line-height: 1.24;
+  letter-spacing: -0.008em;
   color: var(--ink);
   text-wrap: pretty;
 }
+/* Floated rather than `initial-letter`, which still lands differently in
+   every engine. Two lines deep, in foil navy.
+
+   The arithmetic matters, and it has to come in UNDER two lines rather than
+   near them. The float's height is font-size x line-height, and the
+   paragraph's line-height is 1.24, so two lines are 2.48em. 2.9 x 0.82 =
+   2.378em clears that with room to spare. An earlier 3.3/0.8 came to 2.13
+   lines: a third line wrapped around a cap that had already ended, leaving a
+   notch of white beside it. */
+.problem__statement::first-letter {
+  font-weight: 600;
+  font-size: 2.9em;
+  line-height: .82;
+  float: left;
+  padding: 0 .07em 0 0;
+  color: var(--navy);
+}
 .problem__turn {
   font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(1.4rem, 1rem + 1.8vw, 2.4rem);
-  line-height: 1.2;
-  letter-spacing: -0.024em;
-  color: var(--navy);
-  margin-top: 1.4em;
-  padding-left: 1.2rem;
-  border-left: 5px solid var(--orange);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.3rem, .95rem + 1.6vw, 2.1rem);
+  line-height: 1.3;
+  color: var(--navy-deep);
+  margin-top: 1.5em;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--amber);
   text-wrap: pretty;
 }
 
-/* ---------- 11. The guides, asymmetric ---------------------------------
-   The artwork leads at size. The guide is the only real proof of work on
-   this page and the best-designed thing the organisation owns, so it is
-   shown large rather than thumbnailed.
+/* ---------- 11. The guides, as book objects ------------------------------
+   The artwork leads at size, lifted off the page with the only shadow in
+   the stylesheet and stamped with a navy spine. The guide is the one real
+   piece of proof here and the best-designed thing the organisation owns, so
+   it is shown as an object rather than thumbnailed.
    -------------------------------------------------------------------------- */
 .guides {
-  background: var(--tint);
+  background: var(--paper-warm);
   border-top: 1px solid var(--rule-firm);
-  padding-block: clamp(3rem, 6vw, 5.5rem);
+  padding-block: clamp(3.25rem, 6vw, 5.5rem);
 }
-/* Offset into the page rather than starting hard left — the asymmetry is
-   what stops this reading like the section above it. */
 .guides__head {
   max-width: 40rem;
-  margin: 0 0 clamp(2rem, 4vw, 3rem) auto;
+  margin: 0 0 clamp(2.25rem, 4.5vw, 3.5rem);
 }
-.guides__lede { font-size: var(--t3); color: var(--body); margin-top: .9rem; }
+.guides__lede { font-size: var(--t3); color: var(--ink-soft); margin-top: 1rem; }
 
 .shelf {
   list-style: none;
@@ -631,28 +739,41 @@ a:hover { color: var(--accent); }
      below its own minimum and would force a 468px column onto a 360px
      phone. */
   grid-template-columns: repeat(auto-fill, minmax(min(26rem, 100%), 1fr));
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(1.75rem, 3.5vw, 3rem);
 }
 .guide {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 1.4rem;
+  gap: 1.6rem;
   align-items: start;
-  background: var(--white);
+  background: var(--page);
   border: 1px solid var(--rule-firm);
-  padding: clamp(1.25rem, 2.5vw, 2rem);
+  padding: clamp(1.35rem, 2.5vw, 2.25rem);
 }
+/* The object: sheet, navy spine, and the page's only shadow. */
 .guide__cover {
   display: block;
   max-width: 15rem;
   border: 1px solid var(--rule-firm);
-  transition: border-color .12s linear;
+  border-left: 5px solid var(--navy);
+  box-shadow: var(--lift);
+  transition: box-shadow .18s ease, transform .18s ease;
 }
-.guide__cover:hover { border-color: var(--navy); }
-.guide__text > h3 { margin-bottom: .6rem; }
-.guide__text > h3 a { color: var(--ink); text-decoration: none; }
+.guide__cover:hover {
+  box-shadow: 0 1px 1px rgba(27, 25, 21, .18),
+              0 22px 40px -18px rgba(27, 25, 21, .5);
+  transform: translateY(-2px);
+}
+.guide__text > h3 { margin-bottom: .65rem; }
+/* The padding is a touch target, not spacing: on an inline box it grows the
+   hit area to 44px without moving a single line of type. */
+.guide__text > h3 a {
+  color: var(--ink);
+  text-decoration: none;
+  padding-block: .4rem;
+}
 .guide__text > h3 a:hover { color: var(--navy); text-decoration: underline; }
-.guide__blurb { font-size: 1rem; }
+.guide__blurb { font-size: 1rem; color: var(--ink-soft); }
 
 /* While there is one guide it runs the full width with a large cover; add a
    second and both fall back to the even grid; add ten and they wrap. One
@@ -661,75 +782,71 @@ a:hover { color: var(--accent); }
   @media (min-width: 60rem) {
     .shelf:has(> li:nth-child(1):last-child) { grid-template-columns: minmax(0, 1fr); }
     .shelf:has(> li:nth-child(1):last-child) > .guide {
-      grid-template-columns: 22rem minmax(0, 1fr);
-      gap: clamp(2rem, 4vw, 3.5rem);
+      grid-template-columns: 21rem minmax(0, 1fr);
+      gap: clamp(2.25rem, 4.5vw, 4rem);
       align-items: center;
-      padding: clamp(1.5rem, 3vw, 2.5rem);
+      padding: clamp(1.75rem, 3vw, 2.75rem);
     }
     .shelf:has(> li:nth-child(1):last-child) .guide__cover { max-width: none; }
-    .shelf:has(> li:nth-child(1):last-child) .guide__text > h3 { font-size: 1.75rem; }
-    .shelf:has(> li:nth-child(1):last-child) .guide__blurb { font-size: 1.08rem; }
+    .shelf:has(> li:nth-child(1):last-child) .guide__text > h3 { font-size: 1.85rem; }
+    .shelf:has(> li:nth-child(1):last-child) .guide__blurb { font-size: 1.06rem; }
   }
 }
 
-/* ---------- 12. The workshops, two columns ------------------------------ */
-.workshops {
-  padding-block: clamp(3rem, 6vw, 5.5rem);
-}
+/* ---------- 12. The workshops ------------------------------------------- */
+.workshops { padding-block: clamp(3.25rem, 6vw, 5.5rem); }
 .workshops__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
 }
-.workshops__lede { font-size: var(--t3); color: var(--body); margin-top: 1.1rem; }
+.workshops__lede { font-size: var(--t3); color: var(--ink-soft); margin-top: 1.15rem; }
 
-/* ---------- 13. How we check it, narrow --------------------------------
-   Deliberately quiet, and narrow, straight after the widest section. The
-   numbers earn their place here — two checks, counted.
+/* ---------- 13. How we check it -----------------------------------------
+   Deliberately quiet, and narrow, straight after the widest section. Two
+   claims we can stand behind, numbered in the margin the way a press
+   numbers its notes.
    -------------------------------------------------------------------------- */
 .review {
-  border-top: 1px solid var(--rule);
-  padding-block: clamp(2.75rem, 5vw, 4.5rem);
+  border-top: 1px solid var(--rule-firm);
+  padding-block: clamp(3rem, 5.5vw, 4.75rem);
 }
 .checks {
   list-style: none;
   counter-reset: check;
-  margin-top: 2rem;
+  margin-top: 2.25rem;
   border-top: 1px solid var(--rule);
 }
 .checks > li {
   counter-increment: check;
   display: grid;
-  grid-template-columns: 2.2rem minmax(0, 1fr);
-  gap: .3rem 1.1rem;
-  padding: 1.4rem 0;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: .35rem 1.1rem;
+  padding: 1.5rem 0;
   border-bottom: 1px solid var(--rule);
 }
 /* Both the heading and the copy belong in the second column. Without these
-   the counter takes the first cell and the paragraph wraps into the 2.2rem
-   badge column, one word per line. */
+   the counter takes the first cell and the paragraph wraps into the badge
+   column, one word per line. */
 .checks > li::before {
-  content: counter(check);
+  content: counter(check, decimal-leading-zero);
   grid-column: 1; grid-row: 1;
-  display: grid;
-  place-items: center;
-  width: 2.2rem; height: 2.2rem;
-  border: 2px solid var(--navy);
-  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .12em;
   color: var(--navy);
-  font-family: var(--display);
-  font-size: .88rem;
-  font-weight: 700;
+  padding-top: .55em;
 }
 .checks > li > h3 { grid-column: 2; grid-row: 1; }
-.checks > li > p  { grid-column: 2; grid-row: 2; font-size: 1rem; }
+.checks > li > p  { grid-column: 2; grid-row: 2; font-size: 1rem; color: var(--ink-soft); }
 
-/* ---------- 14. Host, full bleed ---------------------------------------- */
+/* ---------- 14. Host, reversed ------------------------------------------ */
 .host {
   background: var(--navy-deep);
   color: var(--on-navy);
-  padding-block: clamp(3rem, 6vw, 5.5rem);
+  padding-block: clamp(3.25rem, 6vw, 5.5rem);
 }
 .host__grid {
   display: grid;
@@ -737,12 +854,13 @@ a:hover { color: var(--accent); }
   gap: clamp(1.75rem, 4vw, 4rem);
   align-items: start;
 }
-.host h2 { color: var(--white); }
+.host h2 { color: var(--page); }
 .host__body p { color: var(--on-navy); }
 
 /* ---------- 15. Volunteer ----------------------------------------------- */
 .volunteer {
-  padding-block: clamp(3rem, 6vw, 5.5rem);
+  background: var(--paper-warm);
+  padding-block: clamp(3.25rem, 6vw, 5.5rem);
 }
 .volunteer__grid {
   display: grid;
@@ -750,25 +868,27 @@ a:hover { color: var(--accent); }
   gap: clamp(2rem, 5vw, 4.5rem);
   align-items: start;
 }
-.volunteer__lede { font-size: var(--t3); color: var(--body); margin-top: 1.1rem; }
+.volunteer__lede { font-size: var(--t3); color: var(--ink-soft); margin-top: 1.15rem; }
 
-/* ---------- 16. Facts, actions -----------------------------------------
-   The facts list replaces the old uppercase-monospace definition table. Same
-   typeface as everything else, lighter weight, sentence case.
+/* ---------- 16. Facts, actions ------------------------------------------
+   Hairline-ruled rows with the term set as a small letterspaced label — a
+   colophon, which is what these lists actually are.
    -------------------------------------------------------------------------- */
 .facts { border-top: 2px solid var(--navy); }
 .facts > div {
   display: grid;
   grid-template-columns: 11rem minmax(0, 1fr);
   gap: .3rem 1.5rem;
-  padding: .8rem 0;
+  padding: .85rem 0;
   border-bottom: 1px solid var(--rule);
 }
 .facts dt {
-  font-family: var(--display);
-  font-size: .98rem;
-  font-weight: 600;
-  color: var(--navy);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: .22em;
 }
 .facts dd { color: var(--ink); }
 .facts dd strong { font-weight: 700; }
@@ -778,33 +898,32 @@ a:hover { color: var(--accent); }
 .host .facts dt { color: var(--amber); }
 .host .facts dd { color: var(--on-navy); }
 
-/* Square, not pills. Hover inverts — nothing lifts off the page, because
-   nothing on this page is floating. */
+/* Square, not pills. Nothing lifts on hover, because nothing on this page is
+   floating except the guide. */
 .action {
   display: inline-flex;
   align-items: center;
-  gap: .6rem;
+  gap: .65rem;
   min-height: 3rem;
-  padding: .8rem 1.6rem;
+  padding: .85rem 1.7rem;
   border: 2px solid var(--navy);
-  font-family: var(--display);
-  font-size: 1.04rem;
+  font-family: var(--text);
+  font-size: 1.02rem;
   font-weight: 700;
   text-align: center;
   text-decoration: none;
-  transition: background-color .12s linear, color .12s linear,
-              border-color .12s linear;
+  transition: background-color .14s ease, color .14s ease, border-color .14s ease;
 }
 .action::after {
   content: '';
-  width: .45rem; height: .45rem;
+  width: .42rem; height: .42rem;
   border-right: 2px solid currentColor;
   border-top: 2px solid currentColor;
   transform: rotate(45deg);
 }
-.action--solid { background: var(--navy); color: var(--white); }
+.action--solid { background: var(--navy); color: var(--page); }
 .action--solid:hover, .action--solid:focus-visible {
-  background: var(--white); color: var(--navy);
+  background: var(--navy-deep); border-color: var(--navy-deep); color: var(--page);
 }
 /* Amber carries dark ink, never white — white on amber is 1.7:1. */
 .action--amber {
@@ -813,26 +932,35 @@ a:hover { color: var(--accent); }
   color: var(--ink);
 }
 .action--amber:hover, .action--amber:focus-visible {
-  background: var(--white);
-  border-color: var(--white);
-  color: var(--navy-deep);
+  background: var(--amber-foil);
+  border-color: var(--amber-foil);
+  color: var(--ink);
 }
 .act {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: .9rem 1.4rem;
-  margin-top: 1.8rem;
+  margin-top: 1.9rem;
 }
-.act__fine { font-size: .92rem; color: var(--muted); }
+.act__fine { font-size: .92rem; color: var(--ink-soft); }
 .host .act__fine { color: var(--on-navy-dim); }
 
-/* ---------- 17. Footer -------------------------------------------------- */
+/* ---------- 17. Footer — the colophon ------------------------------------ */
 .foot {
   background: var(--navy-deep);
-  border-top: 1px solid rgba(255, 255, 255, .16);
   color: var(--on-navy);
-  padding-block: clamp(2.5rem, 5vw, 3.75rem) 1.75rem;
+  padding-block: clamp(2.75rem, 5vw, 4rem) 1.9rem;
+  position: relative;
+}
+/* The imprint mark again, closing the page the way it opened it. */
+.foot::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: clamp(4rem, 12vw, 9rem);
+  height: 6px;
+  background: var(--amber);
 }
 .foot__inner {
   display: flex;
@@ -841,21 +969,25 @@ a:hover { color: var(--accent); }
   justify-content: space-between;
   align-items: flex-start;
 }
-.foot__brand { display: flex; flex-direction: column; align-items: flex-start; gap: .9rem; }
-.foot__chip { display: inline-flex; background: var(--white); padding: .8rem 1.1rem; }
+.foot__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
+/* The wordmark is navy, so it sits on sheet stock rather than straight on
+   the navy footer, where it would disappear. */
+.foot__chip { display: inline-flex; background: var(--page); padding: .85rem 1.15rem; }
 .foot__chip img { width: auto; height: 3.2rem; }
 .foot__tagline {
   font-family: var(--display);
-  font-size: .92rem;
-  font-weight: 500;
+  font-style: italic;
+  font-size: 1.02rem;
   color: var(--on-navy-dim);
 }
 .foot__contact h2 {
-  font-family: var(--display);
-  font-size: 1rem;
+  font-family: var(--text);
+  font-size: .8rem;
   font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
   color: var(--amber);
-  margin: 0 0 .7rem;
+  margin: 0 0 .8rem;
 }
 .foot__contact ul { list-style: none; display: grid; gap: .25rem; }
 /* min-height is 44px — a real touch target, not a line of text to aim at. */
@@ -864,7 +996,7 @@ a:hover { color: var(--accent); }
   align-items: center;
   gap: .7rem;
   min-height: 44px;
-  color: var(--white);
+  color: var(--page);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, .4);
 }
@@ -873,19 +1005,15 @@ a:hover { color: var(--accent); }
   flex: none;
   width: 1.15rem; height: 1.15rem;
   color: var(--amber);
-  transition: color .12s linear;
+  transition: color .14s ease;
 }
-.foot__contact a:hover .foot__icon { color: var(--white); }
+.foot__contact a:hover .foot__icon { color: var(--page); }
 
-/* A single top rule and nothing else. No border box, no background, no
-   positioned sibling that could land on top of the text. */
+/* A single top rule and nothing else. */
 .foot__note {
-  margin-top: 2.5rem;
-  padding-top: 1.4rem;
+  margin-top: 2.6rem;
+  padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, .22);
-  border-right: 0;
-  border-bottom: 0;
-  border-left: 0;
   color: var(--on-navy-dim);
   font-size: .95rem;
   max-width: 46rem;
@@ -894,7 +1022,7 @@ a:hover { color: var(--accent); }
 /* ---------- 18. Responsive ---------------------------------------------
    Fluid by default; these are the places that need help. Overflow is
    measured, not eyeballed — scrollWidth against innerWidth at 360, 390,
-   414, 768, 1024 and 1440px.
+   414, 768, 1024, 1440 and 1920px.
    -------------------------------------------------------------------------- */
 
 /* The label collapses to a single column of rows. Below this width two
@@ -909,7 +1037,6 @@ a:hover { color: var(--accent); }
   .workshops__grid,
   .volunteer__grid,
   .host__grid { grid-template-columns: minmax(0, 1fr); }
-  .guides__head { margin-right: 0; }
 
   /* The two halves of the translation stack, and the reversed one leads —
      the document arrives before it is explained. */
@@ -917,30 +1044,44 @@ a:hover { color: var(--accent); }
   .translate__jargon, .translate__plain { max-width: 34ch; }
 
   .doors ul { grid-template-columns: minmax(0, 1fr); }
-  .doors li + li { border-left: 0; border-top: 1px solid var(--rule-firm); }
-  .doors a, .doors li + li a { padding: .9rem 0; }
+  .doors li + li { border-left: 0; border-top: 1px solid var(--rule); }
+  .doors a, .doors li + li a { padding: 1rem 0; }
 }
 
 @media (max-width: 40rem) {
   .brand__mark { height: 2.6rem; }
-  .brand__tagline { font-size: .86rem; padding-left: .65rem; }
-  .topnav ul { gap: 0 1.1rem; }
+  .brand__tagline { font-size: .95rem; padding-left: .75rem; }
+  .topnav ul { gap: 0 1.2rem; }
+
+  /* The folio would land on top of the kicker on a narrow screen. */
+  main > section::after { display: none; }
 
   .facts > div, .facts--wide > div { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
+  .facts dt { padding-top: 0; }
 }
 
 @media (max-width: 34rem) {
+  /* The plate's outer rule costs 8px of gutter it cannot spare here. */
+  .rx__sheet { outline: 0; }
+
+  /* "be a privilege" is bound with non-breaking spaces so the phrase never
+     splits. Below this width the clamp's own floor is wider than the screen,
+     so the floor comes down rather than the phrase coming apart. */
+  @media (max-width: 22.5rem) { :root { --t1: 2.1rem; } }
+
   /* The label folds to two columns: the callout number, then the key and
      value stacked beside it. Three columns do not fit 320px of content. */
   .rx__rows summary {
-    grid-template-columns: 2rem minmax(0, 1fr);
+    grid-template-columns: 1.9rem minmax(0, 1fr);
     gap: .35rem .6rem;
     font-size: 1rem;
   }
   .rx__key { grid-column: 2; }
   .rx__val { grid-column: 2; }
   .rx__rows summary::after { grid-column: 2; grid-row: 1; justify-self: end; }
-  .rx__rows details > p { margin-left: .2rem; }
+  .rx__rows details > p { margin-left: .35rem; }
+
+  .problem__statement::first-letter { font-size: 2.9em; }
 
   .guide__cover { max-width: 12rem; }
   .action { width: 100%; justify-content: center; }
