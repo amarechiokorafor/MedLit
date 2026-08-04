@@ -33,12 +33,11 @@
   <link rel="preload" href="assets/fonts/atkinson-next-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
 
-  <!-- Arrival motion is opt-in, and this is the opt-in. The stylesheet only
-       hides a block before revealing it when `js` is present, so if this
-       script never runs — or the one at the end of the body throws — every
-       word on the page is visible with no transition. Nothing can be
-       stranded. IntersectionObserver is the gate because it is what does
-       the revealing. -->
+  <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
+       block before revealing it when `js` is present, so if this script never
+       runs — or the one at the end of the body throws — every word on the
+       page is visible with no transition. Nothing can be stranded.
+       IntersectionObserver is the gate because it is what does the work. -->
   <script>
     if ('IntersectionObserver' in window) document.documentElement.className += ' js';
   </script>
@@ -69,30 +68,34 @@
 
      MedLit's whole argument is that a document should be readable. So the
      page is built out of MedLit's own materials rather than out of a house
-     style:
+     style: pharmacy amber at full strength as a field, and every word set
+     in Atkinson Hyperlegible Next, the typeface the Braille Institute drew
+     for low-vision readers. Body copy and the 124px headline alike. The
+     personality comes from scale, weight and colour.
 
-       - Pharmacy amber, at full strength, as a field. It is the one colour
-         nobody else in this category owns, because it is the colour of the
-         bottle in the logo.
-       - White label stock for the documents that sit on it. The reader
-         overlaps the amber edge the way a label wraps a bottle.
-       - Every word is set in Atkinson Hyperlegible Next, the typeface the
-         Braille Institute drew for low-vision readers. Not just the body
-         copy — the headline too. The personality comes from scale, weight
-         and colour, not from a borrowed editorial serif.
+     The shape of the page: why we exist, what we do, then the proof of
+     each — the guide, the workshops, and how the work gets checked. Then
+     the two asks.
+
+     TWO THINGS WERE DELIBERATELY REMOVED, so nobody puts them back by
+     accident:
+
+       - An interactive document reader in the hero, where you could open a
+         prescription label line by line. It demonstrated the mission well
+         and it duplicated what the guides already do. If MedLit ever wants
+         a genuine "quick interactive guide" alongside the printed ones,
+         that is its own thing with its own page, not a hero widget.
+       - A "what it says / what it really means" panel. One fixed example
+         is a slogan, not a demonstration. It would earn its place as
+         something that changes — a literacy fact that rotates daily — and
+         not before.
 
      Rules worth keeping:
-       1. The document reader is the hero. It is the whole mission in three
-          objects a person can click. Never shrink it into a corner.
-       2. It covers all three documents the workshops cover — prescription
-          labels, lab results, insurance letters — because MedLit is not a
-          medication charity. Adding a fourth is a copy-paste; see the note
-          above .reader in styles.css.
-       3. Numbers are for sequences. You read a document line by line, so
-          the callouts are numbered. Nothing else on this page is.
-       4. Monospace is only for transcribed documents. It is the artefact's
-          voice, not decoration.
-       5. Nothing needs JavaScript to be read.
+       1. One typeface. If a serif shows up here, ask what it knows that
+          Atkinson doesn't.
+       2. Amber carries dark ink only. White on amber is 1.7:1.
+       3. Numbers are for sequences. Nothing on this page is one.
+       4. Nothing needs JavaScript to be read.
      ============================================================== -->
 <body>
 
@@ -116,9 +119,9 @@
 
       <nav class="topnav" aria-label="Sections">
         <ul>
+          <li><a href="#what-we-do">What we do</a></li>
           <li><a href="#guides">Guides</a></li>
           <li><a href="#workshops">Workshops</a></li>
-          <li><a href="#review">How we check it</a></li>
           <li><a href="#host">Host a workshop</a></li>
         </ul>
       </nav>
@@ -129,8 +132,8 @@
   <main id="main">
 
     <!-- ============================================================
-         THE AMBER FIELD. The bottle's own colour at full strength, with
-         deep bottom padding because the reader below is pulled up into it.
+         THE AMBER FIELD. The bottle's own colour at full strength, and the
+         largest type on the site. That is the whole hero.
          ============================================================ -->
     <section class="hero" id="top">
       <div class="wide">
@@ -146,205 +149,11 @@
     </section>
 
     <!-- ============================================================
-         THE DOCUMENT READER — the hero, and the reason the page works.
-
-         Three real documents a person can open line by line: the three the
-         workshops actually cover. It demonstrates the entire mission
-         without a word of explanation.
-
-         Mechanically it is three radio buttons and three stacks of
-         <details>. No JavaScript, no ARIA to get wrong, no custom keyboard
-         handling: the picker is a native radio group that arrow keys
-         already drive, and every row is a native disclosure. The callout
-         numbers are CSS counters, so lines can be added, removed or
-         reordered and they renumber themselves.
-
-         THE NUMBERS ARE INVENTED. They are plausible, not anyone's records.
-         Before this goes in front of the public, the two new documents
-         should get the same licensed review the printed guides get.
-
-         TO ADD A DOCUMENT: copy one <input>, one <label> and one .plate,
-         give them a matching new id, write the rows. No CSS to touch.
-         ============================================================ -->
-    <section class="reader" aria-labelledby="reader-h">
-      <div class="wide">
-        <h2 class="hidden" id="reader-h">What the documents actually say</h2>
-
-        <fieldset class="deck">
-          <legend class="hidden">Choose a document to read</legend>
-
-          <input type="radio" name="doc" id="doc-1" checked>
-          <input type="radio" name="doc" id="doc-2">
-          <input type="radio" name="doc" id="doc-3">
-
-          <div class="tabs">
-            <label for="doc-1">Prescription label</label>
-            <label for="doc-2">Lab result</label>
-            <label for="doc-3">Insurance letter</label>
-          </div>
-
-          <!-- ---------- 1. Prescription label ---------- -->
-          <div class="plate" data-doc="1">
-            <p class="plate__head">
-              Community Care Pharmacy <span>(281)&nbsp;555-0142</span>
-            </p>
-            <ol class="rows">
-              <li>
-                <details>
-                  <summary><span class="k">Rx #</span><span class="v">4827193</span></summary>
-                  <p>The number you give the pharmacy when you call to ask for a refill.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Drug</span><span class="v">Lisinopril 10&nbsp;mg tablets
-                    <small>Generic for Zestril</small></span></summary>
-                  <p>The medicine, and how much is in each tablet. &ldquo;Zestril&rdquo; is a
-                     brand name for the very same drug.</p>
-                </details>
-              </li>
-              <!-- The one line that matters most, filled amber — the same
-                   emphasis the printed guide gives it. Only ever one. -->
-              <li class="is-key">
-                <details>
-                  <summary><span class="k">Sig</span><span class="v">Take 1 tablet by mouth once daily</span></summary>
-                  <p>The most important line. One dose every day. Pick a time and keep it
-                     the same.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Qty</span><span class="v">30 tablets</span></summary>
-                  <p>How many are in the bottle.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Refills</span><span class="v">2</span></summary>
-                  <p>You can get it filled twice more before you need a new prescription
-                     from your doctor.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Discard after</span><span class="v">07/24/2027</span></summary>
-                  <p>Don&rsquo;t take it after this date without asking your pharmacist first.</p>
-                </details>
-              </li>
-            </ol>
-          </div>
-
-          <!-- ---------- 2. Lab result ---------- -->
-          <div class="plate" data-doc="2">
-            <p class="plate__head">
-              Riverside Clinical Lab <span>Collected 07/24/2027</span>
-            </p>
-            <ol class="rows">
-              <li>
-                <details>
-                  <summary><span class="k">Test</span><span class="v">Hemoglobin A1c</span></summary>
-                  <p>A blood test that shows your average blood sugar over about the last
-                     three months.</p>
-                </details>
-              </li>
-              <li class="is-key">
-                <details>
-                  <summary><span class="k">Your result</span><span class="v">6.1 %</span></summary>
-                  <p>Your number, from the blood drawn that day. One test is one day&rsquo;s
-                     picture. Ask what yours means for you.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Reference range</span><span class="v">4.0 &ndash; 5.6 %</span></summary>
-                  <p>The span most people fall in. It is a comparison, not a target set
-                     for you.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Flag</span><span class="v">HIGH</span></summary>
-                  <p>The lab marks anything outside the range automatically. The mark comes
-                     from a computer, not from your doctor.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Specimen</span><span class="v">Blood, fasting</span></summary>
-                  <p>What was tested, and how. Fasting means you had not eaten. That changes
-                     some numbers.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Ordered by</span><span class="v">A. Smith, MD</span></summary>
-                  <p>The clinician who asked for the test. They are who to call with
-                     questions.</p>
-                </details>
-              </li>
-            </ol>
-          </div>
-
-          <!-- ---------- 3. Insurance letter ---------- -->
-          <div class="plate" data-doc="3">
-            <p class="plate__head">
-              Meridian Health Plan <span>Explanation of benefits</span>
-            </p>
-            <ol class="rows">
-              <li class="is-key">
-                <details>
-                  <summary><span class="k">This is</span><span class="v">NOT A BILL</span></summary>
-                  <p>The line people miss. This letter explains what your plan paid. If you
-                     owe anything, the clinic sends that separately.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Claim #</span><span class="v">20270724-88431</span></summary>
-                  <p>The number to give your plan when you call about this visit.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Date of service</span><span class="v">07/24/2027</span></summary>
-                  <p>The day you were seen. Not the day this letter was printed.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Amount billed</span><span class="v">$482.00</span></summary>
-                  <p>What the clinic asked for. Almost nobody pays this number.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">Plan discount</span><span class="v">&minus;$310.40</span></summary>
-                  <p>The amount your plan negotiated away. You do not owe it.</p>
-                </details>
-              </li>
-              <li>
-                <details>
-                  <summary><span class="k">You may owe</span><span class="v">$34.32</span></summary>
-                  <p>Wait for the clinic&rsquo;s bill, then check that it matches this number.</p>
-                </details>
-              </li>
-            </ol>
-          </div>
-        </fieldset>
-
-        <p class="reader__note">
-          Three examples, with the numbers made up. Prescription labels, lab results,
-          and insurance letters are the three documents our workshops cover.
-        </p>
-      </div>
-    </section>
-
-    <!-- ============================================================
          THREE DOORS — a thin strip, not a section. Three different people
          arrive on this page and each should reach their own thing in about
          five seconds without reading it.
          ============================================================ -->
-    <nav class="doors" aria-label="Start here" data-reveal>
+    <nav class="doors" aria-label="Start here">
       <ul class="wide">
         <li>
           <a href="#guides">
@@ -368,51 +177,66 @@
     </nav>
 
     <!-- ============================================================
-         THE TRANSLATION — full bleed, the two halves set against each
-         other. The jargon is set in the documents' monospace because that
-         is what it is: transcribed. The plain version is large, on stock.
-         Keep the two halves the same instruction. If they ever drift apart
-         the section stops being an argument.
+         OUR WHY — one enormous statement and nothing else on screen. The
+         heading is small on purpose: the statement under it is the display
+         type, and two things that size would fight.
          ============================================================ -->
-    <section class="translate" aria-labelledby="translate-h">
-      <h2 class="hidden" id="translate-h">The same instruction, twice</h2>
-      <div class="translate__grid">
-
-        <div class="translate__side translate__side--before" data-reveal>
-          <p class="kicker">What it says</p>
-          <p class="translate__jargon">
-            Take 1 tab PO BID PRN for pain, not to exceed 6 tabs in 24h
-          </p>
-        </div>
-
-        <div class="translate__side translate__side--after" data-reveal>
-          <p class="kicker">What it really means</p>
-          <p class="translate__plain">
-            Take one tablet by mouth twice a day when you have pain.
-            <span class="swipe">Never more than 6 tablets in one day.</span>
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ============================================================
-         THE PROBLEM — one enormous statement and nothing else on screen.
-         The page's held breath.
-         ============================================================ -->
-    <section class="problem" aria-labelledby="problem-h">
+    <section class="why" id="why" aria-labelledby="why-h">
       <div class="read" data-reveal>
-        <h2 class="hidden" id="problem-h">The problem</h2>
-        <p class="problem__statement">
+        <h2 class="section-mark" id="why-h">Our why</h2>
+        <p class="why__statement">
           Every day, people struggle with prescription labels, lab results, and
           insurance letters. The print is small, the words are hard to understand,
           and the person who could explain it has already moved on to the next
           patient.
         </p>
-        <p class="problem__turn">
+        <p class="why__turn">
           So people guess. And guessing about your own health is a risk no one
           should have to take.
         </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHAT WE DO — the mission, then the three things it comes down to.
+         Each one is expanded further down the page: the guide itself, what
+         a workshop involves, and how the work gets checked.
+         ============================================================ -->
+    <section class="does" id="what-we-do" aria-labelledby="what-we-do-h">
+      <div class="wide">
+        <div class="does__head" data-reveal>
+          <h2 id="what-we-do-h">What we do</h2>
+          <p class="does__lede">
+            We take the documents people are handed at the pharmacy, the lab, and
+            the insurance office, and we put them in plain language. Two ways: in a
+            room, and on one page.
+          </p>
+        </div>
+
+        <ul class="does__list" role="list" data-reveal>
+          <li>
+            <h3>Free workshops</h3>
+            <p>
+              45 minutes, interactive, at senior communities, libraries, and food
+              pantries. We bring the materials and the facilitators. You bring the
+              room and the people.
+            </p>
+          </li>
+          <li>
+            <h3>Free guides</h3>
+            <p>
+              One page each, in English and Spanish. Read them on your phone, print
+              them, hand them out at the front desk.
+            </p>
+          </li>
+          <li>
+            <h3>Free. Always.</h3>
+            <p>
+              No fee, no trial, no first-one-free. There is no version of this that
+              costs money, for the workshops or for the guides.
+            </p>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -580,10 +404,11 @@
       </div>
     </section>
 
-    <!-- ADD NEW SECTIONS HERE. Give it a unique id, a matching link in the
-         masthead nav, and a width that earns it: .wide to use the page,
-         .read for a narrow measure. Do not give every new section the same
-         frame — the rhythm down the page is the design. -->
+    <!-- ADD NEW SECTIONS HERE. Give it a unique id, a heading, and a width
+         that earns it: .wide to use the page, .read for a narrow measure.
+         Add data-reveal to the block that should settle in. Do not give
+         every new section the same frame — the rhythm down the page is the
+         design. -->
 
   </main>
 
@@ -657,54 +482,35 @@
   </footer>
 
   <script>
-    // Progressive enhancement only, in two parts. Both are additive: delete
-    // this whole block and every word is still on the page, every link still
-    // works, and the document reader still switches and opens.
+    // Passing motion, and nothing else. Delete this block and every word is
+    // still on the page and every link still works — the stylesheet only hides
+    // a block when the `js` class is set, and the catch below strips it.
     (function () {
       var root = document.documentElement;
 
       try {
-        // 1. The per-document readout. It APPENDS a line under each stack of
-        //    rows. It never hides anything, so there is nothing to strand.
-        Array.prototype.forEach.call(document.querySelectorAll('.plate'), function (plate) {
-          var rows = plate.querySelectorAll('.rows > li');
-          if (!rows.length) return;
+        var targets = document.querySelectorAll('[data-reveal]');
+        if (!targets.length) return;
 
-          var readout = document.createElement('p');
-          readout.className = 'readout';
-          var total = rows.length;
-
-          var tally = function () {
-            var open = plate.querySelectorAll('details[open]').length;
-            readout.textContent = open === 0
-              ? total + ' lines off one document. Open any of them.'
-              : open === total
-                ? 'That’s the whole document, in plain English.'
-                : open + ' of ' + total + ' lines explained.';
-          };
-
-          tally();
-          plate.appendChild(readout);
-          Array.prototype.forEach.call(rows, function (row) {
-            var d = row.querySelector('details');
-            if (d) d.addEventListener('toggle', tally);
+        // Blocks settle in on the way in AND let go on the way out, every
+        // time, not once. --rv is the direction: a block leaving past the top
+        // of the screen carries on upward, one leaving past the bottom goes
+        // down. The movement always agrees with the scroll, which is the
+        // difference between settling and twitching.
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            var leavingUpward = e.boundingClientRect.top < 0;
+            e.target.style.setProperty('--rv', leavingUpward ? '-20px' : '20px');
+            e.target.classList.toggle('is-in', e.isIntersecting);
           });
+        }, {
+          // A band inset from both edges, so a block commits to being in or
+          // out instead of flickering across the exact boundary.
+          rootMargin: '-7% 0px -7% 0px',
+          threshold: 0
         });
 
-        // 2. Arrival motion. One move per block, on the way in, then the
-        //    observer lets go of it. Blocks that are already on screen when
-        //    the page loads settle immediately.
-        var targets = document.querySelectorAll('[data-reveal]');
-        if (targets.length) {
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (e) {
-              if (!e.isIntersecting) return;
-              e.target.classList.add('is-in');
-              io.unobserve(e.target);
-            });
-          }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
-          Array.prototype.forEach.call(targets, function (t) { io.observe(t); });
-        }
+        Array.prototype.forEach.call(targets, function (t) { io.observe(t); });
       } catch (err) {
         // If anything above failed, drop the flag so the stylesheet stops
         // hiding blocks it may never get told to reveal.

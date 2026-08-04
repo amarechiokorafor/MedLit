@@ -10,7 +10,7 @@ assets/medlit-logo.png           stacked lockup — header and footer
 assets/medlit-logo-vertical.png  full lockup with tagline — source for the icons
 assets/favicon.png               browser tab icon
 assets/apple-touch-icon.png      iOS home-screen icon
-assets/fonts/                    self-hosted woff2 (4 files, ~96 KB total)
+assets/fonts/                    self-hosted woff2 (2 files, ~65 KB total)
 assets/guides/                   guide PDFs and their cover images
 ```
 
@@ -113,8 +113,6 @@ style:
 - **Pharmacy amber, at full strength, as a field.** Not a 4px accent. It is the
   one colour nobody else in this category owns, because it is the colour of the
   bottle in the logo.
-- **White label stock for the documents that sit on it.** The document reader
-  overlaps the amber edge the way a label wraps a bottle.
 - **Every word set in Atkinson Hyperlegible Next** — the body copy and the 124px
   headline alike. An organisation whose entire product is legibility should not
   borrow an editorial serif to look serious. The personality comes from scale,
@@ -127,31 +125,30 @@ legible reads as confident. It also happens to be the thing MedLit sells.
 
 Five rules hold it together:
 
-1. **The document reader is the hero.** It is the whole mission in three objects
-   a person can click, at the top of the page, at full width. It was once a small
-   box in the corner. Don't put it back there.
-2. **One typeface for language, one for transcribed documents.** If a serif shows
-   up here again, ask what it knows that Atkinson doesn't.
-3. **Amber carries dark ink only.** White on amber is 1.7:1, and `--ink-2` on
+1. **One typeface.** If a serif shows up here, ask what it knows that Atkinson
+   doesn't.
+2. **Amber carries dark ink only.** White on amber is 1.7:1, and `--ink-2` on
    amber is 4.1:1. On amber the secondary voice is `--navy-deep`.
-4. **Numbers are for sequences.** The reader's callouts are numbered because you
-   read a document line by line. Nothing else on this page is — see below.
+3. **Numbers are for sequences.** Nothing on this page is one, so nothing on this
+   page is numbered — see below.
+4. **Spend the boldness in one place.** The amber field is the loud thing, and it
+   only stays loud because everything under it is quiet.
 5. **Nothing needs JavaScript to be read.**
 
 **Rhythm.** The variation down the page is deliberate, and it is the part
 easiest to destroy by adding one more section in the "house style". In order:
-amber field, the reader pulled up into it, thin routing strip, full-bleed
-two-tone translation, one enormous statement alone on the screen, guides on a
-recessed band, two-column workshops, a deliberately narrow and quiet checks
-list, full-bleed reversed host, volunteer on a band again. If everything becomes
-the same frame, the design is gone even if every colour is still correct.
+amber field, thin routing strip, one enormous statement alone on the screen,
+three columns of what we do, guides on a recessed band, two-column workshops, a
+deliberately narrow and quiet checks list, full-bleed reversed host, volunteer on
+a band again. If everything becomes the same frame, the design is gone even if
+every colour is still correct.
 
 **Colour.** The navy and the amber are the logo's own — the wordmark and the
 pill bottle's cap.
 
 | | | |
 |---|---|---|
-| `#FFFFFF` | stock | the page, the plates, the cards |
+| `#FFFFFF` | stock | the page and the cards |
 | `#F6F5F1` | recessed | the bands under doors, guides and volunteer |
 | `#14161C` | ink | body copy and headlines |
 | `#4A4F5C` | soft ink | captions and secondary copy. Never on amber |
@@ -161,14 +158,14 @@ pill bottle's cap.
 | `#FFE0A8` | pale amber | the fill on the one line that matters |
 | `#A05A04` | dark amber | the only amber legible as text on white, held in reserve |
 | `#DCDDE2` | rule | the hairline that draws most of the structure |
-| `#A9ADB8` | firm rule | plate borders, tab borders |
+| `#A9ADB8` | firm rule | held in reserve for anything that needs a hard edge |
 
 Everything used on the page was measured in a rendered browser. The floor is AA
 and most pairs clear AAA: ink on stock 18.1, ink on amber 9.1, navy-deep on
 amber 7.2, navy on stock 9.5, soft ink on stock 8.2, amber on navy-deep 7.2.
 
-**Type.** Two families, self-hosted, latin subsets, no CDN — about 96 KB for the
-set, down from 155 KB, which matters because this may load on an old phone on
+**Type.** One family, self-hosted, latin subset, no CDN — about 65 KB, down from
+155 KB two versions ago, which matters because this may load on an old phone on
 library wifi.
 
 - **Atkinson Hyperlegible Next** for every word of language on the page. The
@@ -177,8 +174,10 @@ library wifi.
   it is the argument in a typeface. It is a variable font with a 200–800 weight
   axis, which is the whole reason one family can carry an extreme type scale.
   **Don't swap it out, and don't add a display face beside it.**
-- **IBM Plex Mono** for transcribed documents only — the reader's plates and the
-  jargon column in the translation. It is the artefact's own voice.
+IBM Plex Mono used to sit beside it for the transcribed documents in the
+interactive reader. The reader is gone, so the font went with it — 30 KB of dead
+weight on a page with no artefact to transcribe. If a genuinely interactive guide
+ever lands here, bring it back then.
 
 Three typographic rules that are easy to undo by accident:
 
@@ -195,34 +194,55 @@ about six times body. Nothing sits between them, and something on the page is
 genuinely large. Add a fourth only if you truly need it, and put it in the token
 block rather than inline.
 
-**Numbers are for sequences.** The reader's callouts are numbered because a
-document is read line by line and the order carries information a person needs.
-The "How we check it" list used to be numbered too — it is two parallel
-commitments, not steps one and two of anything, so the numbers came off and an
-amber rule went on instead. Section folios (`§ 01`, `§ 02`) came off for the same
-reason: page numbers on a page that has one page are decoration wearing the
-costume of structure.
+**Numbers are for sequences, and nothing here is one.** The "How we check it"
+list used to be numbered — it is two parallel commitments, not steps one and two
+of anything, so the numbers came off and an amber rule went on instead. Section
+folios (`§ 01`, `§ 02`) came off for the same reason: page numbers on a page that
+has one page are decoration wearing the costume of structure. The only numbering
+that ever earned its place here was the callouts inside the interactive document
+reader, because a document *is* read line by line — and that went with the
+reader.
 
 **The signature moves**, so that edits keep them:
 
-- **The amber field**, and the reader overlapping its bottom edge. That overlap
-  is why `.hero` carries so much bottom padding and `.deck` a negative top
-  margin. It is the composition; don't flatten it on a whim. On phones the
-  overlap is dropped, because there is no room for it to read.
+- **The amber field.** The page opens on the bottle's own colour at full strength
+  carrying the largest type on the site, and that is the entire hero. Don't put a
+  widget back in it.
 - **The kicker bar.** A short amber block in front of every kicker —
   `.kicker::before`. One ornament, repeated, which is what makes it a system.
-- **The plates.** White stock, 2px border, one soft shadow, radius 0. Documents
-  are paper. Controls get `--r` (4px). That is the entire radius system.
-- **The marker.** A solid amber band under the baseline on the one line that
-  matters, and never more than one per section.
+- **The amber rule.** A 4–5px amber bar: over each "what we do" column, down the
+  left of each check, above the turn in "Our why". It is the page's one repeated
+  structural mark.
+- **`--r` is 4px, everywhere.** One radius, on controls and cards. That is the
+  entire radius system.
 
-**Motion.** New in this version, and deliberately small. Blocks settle in on
-arrival — `opacity` and `translateY(14px)` over 600ms on
-`cubic-bezier(.16, 1, .3, 1)`, driven by `IntersectionObserver`, once per block,
-then the observer lets go. Only `transform` and `opacity`, so it composites and
-never reflows. Hover effects are behind
-`@media (hover: hover) and (pointer: fine)` so a touch device never gets a stuck
-hover state. Everything is inside `@media (prefers-reduced-motion: no-preference)`.
+**Motion.** Blocks settle in as they enter the viewport and let go as they
+leave — **every time, both directions**, not once on first sight. `opacity` and
+`translateY` over 550ms on `cubic-bezier(.16, 1, .3, 1)`, driven by
+`IntersectionObserver`, which is never unobserved. Only `transform` and
+`opacity`, so it composites and never reflows.
+
+Three details are what make it read as considered rather than as twitch, and
+they are the easy ones to break:
+
+1. **The transition lives on the base rule**, not only on `.is-in`. With it only
+   on `.is-in`, a block fades in gently and then snaps out.
+2. **`--rv` is the direction**, set from JavaScript on every crossing from
+   `entry.boundingClientRect.top`. A block leaving past the top of the screen
+   carries on upward; one leaving past the bottom goes down. The movement always
+   agrees with the scroll.
+3. **The observer band is inset 7% top and bottom** (`rootMargin`), so a block
+   commits to being in or out instead of flickering across an exact boundary.
+
+`.js [data-reveal]:focus-within` sets `transition: none` as well as full
+opacity. Tabbing into a block that has scrolled out puts it on screen *now* — a
+keyboard user should never spend half a second watching the thing they just
+focused fade up. Verified by tabbing 30 stops through the page and checking that
+none of them land in a block below full opacity.
+
+Hover effects sit behind `@media (hover: hover) and (pointer: fine)` so a touch
+device never gets a stuck hover state, and the whole reveal system is inside
+`@media (prefers-reduced-motion: no-preference)`.
 
 The important part is how it fails. The stylesheet only hides a block before
 revealing it when the `js` class is on `<html>`, and a script in the `<head>`
@@ -251,60 +271,30 @@ logging dialogs, and error messages — not just the page.
 If you edit copy, read it aloud first. If you wouldn't say it to someone's
 face, rewrite it.
 
-## The document reader
+## Two things that were removed on purpose
 
-This is the hero and the reason the page works: three real documents a person
-can open line by line, at the top of the page, at full width. One real document
-someone can click argues the mission better than any paragraph.
+Both of these were good, and both are the kind of thing that gets put back by a
+future editor who doesn't know why they went. So:
 
-**Why three, and not just the prescription label.** The earlier version showed
-only a label, lifted straight out of the printed guide. It was the best thing on
-the page and it was also quietly mis-selling the organisation: MedLit's own
-sentence is *"prescription labels, lab results, and insurance letters,"* and the
-page demonstrated one of the three. Someone deciding whether to book a workshop
-came away thinking this was a medication charity. The reader now covers all
-three, so the demonstration and the mission statement say the same thing.
+**The interactive document reader.** A prescription label — later three
+documents — at the top of the page, that a person could open line by line. It
+demonstrated the mission in one object and it was the most impressive thing
+here. It was cut because it duplicates the guides. The guides already explain a
+document one piece at a time, they are reviewed by a licensed professional, and
+they can be printed and handed out. A hero widget that does the same thing
+worse, and that had to invent plausible-but-fake lab values to cover the other
+two document types, is a demo of the product standing in front of the product.
 
-**The numbers in the two new documents are invented.** They are plausible, and
-the explanations are about how to *read* a document rather than what any result
-means — that is deliberate, and it is the same job the printed guide does. Even
-so: the lab result and the insurance letter should get the same licensed review
-the guides get before this goes in front of the public. Nothing else on the site
-makes a claim that needs checking; these two do.
+If MedLit later wants a genuine **quick interactive guide** as its own format —
+distinct from the printed PDF ones — that is a real idea and worth building. It
+belongs on its own page with its own reviewed content, not in the hero.
 
-**How it works.** Three radio buttons and three stacks of `<details>`. No
-JavaScript, no ARIA to get wrong, no custom keyboard handling:
-
-- The picker is a real `<fieldset>` with a hidden `<legend>` and three native
-  radios, so arrow keys already drive it and a screen reader announces "Lab
-  result, radio button, 2 of 3". The radios are visually hidden but still
-  focusable; the focus ring is drawn on the visible `<label>` through a sibling
-  selector.
-- `#doc-2:checked ~ .plate[data-doc="2"] { display: block }` does the switching.
-  It works with JavaScript disabled — verified, not assumed.
-- Every row is a native `<details>`, keyboard-operable for free.
-- The callout numbers are CSS counters. Add, remove or reorder lines and they
-  renumber themselves.
-
-The rows run in **two columns**, which is how the printed guide arranges its
-callouts around the bottle, and it means the wide measure carries content rather
-than air. One line per document spans both columns and is filled amber — the
-`.is-key` class. There should only ever be one, and it should be the line people
-actually get wrong: the dosing line, the result, the words "not a bill".
-
-The inline script *appends* the "3 of 6 lines explained" readout to each plate.
-Delete the script and you lose those lines and nothing else.
-
-**To add a fourth document**: copy one `<input>`, one `<label>` and one `.plate`
-block, give them a matching new id, write the rows, and add the id to the two
-grouped selectors in section 8 of `styles.css`. No new CSS.
-
-**The translation.** The before/after section is the same argument compressed
-into one line. The jargon is on the left, in the documents' own monospace,
-reversed out of deep navy. The plain version is on the right on stock, large,
-with the dose ceiling marked. The two kickers borrow the printed guide's own
-words. Keep the two halves the same instruction — if they ever drift apart the
-section stops being an argument.
+**The "what it says / what it really means" panel.** One line of pharmacy jargon
+beside its plain-English version. It read as a demonstration but it was one
+fixed example, which makes it a slogan. It would earn its place as something
+that *changes* — a literacy fact that rotates daily, so the page is worth coming
+back to — and not before. That version is easy to build later: an array of
+facts, indexed by day number, no dependencies.
 
 ## Adding a guide
 
@@ -370,26 +360,26 @@ These aren't decoration — please keep them when editing:
 
 - Body text is 18px minimum (`html { font-size: 18px }`); everything else scales
   from it in `rem`. The only type below that is structural chrome — kickers,
-  definition terms, the reader's keys — which never goes under 14px
+  definition terms — which never goes under 14px
   and is never something you read a sentence of. The masthead nav is at full
   body size and sentence case on purpose: small letterspaced caps would have
   suited the imprint, but the people this page is for should not have to squint
   at the navigation.
 - Every text/background pair on the rendered page meets WCAG AA. Verified in a
-  real browser rather than by eye: 97 visible text nodes measured at 1440, 768
-  and 390px, with the `<details>` rows forced open, and none below its threshold.
-  Amber is light, so it always carries dark ink, never white.
+  real browser rather than by eye: 75 visible text nodes measured at 1440, 768
+  and 390px, and none below its threshold. Amber is light, so it always carries
+  dark ink, never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
   to amber on the reversed sections and the footer.
-- Every section contributes exactly one `<h2>` to the document outline. The
-  translation and the problem statement have no visible heading — their content
-  *is* the statement — so each carries a visually hidden `<h2>` instead. That is
-  what the two `class="hidden"` headings are for; don't delete them to tidy up.
-- The label decoder is the only interactive element on the page, and it is a
-  native `<details>` — no custom keyboard handling to get wrong.
-- Responsive down to a 360px-wide screen. Overflow is measured, not eyeballed:
-  `scrollWidth` compared against `innerWidth` at 360, 390, 414, 768, 1024, 1440
-  and 1920px. Watch for `minmax()` grid tracks — a bare `minmax(26rem, 1fr)`
+- Every section contributes exactly one visible `<h2>` to the document outline.
+  There are no headings hidden off-screen any more: "Our why" carries its heading
+  as `.section-mark`, small on purpose because the statement below it is the
+  display type and two things that size would fight.
+- Nothing on the page is a custom widget. Every interactive element is a link,
+  so there is no keyboard handling to get wrong.
+- Responsive down to a 320px-wide screen. Overflow is measured, not eyeballed:
+  `scrollWidth` compared against `innerWidth` at 320, 360, 390, 414, 768, 1024,
+  1280, 1440 and 1920px. Watch for `minmax()` grid tracks — a bare `minmax(26rem, 1fr)`
   cannot shrink below its own minimum and will force a 468px column onto a 360px
   screen. The guide shelf uses `minmax(min(26rem, 100%), 1fr)` for exactly that
   reason.
