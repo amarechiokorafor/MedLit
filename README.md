@@ -312,6 +312,48 @@ lone one shouldn't sit in a half-empty row. Add a second and both fall back to a
 even grid; add ten and they wrap. That switch is a single `:has()` rule in
 `styles.css` under "The guide shelf".
 
+## When you have photographs
+
+There are none on this site on purpose. Every large charity site worth copying —
+WaterAid, The Children's Society, Farm Africa, SolarAid, the Obama Foundation —
+opens on a photograph of a real person, and that is the one thing this page is
+missing. It is missing it because MedLit has not run a session to photograph yet.
+Stock photography of smiling strangers would close the gap on paper and lose the
+trust of exactly the activity director this page has to convince, so the page
+carries type and colour instead until there is something real to show.
+
+Nothing has been stubbed out for them. No placeholder markup, no dead CSS. When
+the first real photographs exist, here is where they go:
+
+**The first one goes in the hero**, on the amber. Either beside the headline on
+wide screens and under it on narrow ones, or full-bleed with the amber becoming a
+band beneath it. The headline stays the largest thing on the page either way.
+
+**The second goes in the workshops section**, beside the facts table — a session
+actually happening is the answer to "what is this like?" that no list of facts
+gets to.
+
+What to shoot, in order of usefulness:
+
+1. A student and a participant, heads down over a real document. Hands and paper
+   in frame.
+2. A room mid-session. Wide, from the back.
+3. A guide being handed to someone, or read.
+
+Practical notes:
+
+- **Get written permission before publishing anyone's face**, and keep it on
+  file. Non-negotiable when the people in frame are older adults at a senior
+  community. Shots of hands and documents avoid the question entirely and are
+  often the better picture anyway.
+- Landscape, roughly 3:2. Export about 1600px wide, JPEG quality ~82.
+- Give every `<img>` real `width` and `height` attributes so the page doesn't
+  jump while it loads.
+- `loading="lazy"` on anything below the fold. **Not** on a hero image.
+- Alt text describes what is happening, not what the file is: "A MedLit
+  volunteer and a resident reading a prescription label together at a table",
+  not "workshop photo".
+
 ## Adding a section
 
 There's an `<!-- ADD NEW SECTIONS HERE -->` marker near the bottom of `<main>`.
