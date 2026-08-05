@@ -137,6 +137,20 @@ Five rules hold it together:
    only stays loud because everything under it is quiet.
 5. **Nothing needs JavaScript to be read.**
 
+**One left rail.** Every section starts at the same x, from the masthead to
+the footer, and the only thing that varies is how far right the content runs.
+`.read` used to be a narrow box centred in the *viewport*, which put its left
+edge 266px inside the flush-left sections above and below it — centred is not
+the same as aligned, and next to a run of flush-left blocks it reads as shoved
+right with a dead strip down the left of the page. `.read` now has the exact
+geometry of `.wide` and caps its *children* at the reading measure instead.
+
+The related trap, which has now caught two elements: **never put a `max-width`
+on an element that also carries `.wide`.** It overrides `.wide`'s own max-width,
+and `margin-inline: auto` then centres the whole block away from the rail. Cap
+an inner element instead. `.hero__head` and `.measure__inner` are both nested
+for this reason.
+
 **Rhythm.** The variation down the page is deliberate, and it is the part
 easiest to destroy by adding one more section in the "house style". In order:
 amber field, the label card pulled up into it, thin routing strip, full-bleed
@@ -351,6 +365,22 @@ page — a library programming lead, a funder — can tell.
 prevented errors, changed health outcomes, "clinically proven", "research-backed".
 Comprehension scores are what gets measured, so comprehension scores are what
 gets reported.
+
+## The placeholder that expires
+
+`.github/workflows/impact-placeholder.yml` runs every Monday. After
+**2026-08-15** it checks whether `index.html` still contains the sentence *"Our
+first numbers arrive with our first workshops"* and, if it does, opens an issue
+asking for the real result. It never edits the site — it only tells a person to.
+
+That exists because a comment in the HTML is not a reminder. Nobody reads the
+source of a page they aren't already editing, and a placeholder that was honest
+in August becomes a quiet lie in September.
+
+To change the date, edit `DEADLINE` in the workflow. To switch it off, do
+nothing: once the real number is in, the check finds the placeholder gone and
+exits quietly every week thereafter. The issue body lives in
+`.github/impact-placeholder-issue.md` and carries the reporting rules with it.
 
 ## Adding a guide
 

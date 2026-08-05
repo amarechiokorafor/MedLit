@@ -344,10 +344,24 @@ a:hover { color: var(--navy-deep); }
   width: 100%; max-width: var(--wide);
   margin-inline: auto; padding-inline: var(--gutter);
 }
+/* ONE LEFT RAIL. Every section on this page starts at the same x, from the
+   masthead to the footer, and the only thing that varies is how far right the
+   content runs.
+
+   .read used to be a narrow box centred in the VIEWPORT, which put its left
+   edge 266px inside everything above and below it. Centred is not the same as
+   aligned: next to a run of flush-left sections it reads as shoved right, with
+   a dead strip down the left of the page. So .read now has exactly the
+   geometry of .wide — same max-width, same gutter — and caps its CHILDREN at
+   the reading measure instead. Narrow column, flush left, air on the right.
+
+   If you add a child that should run full width inside a .read section, give
+   it `max-width: none`. */
 .read {
-  width: 100%; max-width: calc(var(--read) + var(--gutter) * 2);
+  width: 100%; max-width: var(--wide);
   margin-inline: auto; padding-inline: var(--gutter);
 }
+.read > * { max-width: var(--read); }
 
 /* ---------- 7. Masthead --------------------------------------------------
    White, so the navy-and-amber wordmark reads at full strength before the
@@ -679,6 +693,10 @@ a:hover { color: var(--navy-deep); }
   background: var(--amber);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
 }
+/* Nested inside .wide, never sharing its class. A max-width on the container
+   itself overrides .wide's own and then `margin-inline: auto` centres the
+   whole block away from the left rail — the same trap the hero head fell into
+   once. Keep the width cap on an inner element. */
 .measure__inner { max-width: 54rem; }
 .measure__figure {
   font-size: clamp(1.7rem, 1.15rem + 2.5vw, 3.1rem);

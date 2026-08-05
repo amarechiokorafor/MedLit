@@ -1,0 +1,67 @@
+# Stops the impact placeholder outliving the first workshop.
+#
+# "Our first numbers arrive with our first workshops." is honest today and
+# becomes a quiet lie the week after the first session runs. A comment in the
+# HTML is not a reminder — nobody reads the source of a page they aren't
+# already editing. So this checks weekly and opens an issue if the sentence is
+# still live past the date the first workshops are expected.
+#
+# It never edits the site. It only tells a person to.
+#
+# TO CHANGE THE DATE: edit DEADLINE below.
+# TO TURN IT OFF once the real number is in: nothing to do. The check finds the
+# placeholder gone and exits quietly, every week, forever.
+#
+# The issue body lives in .github/impact-placeholder-issue.md rather than
+# inline, because a heredoc inside a YAML block scalar is a fight nobody wins.
+
+name: Impact placeholder check
+
+on:
+  schedule:
+    # Mondays, 13:00 UTC — 8am Central, so it lands at the start of the week.
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Open an issue if the placeholder is still live
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEADLINE: '2026-08-15'
+          PLACEHOLDER: 'Our first numbers arrive with our first workshops'
+          TITLE: 'Replace the impact placeholder with a real comprehension result'
+        run: |
+          set -euo pipefail
+          TODAY=$(date -u +%F)
+
+          if [[ "$TODAY" < "$DEADLINE" ]]; then
+            echo "Today is $TODAY. Nothing to check before $DEADLINE."
+            exit 0
+          fi
+
+          if ! grep -qF "$PLACEHOLDER" index.html; then
+            echo "Placeholder is gone. Nothing to do."
+            exit 0
+          fi
+
+          # Don't stack a new issue on top of last week's.
+          if gh issue list --state open --limit 100 --json title --jq '.[].title' \
+               | grep -qxF "$TITLE"; then
+            echo "An issue is already open. Leaving it alone."
+            exit 0
+          fi
+
+          echo "Placeholder still live after $DEADLINE. Opening an issue."
+          gh issue create \
+            --title "$TITLE" \
+            --body-file .github/impact-placeholder-issue.md

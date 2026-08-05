@@ -45,7 +45,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=8">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -150,10 +150,10 @@
       <div class="wide">
         <div class="hero__head">
           <p class="kicker">Student-led nonprofit</p>
-<!-- One non-breaking space, not two. It keeps "a" from being stranded at the
-               end of a line, which is the thing worth preventing. Binding
-               "privilege" on as well made a 14-character unbreakable run that was
-               wider than a 375px phone could hold. -->
+          <!-- One non-breaking space, not two. It keeps "a" from being
+               stranded at the end of a line, which is the thing worth
+               preventing. Binding "privilege" on as well made a 14-character
+               unbreakable run wider than a 375px phone could hold. -->
           <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a <em>privilege</em>.</h1>
           <p class="hero__lede">
             MedLit is a student-led nonprofit that makes health information
@@ -435,18 +435,26 @@
          measured, so comprehension scores are what gets reported.
          ============================================================ -->
     <section class="measure" id="measure" aria-labelledby="measure-h">
-      <div class="wide measure__inner" data-reveal>
-        <h2 class="section-mark" id="measure-h">What we measure</h2>
+      <div class="wide">
+        <div class="measure__inner" data-reveal>
 
-        <p class="measure__figure">
-          Our first numbers arrive with our first workshops.
-        </p>
+          <h2 class="section-mark" id="measure-h">What we measure</h2>
 
-        <p class="measure__note">
-          We test comprehension before and after every session. Every result we
-          publish comes with its denominator. Sixteen of twenty-three, never
-          seventy percent.
-        </p>
+          <!-- PLACEHOLDER. Replace on the day of the first workshop. See the
+               block comment above this section, and the scheduled check in
+               .github/workflows/impact-placeholder.yml that will open an issue
+               if this sentence is still here after 2026-08-15. -->
+          <p class="measure__figure">
+            Our first numbers arrive with our first workshops.
+          </p>
+
+          <p class="measure__note">
+            We test comprehension before and after every session. Every result we
+            publish comes with its denominator. Sixteen of twenty-three, never
+            seventy percent.
+          </p>
+
+        </div>
       </div>
     </section>
 
