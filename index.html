@@ -31,7 +31,21 @@
   <meta name="twitter:card" content="summary_large_image">
 
   <link rel="preload" href="assets/fonts/atkinson-next-var.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
+
+  <!-- The ?v= is a cache buster, and it is not optional.
+       GitHub Pages serves styles.css with a max-age, and browsers — phones
+       especially — hold a stylesheet far longer than that. Without this, a
+       visitor who has seen an older version of the site can load new HTML
+       against old CSS, which looks worse than either version on its own.
+
+       BUMP THE NUMBER EVERY TIME YOU CHANGE styles.css. It costs nothing and
+       it is the difference between "the update is live" and "the update is
+       live for people who have never been here before".
+
+       index.html itself can't be versioned this way — that one is the
+       browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
+       or by opening the URL with ?anything on the end. -->
+  <link rel="stylesheet" href="styles.css?v=6">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
