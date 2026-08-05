@@ -10,7 +10,7 @@ assets/medlit-logo.png           stacked lockup — header and footer
 assets/medlit-logo-vertical.png  full lockup with tagline — source for the icons
 assets/favicon.png               browser tab icon
 assets/apple-touch-icon.png      iOS home-screen icon
-assets/fonts/                    self-hosted woff2 (2 files, ~65 KB total)
+assets/fonts/                    self-hosted woff2 (3 files, ~80 KB total)
 assets/guides/                   guide PDFs and their cover images
 ```
 
@@ -113,10 +113,12 @@ style:
 - **Pharmacy amber, at full strength, as a field.** Not a 4px accent. It is the
   one colour nobody else in this category owns, because it is the colour of the
   bottle in the logo.
-- **Every word set in Atkinson Hyperlegible Next** — the body copy and the 124px
-  headline alike. An organisation whose entire product is legibility should not
-  borrow an editorial serif to look serious. The personality comes from scale,
-  weight and colour.
+- **The numbered callout disc from the printed guide**, as the repeating mark.
+  A navy circle with a white numeral, pointing at real document text.
+- **Every word of language set in Atkinson Hyperlegible Next** — the body copy
+  and the 124px headline alike. An organisation whose entire product is
+  legibility should not borrow an editorial serif to look serious. The
+  personality comes from scale, weight and colour.
 
 The register is deliberate. The two people this page has to convince are an
 activity director at a senior community and a library programming lead, both
@@ -125,21 +127,23 @@ legible reads as confident. It also happens to be the thing MedLit sells.
 
 Five rules hold it together:
 
-1. **One typeface.** If a serif shows up here, ask what it knows that Atkinson
-   doesn't.
+1. **One typeface for language, one for transcribed documents.** If a serif
+   shows up here, ask what it knows that Atkinson doesn't.
 2. **Amber carries dark ink only.** White on amber is 1.7:1, and `--ink-2` on
    amber is 4.1:1. On amber the secondary voice is `--navy-deep`.
-3. **Numbers are for sequences.** Nothing on this page is one, so nothing on this
-   page is numbered — see below.
+3. **The callout disc points at document text.** A navy circle with a white
+   numeral, lifted from the printed guide. Three places only — see below.
 4. **Spend the boldness in one place.** The amber field is the loud thing, and it
    only stays loud because everything under it is quiet.
 5. **Nothing needs JavaScript to be read.**
 
 **Rhythm.** The variation down the page is deliberate, and it is the part
 easiest to destroy by adding one more section in the "house style". In order:
-amber field, thin routing strip, one enormous statement alone on the screen,
-three columns of what we do, guides on a recessed band, two-column workshops, a
-deliberately narrow and quiet checks list, full-bleed reversed host, volunteer on
+amber field, the label card pulled up into it, thin routing strip, full-bleed
+two-tone before-and-after, one enormous statement alone on the screen, three
+columns of what we do, a full-bleed amber band for the numbers, guides on a
+recessed band, two-column workshops, a deliberately narrow and quiet checks
+list, full-bleed reversed host, volunteer on
 a band again. If everything becomes the same frame, the design is gone even if
 every colour is still correct.
 
@@ -164,9 +168,8 @@ Everything used on the page was measured in a rendered browser. The floor is AA
 and most pairs clear AAA: ink on stock 18.1, ink on amber 9.1, navy-deep on
 amber 7.2, navy on stock 9.5, soft ink on stock 8.2, amber on navy-deep 7.2.
 
-**Type.** One family, self-hosted, latin subset, no CDN — about 65 KB, down from
-155 KB two versions ago, which matters because this may load on an old phone on
-library wifi.
+**Type.** Two families, self-hosted, latin subsets, no CDN — about 80 KB, which
+matters because this may load on an old phone on library wifi.
 
 - **Atkinson Hyperlegible Next** for every word of language on the page. The
   Braille Institute drew it for readers with low vision — it pulls apart the
@@ -174,10 +177,9 @@ library wifi.
   it is the argument in a typeface. It is a variable font with a 200–800 weight
   axis, which is the whole reason one family can carry an extreme type scale.
   **Don't swap it out, and don't add a display face beside it.**
-IBM Plex Mono used to sit beside it for the transcribed documents in the
-interactive reader. The reader is gone, so the font went with it — 30 KB of dead
-weight on a page with no artefact to transcribe. If a genuinely interactive guide
-ever lands here, bring it back then.
+- **IBM Plex Mono**, one weight, only where the page is quoting a real document:
+  the label, and the printed half of "the same sentence, twice". If it turns up
+  anywhere else it has stopped meaning anything and should come out.
 
 Three typographic rules that are easy to undo by accident:
 
@@ -194,20 +196,27 @@ about six times body. Nothing sits between them, and something on the page is
 genuinely large. Add a fourth only if you truly need it, and put it in the token
 block rather than inline.
 
-**Numbers are for sequences, and nothing here is one.** The "How we check it"
-list used to be numbered — it is two parallel commitments, not steps one and two
-of anything, so the numbers came off and an amber rule went on instead. Section
-folios (`§ 01`, `§ 02`) came off for the same reason: page numbers on a page that
-has one page are decoration wearing the costume of structure. The only numbering
-that ever earned its place here was the callouts inside the interactive document
-reader, because a document *is* read line by line — and that went with the
-reader.
+**The callout disc is the identity, and restraint is what makes it one.** It is
+the printed guide's own mark: a navy circle with a white numeral, pointing at a
+piece of real document text and pairing it with the plain version. It earns its
+place in exactly three spots:
+
+- every line of the label
+- both halves of "the same sentence, twice", where the matching `01` on each
+  side is what says *these two are the same sentence*
+- the two commitments in "How we check it"
+
+Put it on a fourth thing and it stops being a mark and starts being wallpaper.
+Section folios (`§ 01`, `§ 02`) were tried and removed, and they are the warning:
+page numbers on a page that has one page are decoration wearing the costume of
+structure.
 
 **The signature moves**, so that edits keep them:
 
-- **The amber field.** The page opens on the bottle's own colour at full strength
-  carrying the largest type on the site, and that is the entire hero. Don't put a
-  widget back in it.
+- **The amber field**, with the label card pulled up over its bottom edge. That
+  overlap is why `.hero` carries the bottom padding it does and `.rx` a negative
+  top margin. On phones the overlap is dropped, because there is no room for it
+  to read.
 - **The kicker bar.** A short amber block in front of every kicker —
   `.kicker::before`. One ornament, repeated, which is what makes it a system.
 - **The amber rule.** A 4–5px amber bar: over each "what we do" column, down the
@@ -271,30 +280,77 @@ logging dialogs, and error messages — not just the page.
 If you edit copy, read it aloud first. If you wouldn't say it to someone's
 face, rewrite it.
 
-## Two things that were removed on purpose
+## The label — the signature interaction
 
-Both of these were good, and both are the kind of thing that gets put back by a
-future editor who doesn't know why they went. So:
+This is the one thing on the page that performs the mission instead of
+describing it. Choosing a line does not open a footnote beside it. **The line
+itself rewrites, in place**, from what the pharmacy printed into what it means.
+Using it is the product.
 
-**The interactive document reader.** A prescription label — later three
-documents — at the top of the page, that a person could open line by line. It
-demonstrated the mission in one object and it was the most impressive thing
-here. It was cut because it duplicates the guides. The guides already explain a
-document one piece at a time, they are reviewed by a licensed professional, and
-they can be printed and handed out. A hero widget that does the same thing
-worse, and that had to invent plausible-but-fake lab values to cover the other
-two document types, is a demo of the product standing in front of the product.
+It is deliberately not the same thing as the guides. A guide explains a whole
+document once, on paper, reviewed. The label does one line at a time, in the
+browser, and the *act of doing it* is what lands. If the two ever start feeling
+like duplicates again, the label is the one that has drifted.
 
-If MedLit later wants a genuine **quick interactive guide** as its own format —
-distinct from the printed PDF ones — that is a real idea and worth building. It
-belongs on its own page with its own reviewed content, not in the hero.
+**How it works, and why it is built this way.** Each row is a
+hidden-but-focusable `<input type="checkbox">` followed by a `<label>` that
+wraps both versions of the line. `input:checked + label` decides which one is
+visible. That single choice buys three things at once:
 
-**The "what it says / what it really means" panel.** One line of pharmacy jargon
-beside its plain-English version. It read as a demonstration but it was one
-fixed example, which makes it a slogan. It would earn its place as something
-that *changes* — a literacy fact that rotates daily, so the page is worth coming
-back to — and not before. That version is easy to build later: an array of
-facts, indexed by day number, no dependencies.
+- it works with **JavaScript switched off** — verified, not assumed
+- Tab and Space operate it, with **no keyboard code to get wrong**
+- a screen reader announces the row as a checkbox whose accessible name is
+  whichever version is currently showing, plus its checked state. Measured:
+  unchecked it reads `SIG: 1 TAB PO QAM`, checked it reads
+  `Take one tablet by mouth every morning.` — one version, never both
+
+The two versions sit in the same CSS grid cell, so the row keeps the height of
+the taller one and **nothing shifts when it flips** (87.2px before and after,
+measured). The inactive version takes `visibility: hidden` rather than only
+`opacity: 0`, which is what keeps it out of the accessible name.
+
+The numerals come from a CSS counter, so lines renumber themselves.
+
+**To edit a line**, change the two spans inside `.rx__swap`. **To add one**,
+copy a whole `<li>` and give the input and label a new matching id. No CSS to
+touch either way.
+
+**The label is realistic and its numbers are made up.** If a real one ever
+replaces it, scrub it properly — a prescription label carries a name, an address
+and an Rx number.
+
+## The same sentence, twice
+
+Full bleed, two-tone, large type, almost no chrome. The printed version on navy
+in the document's own monospace; what it means beside it, on stock, large. The
+matching callout `01` on each side is what says *these two are the same
+sentence* — that pairing is the guide's own device, and it is the reason the
+numbers are there rather than decoration.
+
+Keep the two halves the same sentence. If they ever drift apart the section
+stops being an argument and becomes two slogans.
+
+## What we measure — the impact slot
+
+Built now, filled later. The band is designed around one large sentence, and
+swapping the placeholder for a real result is a one-line edit inside
+`.measure__figure`. The shape it takes is in a comment right there in
+`index.html`:
+
+```html
+<p class="measure__figure">
+  <b>16 of 23</b> participants improved their comprehension score.
+</p>
+```
+
+**The denominator is not optional.** "16 of 23", never "70%". A percentage with
+no bottom number is a claim the work has not earned, and the people reading this
+page — a library programming lead, a funder — can tell.
+
+**What may never be claimed here**, whatever the numbers say: better adherence,
+prevented errors, changed health outcomes, "clinically proven", "research-backed".
+Comprehension scores are what gets measured, so comprehension scores are what
+gets reported.
 
 ## Adding a guide
 
@@ -314,44 +370,40 @@ even grid; add ten and they wrap. That switch is a single `:has()` rule in
 
 ## When you have photographs
 
-There are none on this site on purpose. Every large charity site worth copying —
-WaterAid, The Children's Society, Farm Africa, SolarAid, the Obama Foundation —
-opens on a photograph of a real person, and that is the one thing this page is
-missing. It is missing it because MedLit has not run a session to photograph yet.
-Stock photography of smiling strangers would close the gap on paper and lose the
-trust of exactly the activity director this page has to convince, so the page
-carries type and colour instead until there is something real to show.
+There are none on this site yet, and there is no placeholder pretending to be
+one — a dashed grey box reading "photo goes here" on a live nonprofit site
+reads as unfinished, which is worse than reading as spare. What exists instead
+is **the layout that will hold them**, so adding the first real photograph is a
+markup change with no CSS to write.
 
-Nothing has been stubbed out for them. No placeholder markup, no dead CSS. When
-the first real photographs exist, here is where they go:
+**Two slots**, both marked in `index.html` with a commented-out
+`<figure class="shot">` and full instructions:
 
-**The first one goes in the hero**, on the amber. Either beside the headline on
-wide screens and under it on narrow ones, or full-bleed with the amber becoming a
-band beneath it. The headline stays the largest thing on the page either way.
+| Slot | Where | What to shoot |
+|---|---|---|
+| One | inside `.workshops__grid` | A session happening. A volunteer and a participant, heads down over a real document, hands and paper in frame. |
+| Two | inside `.host__grid` | The room. Wide, from the back, mid-session. |
 
-**The second goes in the workshops section**, beside the facts table — a session
-actually happening is the answer to "what is this like?" that no list of facts
-gets to.
-
-What to shoot, in order of usefulness:
-
-1. A student and a participant, heads down over a real document. Hands and paper
-   in frame.
-2. A room mid-session. Wide, from the back.
-3. A guide being handed to someone, or read.
+Each of those sections is a two-column grid today. **Uncomment a `.shot` and it
+becomes three columns on its own** — the `:has()` rules in section 20 of
+`styles.css` do that, so there is nothing to edit. Verified by dropping a
+stand-in image in and measuring: three columns at 1440px, one column at 768 and
+390, no overflow at any of them. A browser without `:has()` keeps two columns
+and stacks the figure, which is a perfectly good outcome.
 
 Practical notes:
 
 - **Get written permission before publishing anyone's face**, and keep it on
-  file. Non-negotiable when the people in frame are older adults at a senior
-  community. Shots of hands and documents avoid the question entirely and are
-  often the better picture anyway.
-- Landscape, roughly 3:2. Export about 1600px wide, JPEG quality ~82.
-- Give every `<img>` real `width` and `height` attributes so the page doesn't
-  jump while it loads.
-- `loading="lazy"` on anything below the fold. **Not** on a hero image.
+  file. Non-negotiable when the people in frame are at a senior community. Shots
+  of hands and documents avoid the question entirely and are often the better
+  picture anyway.
+- Landscape, roughly 3:2. Export about 1600px wide, JPEG quality ~82, into
+  `assets/photos/`.
+- Keep real `width` and `height` attributes so the page doesn't jump while it
+  loads.
+- `loading="lazy"` on both of these. They are well below the fold.
 - Alt text describes what is happening, not what the file is: "A MedLit
-  volunteer and a resident reading a prescription label together at a table",
+  volunteer and a participant reading a prescription label together at a table",
   not "workshop photo".
 
 ## Adding a section
@@ -408,20 +460,38 @@ These aren't decoration — please keep them when editing:
   suited the imprint, but the people this page is for should not have to squint
   at the navigation.
 - Every text/background pair on the rendered page meets WCAG AA. Verified in a
-  real browser rather than by eye: 75 visible text nodes measured at 1440, 768
-  and 390px, and none below its threshold. Amber is light, so it always carries
-  dark ink, never white.
+  real browser rather than by eye: 99 visible text nodes measured at 1440, 768
+  and 390px, plus every rewritten line of the label with all five toggled on.
+  None below its threshold. Amber is light, so it always carries dark ink,
+  never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
   to amber on the reversed sections and the footer.
 - Every section contributes exactly one visible `<h2>` to the document outline.
   There are no headings hidden off-screen any more: "Our why" carries its heading
   as `.section-mark`, small on purpose because the statement below it is the
   display type and two things that size would fight.
-- Nothing on the page is a custom widget. Every interactive element is a link,
-  so there is no keyboard handling to get wrong.
-- Responsive down to a 320px-wide screen. Overflow is measured, not eyeballed:
-  `scrollWidth` compared against `innerWidth` at 320, 360, 390, 414, 768, 1024,
-  1280, 1440 and 1920px. Watch for `minmax()` grid tracks — a bare `minmax(26rem, 1fr)`
+- The label is the only interactive element beyond links, and it is a native
+  checkbox in a native label. Tab reaches it, Space toggles it, the focus ring
+  is drawn on the visible row, and the accessible name is whichever version of
+  the line is currently showing. No ARIA invented, no key handlers written.
+- Responsive down to a 320px-wide screen, checked at every 5px step from 320 to
+  1920. Overflow is measured two ways, and the second one matters: `scrollWidth`
+  against `clientWidth` on the document, **and on every element**. A headline can
+  spill past its own content box into the gutter while the document still
+  measures clean — that is exactly how a real bug hid here once, so both checks
+  now run.
+
+- **`rem` inside a media query does not mean what it looks like.** It always
+  resolves against the browser's initial root font size of 16px and ignores
+  `html { font-size: 18px }`. So `@media (max-width: 22.5rem)` meant 360px, not
+  405px, and every phone between 361px and 400px fell through the gap with an
+  oversized headline. The small-screen breakpoint at the bottom of `styles.css`
+  is written in **pixels on purpose**. Don't tidy it into rem.
+
+- **Print gets the whole page.** Because a block fades back out once it leaves
+  the viewport, anything off-screen at the moment of printing would come out
+  blank. `@media print` forces every `[data-reveal]` back to full opacity.
+  Someone handing this page round a staff meeting is a real thing that happens. Watch for `minmax()` grid tracks — a bare `minmax(26rem, 1fr)`
   cannot shrink below its own minimum and will force a 468px column onto a 360px
   screen. The guide shelf uses `minmax(min(26rem, 100%), 1fr)` for exactly that
   reason.

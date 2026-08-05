@@ -45,13 +45,12 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=6">
+  <link rel="stylesheet" href="styles.css?v=7">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
        runs — or the one at the end of the body throws — every word on the
-       page is visible with no transition. Nothing can be stranded.
-       IntersectionObserver is the gate because it is what does the work. -->
+       page is visible with no transition. Nothing can be stranded. -->
   <script>
     if ('IntersectionObserver' in window) document.documentElement.className += ' js';
   </script>
@@ -81,35 +80,33 @@
      THE IDEA, so that edits keep it intact.
 
      MedLit's whole argument is that a document should be readable. So the
-     page is built out of MedLit's own materials rather than out of a house
-     style: pharmacy amber at full strength as a field, and every word set
-     in Atkinson Hyperlegible Next, the typeface the Braille Institute drew
-     for low-vision readers. Body copy and the 124px headline alike. The
-     personality comes from scale, weight and colour.
+     page is built out of MedLit's own materials: pharmacy amber at full
+     strength as a field, the numbered callout disc from the printed guide
+     as the repeating mark, and every word of language set in Atkinson
+     Hyperlegible Next, the typeface the Braille Institute drew for
+     low-vision readers.
 
-     The shape of the page: why we exist, what we do, then the proof of
-     each — the guide, the workshops, and how the work gets checked. Then
-     the two asks.
+     THE CENTREPIECE is the label. Choosing a line does not open a footnote
+     beside it — the line itself rewrites into plain English, in place.
+     Using it IS the product. Everything else on the page supports that one
+     move, so if a future edit has to cost something, cost it somewhere
+     else.
 
-     TWO THINGS WERE DELIBERATELY REMOVED, so nobody puts them back by
-     accident:
+     The shape of the page: the claim, the label that proves it, the same
+     sentence twice, why we exist, what we do, what we measure, then the
+     proof of each and the two asks.
 
-       - An interactive document reader in the hero, where you could open a
-         prescription label line by line. It demonstrated the mission well
-         and it duplicated what the guides already do. If MedLit ever wants
-         a genuine "quick interactive guide" alongside the printed ones,
-         that is its own thing with its own page, not a hero widget.
-       - A "what it says / what it really means" panel. One fixed example
-         is a slogan, not a demonstration. It would earn its place as
-         something that changes — a literacy fact that rotates daily — and
-         not before.
+     SLOTS BUILT AND WAITING:
+       - .measure carries a real comprehension result the moment there is
+         one. Placeholder copy until then. The denominator is never optional.
+       - Two photograph slots, commented out, in .workshops__grid and
+         .host__grid. Uncomment one and the section relayouts on its own.
 
      Rules worth keeping:
-       1. One typeface. If a serif shows up here, ask what it knows that
-          Atkinson doesn't.
+       1. One typeface for language, one for transcribed documents.
        2. Amber carries dark ink only. White on amber is 1.7:1.
-       3. Numbers are for sequences. Nothing on this page is one.
-       4. Nothing needs JavaScript to be read.
+       3. The callout disc points at document text. Three places only.
+       4. Nothing needs JavaScript to be read, or to operate the label.
      ============================================================== -->
 <body>
 
@@ -147,18 +144,147 @@
 
     <!-- ============================================================
          THE AMBER FIELD. The bottle's own colour at full strength, and the
-         largest type on the site. That is the whole hero.
+         largest type on the site.
          ============================================================ -->
     <section class="hero" id="top">
       <div class="wide">
         <div class="hero__head">
           <p class="kicker">Student-led nonprofit</p>
-          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a&nbsp;<em>privilege</em>.</h1>
+<!-- One non-breaking space, not two. It keeps "a" from being stranded at the
+               end of a line, which is the thing worth preventing. Binding
+               "privilege" on as well made a 14-character unbreakable run that was
+               wider than a 375px phone could hold. -->
+          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a <em>privilege</em>.</h1>
           <p class="hero__lede">
             MedLit is a student-led nonprofit that makes health information
             understandable. Free workshops and free plain-language guides.
           </p>
         </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE LABEL — THE SIGNATURE INTERACTION.
+
+         The one thing on this page that performs the mission instead of
+         describing it. Choose a line and it rewrites itself, in place, from
+         what the pharmacy printed into what it means.
+
+         Each row is a hidden-but-focusable checkbox followed by a label that
+         wraps BOTH versions of the line. `input:checked + label` swaps which
+         one is visible. That buys three things at once:
+           - it works with JavaScript switched off
+           - Tab and Space operate it, with no keyboard code to get wrong
+           - a screen reader announces the row as a checkbox whose name is
+             whichever version is showing, plus its checked state
+
+         The numerals come from a CSS counter, so lines renumber themselves.
+
+         TO EDIT A LINE: change the two spans inside .rx__swap.
+         TO ADD ONE: copy a whole <li> and give the input and label a new
+         matching id. No CSS to touch.
+
+         The label is realistic. The numbers on it are made up.
+         ============================================================ -->
+    <section class="label" aria-labelledby="label-h">
+      <div class="wide">
+        <figure class="rx">
+
+          <figcaption class="rx__note">
+            <h2 class="rx__title" id="label-h">What your label actually says</h2>
+            <p>
+              This is what a pharmacy label looks like. Choose any line.
+              It rewrites itself in plain English.
+            </p>
+          </figcaption>
+
+          <div class="rx__sheet">
+            <p class="rx__head">
+              Community Care Pharmacy <span>(281)&nbsp;555-0142</span>
+            </p>
+
+            <ol class="rx__lines">
+
+              <li>
+                <input class="rx__check" type="checkbox" id="rx-1">
+                <label for="rx-1">
+                  <span class="rx__swap">
+                    <span class="rx__printed">LISINOPRIL 10MG TAB<small>GENERIC FOR ZESTRIL</small></span>
+                    <span class="rx__plain">Lisinopril. Ten milligrams in each tablet. Zestril is another name for the same medicine.</span>
+                  </span>
+                  <svg class="rx__turn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                       aria-hidden="true" focusable="false">
+                    <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                  </svg>
+                </label>
+              </li>
+
+              <!-- The line people get wrong most often, marked amber the way
+                   the printed guide marks it. Only ever one. -->
+              <li class="is-key">
+                <input class="rx__check" type="checkbox" id="rx-2">
+                <label for="rx-2">
+                  <span class="rx__swap">
+                    <span class="rx__printed">SIG: 1 TAB PO QAM</span>
+                    <span class="rx__plain">Take one tablet by mouth every morning.</span>
+                  </span>
+                  <svg class="rx__turn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                       aria-hidden="true" focusable="false">
+                    <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                  </svg>
+                </label>
+              </li>
+
+              <li>
+                <input class="rx__check" type="checkbox" id="rx-3">
+                <label for="rx-3">
+                  <span class="rx__swap">
+                    <span class="rx__printed">DISP: #30 &mdash; 30 DAY SUPPLY</span>
+                    <span class="rx__plain">Thirty tablets. Enough for thirty days.</span>
+                  </span>
+                  <svg class="rx__turn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                       aria-hidden="true" focusable="false">
+                    <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                  </svg>
+                </label>
+              </li>
+
+              <li>
+                <input class="rx__check" type="checkbox" id="rx-4">
+                <label for="rx-4">
+                  <span class="rx__swap">
+                    <span class="rx__printed">RF: 2</span>
+                    <span class="rx__plain">You can refill this twice. Then you need a new prescription from your doctor.</span>
+                  </span>
+                  <svg class="rx__turn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                       aria-hidden="true" focusable="false">
+                    <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                  </svg>
+                </label>
+              </li>
+
+              <li>
+                <input class="rx__check" type="checkbox" id="rx-5">
+                <label for="rx-5">
+                  <span class="rx__swap">
+                    <span class="rx__printed">DISCARD AFTER 07/24/2027</span>
+                    <span class="rx__plain">Do not take this after July 24, 2027. Ask your pharmacist what to do with the rest.</span>
+                  </span>
+                  <svg class="rx__turn" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"
+                       aria-hidden="true" focusable="false">
+                    <path d="M4 12h15"/><path d="m13 6 6 6-6 6"/>
+                  </svg>
+                </label>
+              </li>
+
+            </ol>
+          </div>
+        </figure>
       </div>
     </section>
 
@@ -191,6 +317,44 @@
     </nav>
 
     <!-- ============================================================
+         THE SAME SENTENCE, TWICE — full bleed, two-tone, large type, almost
+         no chrome. The matching callout numerals are what say "these two are
+         the same sentence". That pairing is the printed guide's own device.
+
+         Keep the two halves the same sentence. If they ever drift apart the
+         section stops being an argument.
+         ============================================================ -->
+    <section class="twice" aria-labelledby="twice-h">
+      <div class="wide">
+        <h2 class="section-mark" id="twice-h">The same sentence, twice</h2>
+      </div>
+      <div class="twice__grid">
+
+        <div class="twice__side twice__side--printed" data-reveal>
+          <p class="twice__mark">
+            <span class="callout" aria-hidden="true">01</span>
+            <span class="kicker">As printed</span>
+          </p>
+          <p class="twice__printed">
+            Take 1 tab PO BID PRN for pain, not to exceed 6 tabs in 24h
+          </p>
+        </div>
+
+        <div class="twice__side twice__side--plain" data-reveal>
+          <p class="twice__mark">
+            <span class="callout" aria-hidden="true">01</span>
+            <span class="kicker">What it means</span>
+          </p>
+          <p class="twice__plain">
+            Take one tablet by mouth twice a day when you have pain.
+            <span class="swipe">Never more than 6 tablets in one day.</span>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
          OUR WHY — one enormous statement and nothing else on screen. The
          heading is small on purpose: the statement under it is the display
          type, and two things that size would fight.
@@ -199,31 +363,28 @@
       <div class="read" data-reveal>
         <h2 class="section-mark" id="why-h">Our why</h2>
         <p class="why__statement">
-          Every day, people struggle with prescription labels, lab results, and
-          insurance letters. The print is small, the words are hard to understand,
-          and the person who could explain it has already moved on to the next
-          patient.
+          You get handed a prescription label, a lab result, an insurance letter.
+          The print is small and the words are hard to understand. The person who
+          could explain it has already moved on to the next patient.
         </p>
         <p class="why__turn">
-          So people guess. And guessing about your own health is a risk no one
-          should have to take.
+          So you guess. And guessing about your own health is a risk no one should
+          have to take.
         </p>
       </div>
     </section>
 
     <!-- ============================================================
          WHAT WE DO — the mission, then the three things it comes down to.
-         Each one is expanded further down the page: the guide itself, what
-         a workshop involves, and how the work gets checked.
          ============================================================ -->
     <section class="does" id="what-we-do" aria-labelledby="what-we-do-h">
       <div class="wide">
         <div class="does__head" data-reveal>
           <h2 id="what-we-do-h">What we do</h2>
           <p class="does__lede">
-            We take the documents people are handed at the pharmacy, the lab, and
-            the insurance office, and we put them in plain language. Two ways: in a
-            room, and on one page.
+            We take the documents you get handed at the pharmacy, the lab, and the
+            insurance office. We put them in plain language. Two ways: in a room,
+            and on one page.
           </p>
         </div>
 
@@ -255,6 +416,41 @@
     </section>
 
     <!-- ============================================================
+         WHAT WE MEASURE — the impact slot. Built now, filled later.
+
+         WHEN THERE IS A REAL RESULT, swap the placeholder paragraph below
+         for this shape and delete the placeholder:
+
+           <p class="measure__figure">
+             <b>16 of 23</b> participants improved their comprehension score.
+           </p>
+
+         THE DENOMINATOR IS NOT OPTIONAL. "16 of 23", never "70%". A
+         percentage with no bottom number is a claim the work has not earned,
+         and the people reading this page can tell.
+
+         What may never be claimed here, whatever the numbers say: better
+         adherence, prevented errors, changed health outcomes, "clinically
+         proven", "research-backed". Comprehension scores are what gets
+         measured, so comprehension scores are what gets reported.
+         ============================================================ -->
+    <section class="measure" id="measure" aria-labelledby="measure-h">
+      <div class="wide measure__inner" data-reveal>
+        <h2 class="section-mark" id="measure-h">What we measure</h2>
+
+        <p class="measure__figure">
+          Our first numbers arrive with our first workshops.
+        </p>
+
+        <p class="measure__note">
+          We test comprehension before and after every session. Every result we
+          publish comes with its denominator. Sixteen of twenty-three, never
+          seventy percent.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
          THE GUIDES — the artwork leads at size, because the guide is the
          only real proof of work here and the best-designed thing the
          organisation owns.
@@ -262,9 +458,7 @@
          TO ADD A GUIDE: drop the PDF in assets/guides/, render its first
          page to a .jpg alongside it, then copy one <li class="guide">
          block and change the title, the alt text, the description, the
-         three facts, the cover src and both hrefs. No CSS, ever. While
-         there is one guide it runs full width with a large cover; add a
-         second and both fall back to an even grid; add ten and they wrap.
+         three facts, the cover src and both hrefs. No CSS, ever.
          ============================================================ -->
     <section class="guides" id="guides" aria-labelledby="guides-h">
       <div class="wide">
@@ -308,9 +502,7 @@
     </section>
 
     <!-- ============================================================
-         THE WORKSHOPS — what a session actually involves, for the activity
-         director or librarian deciding whether to trust students with their
-         residents.
+         THE WORKSHOPS — two columns, and the first photograph slot.
          ============================================================ -->
     <section class="workshops" id="workshops" aria-labelledby="workshops-h">
       <div class="wide workshops__grid" data-reveal>
@@ -333,19 +525,46 @@
           <div><dt>Cost</dt><dd><strong>Free. Always.</strong></dd></div>
         </dl>
 
+        <!-- PHOTOGRAPH SLOT ONE. Shoot a session actually happening: a
+             volunteer and a participant, heads down over a real document,
+             hands and paper in frame.
+
+             Uncomment the figure below and the section becomes three columns
+             on its own. The :has() rule in section 20 of styles.css does
+             that, so there is no CSS to write.
+
+             Get written permission before publishing anyone's face, and keep
+             it on file. Shots of hands and documents avoid the question and
+             are often the better picture anyway.
+
+             Export about 1600px wide, JPEG quality 82, into assets/photos/.
+             Keep the real width and height attributes so the page does not
+             jump while it loads, and write alt text that says what is
+             happening rather than what the file is.
+
+        <figure class="shot">
+          <img src="assets/photos/workshop-session.jpg"
+               alt="A MedLit volunteer and a participant reading a prescription label together at a table."
+               width="1600" height="1067" loading="lazy">
+          <figcaption>Where and when, in one short sentence.</figcaption>
+        </figure>
+        -->
+
       </div>
     </section>
 
     <!-- ============================================================
          HOW WE CHECK IT — deliberately quiet and narrow, right after the
-         widest section. Two claims we can stand behind. Not numbered: they
-         are parallel commitments, not steps one and two of anything.
+         widest section. Two claims we can stand behind, each carrying the
+         callout disc: the same mark the printed guide uses to point at
+         something and say what it means.
          ============================================================ -->
     <section class="review" id="review" aria-labelledby="review-h">
       <div class="read" data-reveal>
         <h2 id="review-h">We check the work, and we measure it.</h2>
         <ul class="checks" role="list">
           <li>
+            <span class="callout" aria-hidden="true">01</span>
             <h3>Reviewed before release</h3>
             <p>
               One-page plain-language guides in English and Spanish, reviewed by a
@@ -353,6 +572,7 @@
             </p>
           </li>
           <li>
+            <span class="callout" aria-hidden="true">02</span>
             <h3>Measured every session</h3>
             <p>
               We test comprehension before and after every workshop, so we can show
@@ -364,8 +584,9 @@
     </section>
 
     <!-- ============================================================
-         HOST A WORKSHOP — full bleed, reversed. The primary conversion for
-         the first audience. Plain email, no form.
+         HOST A WORKSHOP — full bleed, reversed, and the second photograph
+         slot. The primary conversion for the first audience. Plain email,
+         no form.
          ============================================================ -->
     <section class="host" id="host" aria-labelledby="host-h">
       <div class="wide host__grid" data-reveal>
@@ -384,6 +605,18 @@
             <span class="act__fine">medliterateofficial@gmail.com</span>
           </p>
         </div>
+
+        <!-- PHOTOGRAPH SLOT TWO. Shoot the room: wide, from the back, mid
+             session. Same rules as slot one above.
+
+        <figure class="shot">
+          <img src="assets/photos/workshop-room.jpg"
+               alt="A room of people seated at tables during a MedLit workshop, seen from the back."
+               width="1600" height="1067" loading="lazy">
+          <figcaption>Where and when, in one short sentence.</figcaption>
+        </figure>
+        -->
+
       </div>
     </section>
 
@@ -444,9 +677,7 @@
       <div class="foot__contact">
         <h2>Contact</h2>
         <!-- The marks are decorative — every link still carries its full text
-             label, so nothing depends on reading an icon. They are drawn in
-             currentColor rather than as the brands' own colour artwork, which
-             would fight the navy. -->
+             label, so nothing depends on reading an icon. -->
         <ul role="list">
           <li>
             <a href="mailto:medliterateofficial@gmail.com">
@@ -496,35 +727,54 @@
   </footer>
 
   <script>
-    // Passing motion, and nothing else. Delete this block and every word is
-    // still on the page and every link still works — the stylesheet only hides
-    // a block when the `js` class is set, and the catch below strips it.
+    // Two pieces of progressive enhancement, both additive. Delete this whole
+    // block and every word is still on the page, every link still works, and
+    // the label still rewrites — that part is pure CSS.
     (function () {
       var root = document.documentElement;
 
       try {
-        var targets = document.querySelectorAll('[data-reveal]');
-        if (!targets.length) return;
+        // 1. The tally under the label. It APPENDS a line. It never hides
+        //    anything, so there is nothing to strand.
+        var sheet = document.querySelector('.rx__sheet');
+        var boxes = document.querySelectorAll('.rx__check');
+        if (sheet && boxes.length) {
+          var tally = document.createElement('p');
+          tally.className = 'rx__tally';
+          var total = boxes.length;
 
-        // Blocks settle in on the way in AND let go on the way out, every
-        // time, not once. --rv is the direction: a block leaving past the top
-        // of the screen carries on upward, one leaving past the bottom goes
-        // down. The movement always agrees with the scroll, which is the
-        // difference between settling and twitching.
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) {
-            var leavingUpward = e.boundingClientRect.top < 0;
-            e.target.style.setProperty('--rv', leavingUpward ? '-20px' : '20px');
-            e.target.classList.toggle('is-in', e.isIntersecting);
+          var count = function () {
+            var done = document.querySelectorAll('.rx__check:checked').length;
+            tally.textContent = done === 0
+              ? total + ' lines. Choose any of them.'
+              : done === total
+                ? 'That is the whole label, in plain English.'
+                : done + ' of ' + total + ' lines rewritten.';
+          };
+
+          count();
+          sheet.appendChild(tally);
+          Array.prototype.forEach.call(boxes, function (b) {
+            b.addEventListener('change', count);
           });
-        }, {
-          // A band inset from both edges, so a block commits to being in or
-          // out instead of flickering across the exact boundary.
-          rootMargin: '-7% 0px -7% 0px',
-          threshold: 0
-        });
+        }
 
-        Array.prototype.forEach.call(targets, function (t) { io.observe(t); });
+        // 2. Passing motion. Blocks settle in on the way in and let go on the
+        //    way out, every time. --rv is the direction: a block leaving past
+        //    the top carries on upward, one leaving past the bottom goes down,
+        //    so the movement always agrees with the scroll.
+        var targets = document.querySelectorAll('[data-reveal]');
+        if (targets.length) {
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              e.target.style.setProperty('--rv',
+                e.boundingClientRect.top < 0 ? '-20px' : '20px');
+              e.target.classList.toggle('is-in', e.isIntersecting);
+            });
+          }, { rootMargin: '-7% 0px -7% 0px', threshold: 0 });
+
+          Array.prototype.forEach.call(targets, function (t) { io.observe(t); });
+        }
       } catch (err) {
         // If anything above failed, drop the flag so the stylesheet stops
         // hiding blocks it may never get told to reveal.
