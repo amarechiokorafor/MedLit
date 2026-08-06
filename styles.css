@@ -1,7 +1,7 @@
 /* ==========================================================================
    MedLit — health made understandable.
    One stylesheet. No frameworks, no build step, no JavaScript required to
-   read anything on the page or to operate the label.
+   read anything on the page.
 
    THE IDEA
    MedLit's whole argument is that a document should be readable. So the page
@@ -10,27 +10,24 @@
      - Pharmacy amber, at full strength, as a field. It is the one colour
        nobody else in this category owns, because it is the colour of the
        bottle in the logo.
-     - The numbered callout from the printed guide, as the repeating mark.
-       A navy disc with a white numeral, pointing at real document text.
-     - Every word of language set in Atkinson Hyperlegible Next, the typeface
-       the Braille Institute drew for low-vision readers. Body copy and the
-       124px headline alike.
-     - IBM Plex Mono for transcribed documents only. It is the artefact's
-       voice, never a decorative label.
+     - The numbered callout disc from the printed guide. A navy circle with a
+       white numeral, pointing at something and saying what it means.
+     - Every word set in Atkinson Hyperlegible Next, the typeface the Braille
+       Institute drew for low-vision readers. Body copy and the 124px headline
+       alike.
 
-   THE CENTREPIECE is the label in section 8. Choosing a line does not reveal
-   a footnote beside it — the line itself rewrites into plain English, in
-   place. The act of using it is the product. It is a pure CSS checkbox
-   toggle, so it works with JavaScript off and needs no keyboard handling.
+   The page states what MedLit does and shows the guide that proves it. It
+   does not demonstrate the product on itself. An interactive prescription
+   label and a before/after panel were both built here and both removed —
+   twice — because the guides already do that job on paper, reviewed, and
+   printable. See the note at the top of index.html before rebuilding either.
 
    Rules worth keeping:
-     1. One typeface for language, one for transcribed documents.
+     1. One typeface. Atkinson Hyperlegible Next, everywhere.
      2. Amber carries dark ink only. White on amber is 1.7:1.
-     3. The callout disc points at document text. It is identity, not
-        decoration — don't scatter it onto things that aren't documents.
-     4. Motion is opacity and transform, and it runs every time a block
+     3. Motion is opacity and transform, and it runs every time a block
         passes through the viewport, in and out.
-     5. Nothing needs JavaScript to be read.
+     4. Nothing needs JavaScript to be read.
 
    Contents
    1.  Fonts
@@ -41,25 +38,23 @@
    6.  Widths
    7.  Masthead
    8.  Hero — the amber field
-   9.  The label — the signature interaction
-   10. Three doors
-   11. The same sentence, twice
-   12. Our why
-   13. What we do
-   14. What we measure — the impact slot
-   15. The guides
-   16. The workshops
-   17. How we check it
-   18. Host
-   19. Volunteer
-   20. Photography slots
-   21. Facts, actions
-   22. Footer
-   23. Responsive
+   9.  Three doors
+   10. Our why
+   11. What we do
+   12. What we measure — the impact slot
+   13. The guides
+   14. The workshops
+   15. How we check it
+   16. Host
+   17. Volunteer
+   18. Photography slots
+   19. Facts, actions
+   20. Footer
+   21. Responsive
    ========================================================================== */
 
 /* ---------- 1. Fonts ------------------------------------------------------
-   Two families, self-hosted, latin subsets, about 80 KB. That matters: this
+   One family, self-hosted, latin subset, about 65 KB. That matters: this
    loads on an old phone on library wifi.
 
    Atkinson Hyperlegible Next is a variable font with a 200–800 weight axis,
@@ -69,9 +64,9 @@
    together. Given who the workshops are for, it is the argument in a
    typeface. Don't swap it out, and don't add a display face beside it.
 
-   IBM Plex Mono appears only where the page is quoting a real document: the
-   label, and the printed half of "the same sentence, twice". If it shows up
-   anywhere else it has stopped meaning anything.
+   IBM Plex Mono used to sit beside it, for the transcribed documents in the
+   interactive label and the before/after panel. Both are gone, so it went too —
+   15 KB of weight on a page with nothing left to transcribe.
    -------------------------------------------------------------------------- */
 @font-face {
   font-family: 'Atkinson';
@@ -83,12 +78,6 @@
   src: url('assets/fonts/atkinson-next-italic.woff2') format('woff2');
   font-weight: 200 800; font-style: italic; font-display: swap;
 }
-@font-face {
-  font-family: 'PlexMono';
-  src: url('assets/fonts/plexmono-400.woff2') format('woff2');
-  font-weight: 400; font-style: normal; font-display: swap;
-}
-
 /* ---------- 2. Tokens ----------------------------------------------------
    The navy and the amber are the logo's own. Everything else is stock, ink
    and rules.
@@ -137,7 +126,6 @@
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
 
   --sans: 'Atkinson', 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
-  --mono: 'PlexMono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 
   --r: 4px;
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -195,8 +183,8 @@ a:hover { color: var(--navy-deep); }
 }
 .hero .kicker { color: var(--navy-deep); }
 .hero .kicker::before { background: var(--navy-deep); }
-.host .kicker, .twice__side--printed .kicker { color: var(--amber); }
-.host .kicker::before, .twice__side--printed .kicker::before { background: var(--amber); }
+.host .kicker { color: var(--amber); }
+.host .kicker::before { background: var(--amber); }
 /* On the amber band the amber bar would be invisible, so both marks flip to
    navy. */
 .measure .kicker, .measure .section-mark { color: var(--navy-deep); }
@@ -215,32 +203,19 @@ a:hover { color: var(--navy-deep); }
   content: ''; width: 2.6rem; height: 5px; flex: none; background: var(--amber);
 }
 
-/* The amber marker, on the one line that matters. Never more than one in a
-   section. */
-/* No inline padding. The negative margin cancels it on a single line, but at
-   a line break the compensation lands on the wrong side and the fragment
-   sticks 2px past its container — which showed up at exactly 500px wide.
-   A band under the baseline does not need the breathing room anyway. */
-.swipe {
-  background-image: linear-gradient(180deg,
-    transparent 58%, var(--amber) 58%, var(--amber) 96%, transparent 96%);
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-}
-
 /* ---------- 4. The callout disc — the repeating mark ---------------------
    Lifted straight from the printed guide: a navy disc with a white numeral,
    pointing at a piece of real document text and pairing it with the plain
    version.
 
-   It earns its place in exactly three places, and that restraint is what
-   makes it identity rather than wallpaper:
-     - every line of the label
-     - both halves of "the same sentence, twice", where the matching numbers
-       are what say "these two are the same sentence"
-     - the two commitments in "How we check it"
+   It has one home now: the two commitments in "How we check it". It used to
+   also mark every line of the interactive label and both halves of the
+   before/after panel, and both of those are gone.
 
-   Do not put it on anything that is not pointing at a document or a claim.
+   One use is thin for a repeating mark. If a section ever arrives that
+   genuinely points at something and says what it means, this is the mark for
+   it. Do not sprinkle it on things that are neither a document nor a claim
+   just to make it recur — that is how a mark becomes wallpaper.
    -------------------------------------------------------------------------- */
 .callout {
   display: inline-grid;
@@ -257,7 +232,6 @@ a:hover { color: var(--navy-deep); }
 }
 /* Reversed out of navy, the disc flips to amber with dark ink. White on
    amber would be 1.7:1; navy-deep on amber is 7.2:1. */
-.twice__side--printed .callout,
 .host .callout {
   background: var(--amber);
   color: var(--navy-deep);
@@ -280,7 +254,6 @@ a:hover { color: var(--navy-deep); }
 
 :focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
 .hero :focus-visible { outline-color: var(--navy-deep); }
-.twice__side--printed :focus-visible,
 .host :focus-visible,
 .foot :focus-visible { outline-color: var(--amber); }
 
@@ -394,11 +367,13 @@ a:hover { color: var(--navy-deep); }
 
 /* ---------- 8. Hero — the amber field ------------------------------------
    The bottle's own colour at full strength, and the largest type on the
-   site. Deep bottom padding, because the label below is pulled up into it.
+   site. That is the whole hero. It carried an interactive label pulled up
+   over its bottom edge for a while; that is why the padding used to be so
+   deep, and why it isn't now.
    -------------------------------------------------------------------------- */
 .hero {
   background: var(--amber);
-  padding-block: clamp(3rem, 6vw, 5.5rem) clamp(5rem, 11vw, 9rem);
+  padding-block: clamp(3rem, 6vw, 5.5rem) clamp(3.5rem, 7vw, 6.5rem);
 }
 .hero__head { max-width: 50rem; }
 .hero h1 { color: var(--ink); }
@@ -408,187 +383,7 @@ a:hover { color: var(--navy-deep); }
   max-width: 34rem; margin-top: 1.7rem;
 }
 
-/* ---------- 9. The label — the signature interaction ---------------------
-   The one idea on this page that performs the mission instead of describing
-   it. Choosing a line does not open a footnote beside it. The line itself
-   rewrites, in place, from what the pharmacy printed into what it means.
-
-   HOW IT WORKS, and why it is built this way:
-
-   Each row is a hidden-but-focusable <input type="checkbox"> followed by a
-   <label> that wraps both versions of the line. `input:checked + label`
-   swaps which one is visible. That means:
-     - it works with JavaScript switched off
-     - it is keyboard-operable with no code: Tab to it, Space to toggle
-     - a screen reader announces the row as a checkbox whose name is
-       whichever version is currently showing, plus its checked state
-
-   The two versions sit in the same grid cell, so the row never jumps height
-   when it flips, and the inactive one takes `visibility: hidden` — not just
-   `opacity: 0` — so assistive technology reads one version, never both.
-
-   TO EDIT A LINE: change the two spans. TO ADD ONE: copy a whole <li>,
-   give the input and label a new matching id. The numerals renumber
-   themselves from a CSS counter.
-   -------------------------------------------------------------------------- */
-.label { position: relative; padding-bottom: clamp(3rem, 6vw, 5rem); }
-.rx { margin: clamp(-7rem, -6.5vw, -3rem) 0 0; }
-
-.rx__note {
-  font-size: 1.02rem;
-  color: var(--ink-2);
-  background: var(--stock);
-  border: 2px solid var(--rule-firm);
-  border-bottom: 0;
-  border-radius: var(--r) var(--r) 0 0;
-  padding: 1rem clamp(1.15rem, 2.2vw, 2.1rem);
-  margin: 0;
-}
-.rx__note p { margin: .5rem 0 0; }
-.rx__title {
-  font-size: clamp(1.3rem, 1.05rem + .9vw, 1.75rem);
-  font-weight: 800;
-  line-height: 1.2;
-  letter-spacing: -0.022em;
-  color: var(--ink);
-}
-
-.rx__sheet {
-  background: var(--stock);
-  border: 2px solid var(--rule-firm);
-  border-radius: 0 0 var(--r) var(--r);
-  padding: clamp(1.15rem, 2.2vw, 2.1rem);
-  box-shadow: 0 1px 2px rgba(20, 22, 28, .07),
-              0 18px 40px -22px rgba(20, 22, 28, .35);
-}
-.rx__head {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: .2rem .75rem;
-  font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--navy);
-  border-bottom: 3px solid var(--navy);
-  padding-bottom: .8rem; margin: 0 0 .3rem;
-}
-.rx__head span { font-weight: 500; color: var(--ink-2); letter-spacing: .06em; }
-
-.rx__lines { list-style: none; counter-reset: line; }
-.rx__lines > li { counter-increment: line; border-bottom: 1px solid var(--rule); }
-.rx__lines > li:last-child { border-bottom: 0; }
-
-/* Hidden but focusable, and never a click target itself — the whole row is
-   the label, so the whole row is clickable. */
-.rx__check {
-  position: absolute;
-  width: 1px; height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.rx__check + label {
-  display: grid;
-  grid-template-columns: 1.85rem minmax(0, 1fr) 1.6rem;
-  align-items: start;
-  gap: 0 1rem;
-  padding: 1rem .3rem;
-  min-height: 44px;
-  cursor: pointer;
-  transition: background-color .16s var(--ease);
-}
-@media (hover: hover) and (pointer: fine) {
-  .rx__check + label:hover { background: var(--stock-2); }
-}
-/* The focus ring belongs on the thing you can see. */
-.rx__check:focus-visible + label {
-  outline: 3px solid var(--navy);
-  outline-offset: 2px;
-  border-radius: var(--r);
-}
-
-/* The callout numeral, generated so lines renumber themselves. Decorative:
-   it sits outside the <label>, so it is not part of the row's name. */
-.rx__lines > li::before {
-  content: counter(line, decimal-leading-zero);
-  position: absolute;
-  display: grid; place-items: center;
-  width: 1.85rem; height: 1.85rem;
-  margin-top: 1rem;
-  border-radius: 50%;
-  background: var(--navy);
-  color: var(--stock);
-  font-size: .76rem; font-weight: 800; line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.rx__lines > li { position: relative; }
-
-/* The swap. Both versions occupy one grid cell, so the row keeps the height
-   of the taller of the two and nothing shifts when it flips. */
-.rx__swap { display: grid; grid-column: 2; }
-.rx__swap > span {
-  grid-area: 1 / 1;
-  transition: opacity .3s var(--ease), transform .3s var(--ease),
-              visibility 0s linear .3s;
-}
-.rx__printed {
-  font-family: var(--mono);
-  font-size: 1rem;
-  line-height: 1.5;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-}
-.rx__printed small {
-  display: block;
-  font-size: .86rem;
-  color: var(--ink-2);
-}
-.rx__plain {
-  font-size: 1.06rem;
-  font-weight: 700;
-  line-height: 1.4;
-  color: var(--navy-deep);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(7px);
-}
-.rx__check:checked + label .rx__printed {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-7px);
-}
-.rx__check:checked + label .rx__plain {
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  transition-delay: 0s;
-}
-
-/* The affordance: an arrow that turns over, because the change reverses. */
-.rx__turn {
-  grid-column: 3;
-  justify-self: end;
-  align-self: start;
-  width: 1.6rem; height: 1.6rem;
-  color: var(--navy);
-  transition: transform .3s var(--ease), color .16s var(--ease);
-}
-.rx__check:checked + label .rx__turn { transform: rotate(180deg); color: var(--amber-dk); }
-
-/* The line that matters most, marked amber the way the printed guide marks
-   it. Only ever one. */
-.rx__lines > li.is-key .rx__check + label { background: var(--amber-lt); }
-@media (hover: hover) and (pointer: fine) {
-  .rx__lines > li.is-key .rx__check + label:hover { background: #ffd88c; }
-}
-
-/* Created by the inline script, not present in index.html — a search for
-   "rx__tally" in the markup will come up empty. It is not dead. */
-.rx__tally {
-  font-size: .95rem;
-  color: var(--ink-2);
-  border-top: 1px solid var(--rule);
-  margin: 0;
-  padding-top: .9rem;
-}
-
-/* ---------- 10. Three doors ---------------------------------------------- */
+/* ---------- 9. Three doors ---------------------------------------------- */
 .doors { background: var(--stock-2); border-block: 1px solid var(--rule); }
 .doors ul { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .doors li + li { border-left: 1px solid var(--rule); }
@@ -610,46 +405,7 @@ a:hover { color: var(--navy-deep); }
   transform: rotate(-45deg);
 }
 
-/* ---------- 11. The same sentence, twice ---------------------------------
-   Full bleed, two-tone, large type, almost no chrome. The matching callout
-   numerals on either side are what say "these two are the same sentence" —
-   that pairing is the guide's own device.
-   -------------------------------------------------------------------------- */
-/* Padding on the section, not the grid: the grid is full bleed and the
-   heading above it is not. */
-.twice { padding-top: clamp(2.75rem, 5vw, 4.5rem); }
-.twice__grid { display: grid; grid-template-columns: 1fr 1fr; }
-/* flex-start, not center: centring each half independently pushes the two
-   kickers out of line, and the whole point is that the sides are the same
-   sentence. */
-.twice__side {
-  padding: clamp(2.5rem, 5vw, 4.5rem) clamp(1.25rem, 4vw, 3.5rem);
-  display: flex; flex-direction: column; justify-content: flex-start;
-}
-.twice__side--printed { background: var(--navy-deep); }
-.twice__side--plain { background: var(--stock); }
-.twice__mark { display: flex; align-items: center; gap: .8rem; margin: 0 0 1.4rem; }
-.twice__mark .kicker { margin: 0; }
-.twice__printed {
-  font-family: var(--mono);
-  font-size: clamp(1.15rem, .9rem + 1vw, 1.6rem);
-  line-height: 1.5;
-  color: var(--on-navy);
-  max-width: 26ch;
-  margin: 0;
-}
-.twice__plain {
-  font-size: clamp(1.4rem, 1rem + 1.9vw, 2.4rem);
-  font-weight: 800;
-  line-height: 1.16;
-  letter-spacing: -0.028em;
-  color: var(--ink);
-  max-width: 22ch;
-  margin: 0;
-  text-wrap: pretty;
-}
-
-/* ---------- 12. Our why -------------------------------------------------
+/* ---------- 10. Our why -------------------------------------------------
    A narrow measure, very large type, deep space, and nothing else on the
    screen. The page's held breath.
    -------------------------------------------------------------------------- */
@@ -667,7 +423,7 @@ a:hover { color: var(--navy-deep); }
   text-wrap: pretty;
 }
 
-/* ---------- 13. What we do ----------------------------------------------- */
+/* ---------- 11. What we do ----------------------------------------------- */
 .does { border-top: 1px solid var(--rule); padding-block: clamp(3.25rem, 6vw, 5.5rem); }
 .does__head { max-width: 42rem; margin-bottom: clamp(2.25rem, 4.5vw, 3.5rem); }
 .does__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.1rem; }
@@ -680,7 +436,7 @@ a:hover { color: var(--navy-deep); }
 .does__list h3 { margin-bottom: .5rem; }
 .does__list p { font-size: 1rem; color: var(--ink-2); }
 
-/* ---------- 14. What we measure — the impact slot ------------------------
+/* ---------- 12. What we measure — the impact slot ------------------------
    Built now, filled later. The band is designed around one large sentence,
    and swapping the placeholder for a real result is a one-line edit inside
    .measure__figure — see the commented block in index.html.
@@ -714,7 +470,7 @@ a:hover { color: var(--navy-deep); }
   border-top: 4px solid var(--navy-deep);
 }
 
-/* ---------- 15. The guides ----------------------------------------------- */
+/* ---------- 13. The guides ----------------------------------------------- */
 .guides {
   background: var(--stock-2); border-top: 1px solid var(--rule);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
@@ -769,7 +525,7 @@ a:hover { color: var(--navy-deep); }
   }
 }
 
-/* ---------- 16. The workshops -------------------------------------------- */
+/* ---------- 14. The workshops -------------------------------------------- */
 .workshops { padding-block: clamp(3.25rem, 6vw, 5.5rem); }
 .workshops__grid {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
@@ -777,7 +533,7 @@ a:hover { color: var(--navy-deep); }
 }
 .workshops__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
 
-/* ---------- 17. How we check it ------------------------------------------ */
+/* ---------- 15. How we check it ------------------------------------------ */
 .review { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 5.5vw, 4.75rem); }
 .checks { list-style: none; margin-top: 2.25rem; }
 .checks > li {
@@ -792,7 +548,7 @@ a:hover { color: var(--navy-deep); }
 .checks > li > p  { grid-column: 2; grid-row: 2; margin: 0; font-size: 1rem; color: var(--ink-2); }
 .checks .callout { grid-column: 1; grid-row: 1; margin-top: .12em; }
 
-/* ---------- 18. Host ----------------------------------------------------- */
+/* ---------- 16. Host ----------------------------------------------------- */
 .host {
   background: var(--navy-deep); color: var(--on-navy);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
@@ -804,7 +560,7 @@ a:hover { color: var(--navy-deep); }
 .host h2 { color: var(--stock); }
 .host__body p { color: var(--on-navy); }
 
-/* ---------- 19. Volunteer ------------------------------------------------ */
+/* ---------- 17. Volunteer ------------------------------------------------ */
 .volunteer {
   background: var(--stock-2); border-top: 1px solid var(--rule);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
@@ -815,7 +571,7 @@ a:hover { color: var(--navy-deep); }
 }
 .volunteer__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
 
-/* ---------- 20. Photography slots ----------------------------------------
+/* ---------- 18. Photography slots ----------------------------------------
    There are no photographs on this site yet, and there is no placeholder
    pretending to be one. What exists is the layout that will hold them, so
    that adding the first real photograph is a markup change with no CSS to
@@ -855,7 +611,7 @@ a:hover { color: var(--navy-deep); }
   }
 }
 
-/* ---------- 21. Facts, actions ------------------------------------------- */
+/* ---------- 19. Facts, actions ------------------------------------------- */
 .facts { border-top: 3px solid var(--navy); }
 .facts > div {
   display: grid; grid-template-columns: 11rem minmax(0, 1fr);
@@ -901,7 +657,7 @@ a:hover { color: var(--navy-deep); }
 .act__fine { font-size: .92rem; color: var(--ink-2); }
 .host .act__fine { color: var(--on-navy-dim); }
 
-/* ---------- 22. Footer --------------------------------------------------- */
+/* ---------- 20. Footer --------------------------------------------------- */
 .foot {
   background: var(--navy-deep); color: var(--on-navy);
   padding-block: clamp(2.75rem, 5vw, 4rem) 1.9rem;
@@ -939,7 +695,7 @@ a:hover { color: var(--navy-deep); }
   color: var(--on-navy-dim); font-size: .95rem; max-width: 46rem;
 }
 
-/* ---------- 23. Responsive ----------------------------------------------
+/* ---------- 21. Responsive ----------------------------------------------
    Fluid by default; these are the places that need help. Overflow is
    measured, not eyeballed — scrollWidth against innerWidth at 320, 360, 390,
    414, 768, 1024, 1280, 1440 and 1920px.
@@ -947,11 +703,6 @@ a:hover { color: var(--navy-deep); }
 @media (max-width: 60rem) {
   .workshops__grid, .volunteer__grid, .host__grid { grid-template-columns: minmax(0, 1fr); }
   .does__list { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
-
-  /* The two halves stack, and the printed one leads — the document arrives
-     before it is explained. */
-  .twice__grid { grid-template-columns: minmax(0, 1fr); }
-  .twice__printed, .twice__plain { max-width: 34ch; }
 
   .doors ul { grid-template-columns: minmax(0, 1fr); }
   .doors li + li { border-left: 0; border-top: 1px solid var(--rule); }
@@ -963,24 +714,11 @@ a:hover { color: var(--navy-deep); }
   .brand__tagline { font-size: .9rem; padding-left: .75rem; }
   .topnav ul { gap: 0 1.2rem; }
 
-  /* The overlap is a wide-screen composition. On a phone the label simply
-     follows the amber field. */
-  .rx { margin-top: 0; }
-  .hero { padding-bottom: clamp(2.5rem, 8vw, 4rem); }
-  .label { padding-top: clamp(2rem, 6vw, 3rem); }
-
   .facts > div, .facts--wide > div { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
   .facts dt { padding-top: 0; }
 }
 
 @media (max-width: 34rem) {
-  /* The numeral moves above the line rather than beside it: 320px of screen
-     cannot carry a 30px gutter and still hold a line of a real label. */
-  .rx__check + label { grid-template-columns: minmax(0, 1fr) 1.6rem; padding-left: 0; }
-  .rx__swap { grid-column: 1; }
-  .rx__lines > li::before { position: static; margin: 1rem 0 -.4rem; }
-  .rx__printed { font-size: .95rem; }
-
   .guide__cover { max-width: 12rem; }
   .action { width: 100%; justify-content: center; }
   .act { flex-direction: column; align-items: stretch; }

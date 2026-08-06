@@ -10,7 +10,7 @@ assets/medlit-logo.png           stacked lockup — header and footer
 assets/medlit-logo-vertical.png  full lockup with tagline — source for the icons
 assets/favicon.png               browser tab icon
 assets/apple-touch-icon.png      iOS home-screen icon
-assets/fonts/                    self-hosted woff2 (3 files, ~80 KB total)
+assets/fonts/                    self-hosted woff2 (2 files, ~65 KB total)
 assets/guides/                   guide PDFs and their cover images
 ```
 
@@ -113,8 +113,8 @@ style:
 - **Pharmacy amber, at full strength, as a field.** Not a 4px accent. It is the
   one colour nobody else in this category owns, because it is the colour of the
   bottle in the logo.
-- **The numbered callout disc from the printed guide**, as the repeating mark.
-  A navy circle with a white numeral, pointing at real document text.
+- **The numbered callout disc from the printed guide.** A navy circle with a
+  white numeral, pointing at something and saying what it means.
 - **Every word of language set in Atkinson Hyperlegible Next** — the body copy
   and the 124px headline alike. An organisation whose entire product is
   legibility should not borrow an editorial serif to look serious. The
@@ -127,12 +127,12 @@ legible reads as confident. It also happens to be the thing MedLit sells.
 
 Five rules hold it together:
 
-1. **One typeface for language, one for transcribed documents.** If a serif
-   shows up here, ask what it knows that Atkinson doesn't.
+1. **One typeface.** Atkinson Hyperlegible Next, everywhere. If a serif shows
+   up here, ask what it knows that Atkinson doesn't.
 2. **Amber carries dark ink only.** White on amber is 1.7:1, and `--ink-2` on
    amber is 4.1:1. On amber the secondary voice is `--navy-deep`.
-3. **The callout disc points at document text.** A navy circle with a white
-   numeral, lifted from the printed guide. Three places only — see below.
+3. **The callout disc** — a navy circle with a white numeral, lifted from the
+   printed guide. One home now, in "How we check it". See below.
 4. **Spend the boldness in one place.** The amber field is the loud thing, and it
    only stays loud because everything under it is quiet.
 5. **Nothing needs JavaScript to be read.**
@@ -153,9 +153,8 @@ for this reason.
 
 **Rhythm.** The variation down the page is deliberate, and it is the part
 easiest to destroy by adding one more section in the "house style". In order:
-amber field, the label card pulled up into it, thin routing strip, full-bleed
-two-tone before-and-after, one enormous statement alone on the screen, three
-columns of what we do, a full-bleed amber band for the numbers, guides on a
+amber field, thin routing strip, one enormous statement alone on the screen,
+three columns of what we do, a full-bleed amber band for the numbers, guides on a
 recessed band, two-column workshops, a deliberately narrow and quiet checks
 list, full-bleed reversed host, volunteer on
 a band again. If everything becomes the same frame, the design is gone even if
@@ -182,7 +181,7 @@ Everything used on the page was measured in a rendered browser. The floor is AA
 and most pairs clear AAA: ink on stock 18.1, ink on amber 9.1, navy-deep on
 amber 7.2, navy on stock 9.5, soft ink on stock 8.2, amber on navy-deep 7.2.
 
-**Type.** Two families, self-hosted, latin subsets, no CDN — about 80 KB, which
+**Type.** One family, self-hosted, latin subset, no CDN — about 65 KB, which
 matters because this may load on an old phone on library wifi.
 
 - **Atkinson Hyperlegible Next** for every word of language on the page. The
@@ -191,9 +190,8 @@ matters because this may load on an old phone on library wifi.
   it is the argument in a typeface. It is a variable font with a 200–800 weight
   axis, which is the whole reason one family can carry an extreme type scale.
   **Don't swap it out, and don't add a display face beside it.**
-- **IBM Plex Mono**, one weight, only where the page is quoting a real document:
-  the label, and the printed half of "the same sentence, twice". If it turns up
-  anywhere else it has stopped meaning anything and should come out.
+IBM Plex Mono used to sit beside it for the transcribed documents in the
+interactive label and the before/after panel. Both are gone, so it went too.
 
 Three typographic rules that are easy to undo by accident:
 
@@ -210,27 +208,23 @@ about six times body. Nothing sits between them, and something on the page is
 genuinely large. Add a fourth only if you truly need it, and put it in the token
 block rather than inline.
 
-**The callout disc is the identity, and restraint is what makes it one.** It is
-the printed guide's own mark: a navy circle with a white numeral, pointing at a
-piece of real document text and pairing it with the plain version. It earns its
-place in exactly three spots:
+**The callout disc** is the printed guide's own mark: a navy circle with a white
+numeral, pointing at something and saying what it means. It used to appear in
+three places; two of them left with the label and the before/after panel, so its
+one remaining home is the two commitments in "How we check it".
 
-- every line of the label
-- both halves of "the same sentence, twice", where the matching `01` on each
-  side is what says *these two are the same sentence*
-- the two commitments in "How we check it"
-
-Put it on a fourth thing and it stops being a mark and starts being wallpaper.
-Section folios (`§ 01`, `§ 02`) were tried and removed, and they are the warning:
-page numbers on a page that has one page are decoration wearing the costume of
+One use is thin for a repeating mark, and that is worth knowing rather than
+papering over. If a section ever arrives that genuinely points at something and
+explains it, this is the mark for it. Do not sprinkle it on things that are
+neither a document nor a claim just to make it recur — section folios
+(`§ 01`, `§ 02`) were tried that way and removed, and they are the warning: page
+numbers on a page that has one page are decoration wearing the costume of
 structure.
 
 **The signature moves**, so that edits keep them:
 
-- **The amber field**, with the label card pulled up over its bottom edge. That
-  overlap is why `.hero` carries the bottom padding it does and `.rx` a negative
-  top margin. On phones the overlap is dropped, because there is no room for it
-  to read.
+- **The amber field.** The page opens on the bottle's own colour at full
+  strength carrying the largest type on the site, and that is the entire hero.
 - **The kicker bar.** A short amber block in front of every kicker —
   `.kicker::before`. One ornament, repeated, which is what makes it a system.
 - **The amber rule.** A 4–5px amber bar: over each "what we do" column, down the
@@ -294,55 +288,32 @@ logging dialogs, and error messages — not just the page.
 If you edit copy, read it aloud first. If you wouldn't say it to someone's
 face, rewrite it.
 
-## The label — the signature interaction
+## Two things that were built here and removed. Twice.
 
-This is the one thing on the page that performs the mission instead of
-describing it. Choosing a line does not open a footnote beside it. **The line
-itself rewrites, in place**, from what the pharmacy printed into what it means.
-Using it is the product.
+Both worked. Both are the kind of thing a future editor rebuilds without
+knowing why they went, so:
 
-It is deliberately not the same thing as the guides. A guide explains a whole
-document once, on paper, reviewed. The label does one line at a time, in the
-browser, and the *act of doing it* is what lands. If the two ever start feeling
-like duplicates again, the label is the one that has drifted.
+**The interactive prescription label.** Lines that rewrote themselves into
+plain English when you chose them — a pure CSS checkbox toggle, no JavaScript
+needed, keyboard-operable for free. It was the most impressive thing on the
+page.
 
-**How it works, and why it is built this way.** Each row is a
-hidden-but-focusable `<input type="checkbox">` followed by a `<label>` that
-wraps both versions of the line. `input:checked + label` decides which one is
-visible. That single choice buys three things at once:
+**The "same sentence, twice" panel.** One line of pharmacy shorthand on navy,
+its plain version beside it on stock, large type and almost no chrome.
 
-- it works with **JavaScript switched off** — verified, not assumed
-- Tab and Space operate it, with **no keyboard code to get wrong**
-- a screen reader announces the row as a checkbox whose accessible name is
-  whichever version is currently showing, plus its checked state. Measured:
-  unchecked it reads `SIG: 1 TAB PO QAM`, checked it reads
-  `Take one tablet by mouth every morning.` — one version, never both
+They were cut for the same reason both times: **the guides already do this
+job**, on paper, reviewed by a licensed professional, printable, and free to
+hand out at a front desk. A widget that demonstrates the product ends up
+standing in front of the product. The before/after had a second problem — one
+fixed example is a slogan, not a demonstration. It would earn its place as
+something that changes, a literacy fact rotating daily, and not before.
 
-The two versions sit in the same CSS grid cell, so the row keeps the height of
-the taller one and **nothing shifts when it flips** (87.2px before and after,
-measured). The inactive version takes `visibility: hidden` rather than only
-`opacity: 0`, which is what keeps it out of the accessible name.
+If MedLit ever wants a **quick interactive guide** as a genuine format
+alongside the printed ones, that is a real idea. It gets its own page and its
+own reviewed content, not a slot in the hero.
 
-The numerals come from a CSS counter, so lines renumber themselves.
-
-**To edit a line**, change the two spans inside `.rx__swap`. **To add one**,
-copy a whole `<li>` and give the input and label a new matching id. No CSS to
-touch either way.
-
-**The label is realistic and its numbers are made up.** If a real one ever
-replaces it, scrub it properly — a prescription label carries a name, an address
-and an Rx number.
-
-## The same sentence, twice
-
-Full bleed, two-tone, large type, almost no chrome. The printed version on navy
-in the document's own monospace; what it means beside it, on stock, large. The
-matching callout `01` on each side is what says *these two are the same
-sentence* — that pairing is the guide's own device, and it is the reason the
-numbers are there rather than decoration.
-
-Keep the two halves the same sentence. If they ever drift apart the section
-stops being an argument and becomes two slogans.
+IBM Plex Mono went with them. It existed to give transcribed documents their
+own voice, and there is nothing left on the page being transcribed.
 
 ## What we measure — the impact slot
 
@@ -490,20 +461,17 @@ These aren't decoration — please keep them when editing:
   suited the imprint, but the people this page is for should not have to squint
   at the navigation.
 - Every text/background pair on the rendered page meets WCAG AA. Verified in a
-  real browser rather than by eye: 99 visible text nodes measured at 1440, 768
-  and 390px, plus every rewritten line of the label with all five toggled on.
-  None below its threshold. Amber is light, so it always carries dark ink,
-  never white.
+  real browser rather than by eye: 80 visible text nodes measured at 1440, 768
+  and 390px, none below its threshold. Amber is light, so it always carries
+  dark ink, never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
   to amber on the reversed sections and the footer.
 - Every section contributes exactly one visible `<h2>` to the document outline.
   There are no headings hidden off-screen any more: "Our why" carries its heading
   as `.section-mark`, small on purpose because the statement below it is the
   display type and two things that size would fight.
-- The label is the only interactive element beyond links, and it is a native
-  checkbox in a native label. Tab reaches it, Space toggles it, the focus ring
-  is drawn on the visible row, and the accessible name is whichever version of
-  the line is currently showing. No ARIA invented, no key handlers written.
+- Nothing on the page is a custom widget. Every interactive element is a link,
+  so there is no keyboard handling to get wrong and no ARIA to get wrong.
 - Responsive down to a 320px-wide screen, checked at every 5px step from 320 to
   1920. Overflow is measured two ways, and the second one matters: `scrollWidth`
   against `clientWidth` on the document, **and on every element**. A headline can
