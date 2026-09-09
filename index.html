@@ -45,7 +45,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=9">
+  <link rel="stylesheet" href="styles.css?v=10">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -103,11 +103,13 @@
      ever wants an interactive guide as a real format, it gets its own page
      and its own reviewed content — not a slot in the hero.
 
-     SLOTS BUILT AND WAITING:
-       - .measure carries a real comprehension result the moment there is
-         one. Placeholder copy until then. The denominator is never optional.
-       - Two photograph slots, commented out, in .workshops__grid and
-         .host__grid. Uncomment one and the section relayouts on its own.
+     .measure carries real counts now — 160 guides at Cy-Fair Helping Hands,
+     90 English and 70 Spanish. Comprehension scores are the other half of
+     that band and do not exist yet. Counts and scores are different kinds of
+     claim; the comment above the section says how to keep them apart.
+
+     STILL WAITING: two photograph slots, commented out, in .workshops__grid
+     and .host__grid. Uncomment one and the section relayouts on its own.
 
      Rules worth keeping:
        1. One typeface. Atkinson Hyperlegible Next, everywhere.
@@ -259,14 +261,19 @@
     </section>
 
     <!-- ============================================================
-         WHAT WE MEASURE — the impact slot. Built now, filled later.
+         WHAT WE MEASURE — real numbers now. The placeholder is gone.
 
-         WHEN THERE IS A REAL RESULT, swap the placeholder paragraph below
-         for this shape and delete the placeholder:
+         TWO KINDS OF NUMBER LIVE HERE, and keeping them apart is the whole
+         point of the section:
 
-           <p class="measure__figure">
-             <b>16 of 23</b> participants improved their comprehension score.
-           </p>
+           1. COUNTS. Guides handed out, sessions run. A count is a fact you
+              can stand on. 90 + 70 = 160; if you edit one, edit all three.
+           2. COMPREHENSION SCORES. These do not exist yet. When they do,
+              they go in the same band in this shape:
+
+                <p class="measure__figure">
+                  <b>16 of 23</b> participants improved their comprehension score.
+                </p>
 
          THE DENOMINATOR IS NOT OPTIONAL. "16 of 23", never "70%". A
          percentage with no bottom number is a claim the work has not earned,
@@ -274,8 +281,13 @@
 
          What may never be claimed here, whatever the numbers say: better
          adherence, prevented errors, changed health outcomes, "clinically
-         proven", "research-backed". Comprehension scores are what gets
-         measured, so comprehension scores are what gets reported.
+         proven", "research-backed". A count of guides is a count of guides.
+         Comprehension scores are what gets measured, so comprehension
+         scores are what gets reported.
+
+         TO ADD THE NEXT EVENT: the band is built for one headline figure.
+         If a second event needs its own line, put it in .measure__split
+         rather than growing the headline into a list.
          ============================================================ -->
     <section class="measure" id="measure" aria-labelledby="measure-h">
       <div class="wide">
@@ -283,18 +295,19 @@
 
           <h2 class="section-mark" id="measure-h">What we measure</h2>
 
-          <!-- PLACEHOLDER. Replace on the day of the first workshop. See the
-               block comment above this section, and the scheduled check in
-               .github/workflows/impact-placeholder.yml that will open an issue
-               if this sentence is still here after 2026-08-15. -->
           <p class="measure__figure">
-            Our first numbers arrive with our first workshops.
+            <b>160 guides</b> handed out at Cy-Fair Helping Hands.
           </p>
 
+          <ul class="measure__split" role="list">
+            <li><span class="measure__n">90</span> <span>in English</span></li>
+            <li><span class="measure__n">70</span> <span>in Spanish</span></li>
+          </ul>
+
           <p class="measure__note">
-            We test comprehension before and after every session. Every result we
-            publish comes with its denominator. Sixteen of twenty-three, never
-            seventy percent.
+            That is guides handed out, not a health outcome. We test comprehension
+            before and after every session, and those scores carry their
+            denominator. Sixteen of twenty-three, never seventy percent.
           </p>
 
         </div>

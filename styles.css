@@ -41,7 +41,7 @@
    9.  Three doors
    10. Our why
    11. What we do
-   12. What we measure — the impact slot
+   12. What we measure — the numbers
    13. The guides
    14. The workshops
    15. How we check it
@@ -436,14 +436,18 @@ a:hover { color: var(--navy-deep); }
 .does__list h3 { margin-bottom: .5rem; }
 .does__list p { font-size: 1rem; color: var(--ink-2); }
 
-/* ---------- 12. What we measure — the impact slot ------------------------
-   Built now, filled later. The band is designed around one large sentence,
-   and swapping the placeholder for a real result is a one-line edit inside
-   .measure__figure — see the commented block in index.html.
+/* ---------- 12. What we measure — the numbers ----------------------------
+   One headline figure, a split under it, and the standing rule. The band is
+   the loudest thing on the page after the hero, which is right: it is the
+   only place MedLit says something that can be checked.
 
    THE RULE THAT MUST SURVIVE: every number published here carries its
    denominator. "16 of 23", never "70%". A percentage without its bottom
    number is a claim the work has not earned.
+
+   The split exists to make the bilingual work visible. The site claims
+   English and Spanish in three other places; this is the only one that
+   proves it with a number.
    -------------------------------------------------------------------------- */
 .measure {
   background: var(--amber);
@@ -461,13 +465,42 @@ a:hover { color: var(--navy-deep); }
 }
 /* The number itself, when there is one. */
 .measure__figure b { color: var(--navy-deep); font-weight: 800; }
+
+/* The split. The heavy rule lives here rather than on the note below, so the
+   band has one horizontal division and not two competing ones. Baseline
+   alignment, not centre: the numeral and its label should sit on the same
+   line the way they would if you wrote them out. */
+.measure__split {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem clamp(1.75rem, 4vw, 3.5rem);
+  margin: 1.9rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 4px solid var(--navy-deep);
+}
+.measure__split > li {
+  display: flex;
+  align-items: baseline;
+  gap: .55rem;
+  font-size: 1.06rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.measure__n {
+  font-size: clamp(1.6rem, 1.2rem + 1.3vw, 2.25rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--navy-deep);
+  font-variant-numeric: tabular-nums;
+}
+
 .measure__note {
   font-size: 1.06rem;
   color: var(--navy-deep);
   max-width: 42rem;
-  margin: 1.6rem 0 0;
-  padding-top: 1.4rem;
-  border-top: 4px solid var(--navy-deep);
+  margin: 1.5rem 0 0;
 }
 
 /* ---------- 13. The guides ----------------------------------------------- */

@@ -315,45 +315,54 @@ own reviewed content, not a slot in the hero.
 IBM Plex Mono went with them. It existed to give transcribed documents their
 own voice, and there is nothing left on the page being transcribed.
 
-## What we measure — the impact slot
+## What we measure — the numbers
 
-Built now, filled later. The band is designed around one large sentence, and
-swapping the placeholder for a real result is a one-line edit inside
-`.measure__figure`. The shape it takes is in a comment right there in
-`index.html`:
+The band publishes **160 guides handed out at Cy-Fair Helping Hands, 90 in
+English and 70 in Spanish**. That split does real work: the site claims English
+and Spanish in three other places, and this is the only one that proves it with
+a number.
 
-```html
-<p class="measure__figure">
-  <b>16 of 23</b> participants improved their comprehension score.
-</p>
-```
+**Two kinds of number live here, and keeping them apart is the point.**
+
+1. **Counts.** Guides handed out, sessions run. A count is a fact you can stand
+   on, and it is not an outcome. The band says so in its own copy: *"That is
+   guides handed out, not a health outcome."*
+2. **Comprehension scores.** These do not exist yet. When they do, they go in
+   the same band as the headline figure, in this shape:
+   `<b>16 of 23</b> participants improved their comprehension score.`
 
 **The denominator is not optional.** "16 of 23", never "70%". A percentage with
-no bottom number is a claim the work has not earned, and the people reading this
-page — a library programming lead, a funder — can tell.
+no bottom number is a claim the work has not earned, and a library programming
+lead or a funder can tell.
 
 **What may never be claimed here**, whatever the numbers say: better adherence,
-prevented errors, changed health outcomes, "clinically proven", "research-backed".
-Comprehension scores are what gets measured, so comprehension scores are what
-gets reported.
+prevented errors, changed health outcomes, "clinically proven",
+"research-backed". Comprehension scores are what gets measured, so comprehension
+scores are what gets reported.
 
-## The placeholder that expires
+### The guard
 
-`.github/workflows/impact-placeholder.yml` runs every Monday. After
-**2026-08-15** it checks whether `index.html` still contains the sentence *"Our
-first numbers arrive with our first workshops"* and, if it does, opens an issue
-asking for the real result. It never edits the site — it only tells a person to.
+`.github/scripts/check_numbers.py` runs on every push and pull request via
+`.github/workflows/check-numbers.yml`, and enforces exactly two things:
 
-That exists because a comment in the HTML is not a reminder. Nobody reads the
-source of a page they aren't already editing, and a placeholder that was honest
-in August becomes a quiet lie in September.
+- **the split adds up to the headline** — publish "160" over "90 / 70", change
+  one and forget the others, and the site is quietly publishing arithmetic that
+  does not work
+- **no bare percentage in the visible text** — the rule above, mechanically
 
-To change the date, edit `DEADLINE` in the workflow. To switch it off, do
-nothing: once the real number is in, the check finds the placeholder gone and
-exits quietly every week thereafter. The issue body lives in
-`.github/impact-placeholder-issue.md` and carries the reporting rules with it.
+Run it locally, unchanged: `python3 .github/scripts/check_numbers.py`. It exits
+0 when clean and prints what is wrong when it isn't. Both failure modes are
+tested; so is the false positive it would otherwise hit on the `%20` escapes in
+the mailto link.
 
-## Adding a guide
+It replaced `impact-placeholder.yml`, which watched for the placeholder sentence
+*"Our first numbers arrive with our first workshops"* and opened an issue if it
+outlived the first workshop. **That worked** — it fired on 2026-08-17, the first
+Monday after the deadline, and opened issue #1. A check that can only fire once
+is finished once, so it was retired for one that guards the mistakes you make
+while editing numbers, which is the only time anyone touches them.
+
+## Adding a guide## Adding a guide
 
 1. Put the PDF in `assets/guides/`.
 2. Make a cover image from its first page, about 620px wide, saved as `.jpg`

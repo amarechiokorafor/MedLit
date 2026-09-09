@@ -1,0 +1,42 @@
+# Guards the "What we measure" band.
+#
+# This replaced impact-placeholder.yml, which watched for one placeholder
+# sentence and did its job: it opened issue #1 on 2026-08-17, the first Monday
+# after the deadline, and the placeholder is now gone. A check that can only
+# fire once is finished once.
+#
+# What replaced it never expires, because it guards mistakes made while
+# EDITING the numbers — the only time anyone touches them:
+#
+#   1. The split has to add up to the headline.
+#   2. No bare percentage in the visible text. "16 of 23", never "70%".
+#
+# It runs on every push and pull request, so a broken number is caught before
+# it is live rather than the Monday after. The logic lives in
+# .github/scripts/check_numbers.py so it can be run locally, unchanged:
+#
+#     python3 .github/scripts/check_numbers.py
+
+name: Check the published numbers
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - '.github/scripts/check_numbers.py'
+      - '.github/workflows/check-numbers.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - '.github/scripts/check_numbers.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numbers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 .github/scripts/check_numbers.py
