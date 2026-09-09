@@ -45,7 +45,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="styles.css?v=12">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -85,10 +85,10 @@
      and every word set in Atkinson Hyperlegible Next, the typeface the
      Braille Institute drew for low-vision readers.
 
-     The shape of the page: the claim, three doors, why we exist, what we
-     do, what we measure, then the proof of each and the two asks. It says
-     what MedLit does and shows the guide that proves it. It does not
-     demonstrate the product on itself.
+     The shape of the page: the claim, three doors, why we exist, what we do,
+     what we have done, what we measure, then the proof of each and the two
+     asks. It says what MedLit does and shows the guide that proves it. It
+     does not demonstrate the product on itself.
 
      TWO THINGS WERE BUILT HERE AND REMOVED, TWICE. Don't rebuild them:
 
@@ -103,10 +103,11 @@
      ever wants an interactive guide as a real format, it gets its own page
      and its own reviewed content — not a slot in the hero.
 
-     .measure carries real counts now — 160 guides at Cy-Fair Helping Hands,
-     90 English and 70 Spanish. Comprehension scores are the other half of
-     that band and do not exist yet. Counts and scores are different kinds of
-     claim; the comment above the section says how to keep them apart.
+     COUNTS AND SCORES LIVE IN SEPARATE SECTIONS, on purpose. "The work so
+     far" carries counts — 160 guides at Cy-Fair Helping Hands, 90 English and
+     70 Spanish. "What we measure" carries comprehension scores, which do not
+     exist yet. A count of guides is not a count of people helped, and putting
+     the two under one heading is how that line gets blurred.
 
      STILL WAITING: two photograph slots, commented out, in .workshops__grid
      and .host__grid. Uncomment one and the section relayouts on its own.
@@ -261,19 +262,53 @@
     </section>
 
     <!-- ============================================================
-         WHAT WE MEASURE — real numbers now. The placeholder is gone.
+         THE WORK SO FAR — counts, and only counts. Guides handed out,
+         sessions run, places visited. A count is a fact you can stand on and
+         it is not an outcome, which is why it lives here and not in the
+         "What we measure" band below.
 
-         TWO KINDS OF NUMBER LIVE HERE, and keeping them apart is the whole
-         point of the section:
+         TO ADD AN EVENT: copy one <li>, change the number, the place and the
+         split. Every .tally__part inside a row must add up to that row's
+         .tally__n — .github/scripts/check_numbers.py enforces it on every
+         push, so a half-finished edit fails before it is live.
 
-           1. COUNTS. Guides handed out, sessions run. A count is a fact you
-              can stand on. 90 + 70 = 160; if you edit one, edit all three.
-           2. COMPREHENSION SCORES. These do not exist yet. When they do,
-              they go in the same band in this shape:
+         The numeral column sizes itself to the widest number across all
+         rows, so figures stay aligned as events are added.
+         ============================================================ -->
+    <section class="tally" id="numbers" aria-labelledby="numbers-h">
+      <div class="wide">
+        <div class="tally__head" data-reveal>
+          <h2 id="numbers-h">The work so far.</h2>
+          <p class="tally__lede">Counts, not estimates. We add to this after every event.</p>
+        </div>
 
-                <p class="measure__figure">
-                  <b>16 of 23</b> participants improved their comprehension score.
-                </p>
+        <ul class="tally__list" role="list" data-reveal>
+          <li>
+            <p class="tally__n">160</p>
+            <div class="tally__body">
+              <h3>Guides handed out at Cy-Fair Helping Hands</h3>
+              <p><b class="tally__part">90</b> in English. <b class="tally__part">70</b> in Spanish.</p>
+            </div>
+          </li>
+
+          <!-- ADD THE NEXT EVENT HERE -->
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHAT WE MEASURE — the comprehension promise, and the rule that
+         governs it. This band is about scores, not counts. Counts live in
+         "The work so far" above; keeping them in separate sections is what
+         stops a number of guides reading as a number of people helped.
+
+         WHEN THERE ARE COMPREHENSION SCORES, swap the sentence below for
+         this shape:
+
+           <p class="measure__figure">
+             <b>16 of 23</b> participants improved their comprehension score.
+           </p>
 
          THE DENOMINATOR IS NOT OPTIONAL. "16 of 23", never "70%". A
          percentage with no bottom number is a claim the work has not earned,
@@ -281,13 +316,8 @@
 
          What may never be claimed here, whatever the numbers say: better
          adherence, prevented errors, changed health outcomes, "clinically
-         proven", "research-backed". A count of guides is a count of guides.
-         Comprehension scores are what gets measured, so comprehension
-         scores are what gets reported.
-
-         TO ADD THE NEXT EVENT: the band is built for one headline figure.
-         If a second event needs its own line, put it in .measure__split
-         rather than growing the headline into a list.
+         proven", "research-backed". Comprehension scores are what gets
+         measured, so comprehension scores are what gets reported.
          ============================================================ -->
     <section class="measure" id="measure" aria-labelledby="measure-h">
       <div class="wide">
@@ -295,19 +325,17 @@
 
           <h2 class="section-mark" id="measure-h">What we measure</h2>
 
+          <!-- One word longer than it used to be. "Our first numbers" stopped
+               being true the moment the counts above went live, and a sentence
+               that contradicts the section above it costs more than it saves. -->
           <p class="measure__figure">
-            <b>160 guides</b> handed out at Cy-Fair Helping Hands.
+            Our first comprehension numbers arrive with our first workshops.
           </p>
 
-          <ul class="measure__split" role="list">
-            <li><span class="measure__n">90</span> <span>in English</span></li>
-            <li><span class="measure__n">70</span> <span>in Spanish</span></li>
-          </ul>
-
           <p class="measure__note">
-            That is guides handed out, not a health outcome. We test comprehension
-            before and after every session, and those scores carry their
-            denominator. Sixteen of twenty-three, never seventy percent.
+            We test comprehension before and after every session. Every result we
+            publish comes with its denominator. Sixteen of twenty-three, never
+            seventy percent.
           </p>
 
         </div>

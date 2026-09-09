@@ -154,7 +154,8 @@ for this reason.
 **Rhythm.** The variation down the page is deliberate, and it is the part
 easiest to destroy by adding one more section in the "house style". In order:
 amber field, thin routing strip, one enormous statement alone on the screen,
-three columns of what we do, a full-bleed amber band for the numbers, guides on a
+three columns of what we do, a counts ledger, a full-bleed amber band for the
+comprehension promise, guides on a
 recessed band, two-column workshops, a deliberately narrow and quiet checks
 list, full-bleed reversed host, volunteer on
 a band again. If everything becomes the same frame, the design is gone even if
@@ -315,21 +316,36 @@ own reviewed content, not a slot in the hero.
 IBM Plex Mono went with them. It existed to give transcribed documents their
 own voice, and there is nothing left on the page being transcribed.
 
-## What we measure — the numbers
+## The work so far, and what we measure
 
-The band publishes **160 guides handed out at Cy-Fair Helping Hands, 90 in
-English and 70 in Spanish**. That split does real work: the site claims English
-and Spanish in three other places, and this is the only one that proves it with
-a number.
+**Two kinds of number, two separate sections, on purpose.** A count of guides is
+not a count of people helped, and putting them under one heading is how that
+line gets blurred.
 
-**Two kinds of number live here, and keeping them apart is the point.**
+### The work so far — counts
 
-1. **Counts.** Guides handed out, sessions run. A count is a fact you can stand
-   on, and it is not an outcome. The band says so in its own copy: *"That is
-   guides handed out, not a health outcome."*
-2. **Comprehension scores.** These do not exist yet. When they do, they go in
-   the same band as the headline figure, in this shape:
-   `<b>16 of 23</b> participants improved their comprehension score.`
+Guides handed out, sessions run, places visited. Today that is **160 guides at
+Cy-Fair Helping Hands, 90 in English and 70 in Spanish**. The split does real
+work: the site claims English and Spanish in three other places, and this is the
+only one that proves it with a number.
+
+A count is a fact you can stand on, and it is not an outcome.
+
+**To add an event**, copy one `<li>` in `.tally__list` and change the number, the
+place and the split. The numeral column is `auto`, which in CSS Grid sizes to the
+widest content across every row — so figures stay aligned down the column as
+events are added, without hard-coding a width a four-digit number would blow out.
+
+### What we measure — the comprehension promise
+
+This band is about scores, and there are none yet. It reads *"Our first
+comprehension numbers arrive with our first workshops."* That sentence is one
+word longer than it used to be: "Our first numbers" stopped being true the moment
+the counts above went live, and a sentence contradicting the section above it
+costs more than it saves.
+
+When there are scores, they go in the same band in this shape:
+`<b>16 of 23</b> participants improved their comprehension score.`
 
 **The denominator is not optional.** "16 of 23", never "70%". A percentage with
 no bottom number is a claim the work has not earned, and a library programming
@@ -343,17 +359,21 @@ scores are what gets reported.
 ### The guard
 
 `.github/scripts/check_numbers.py` runs on every push and pull request via
-`.github/workflows/check-numbers.yml`, and enforces exactly two things:
+`.github/workflows/check-numbers.yml`, and enforces two things:
 
-- **the split adds up to the headline** — publish "160" over "90 / 70", change
-  one and forget the others, and the site is quietly publishing arithmetic that
-  does not work
-- **no bare percentage in the visible text** — the rule above, mechanically
+- **every row's split adds up to that row's headline.** Publish 160 over 90/70,
+  change one and forget the others, and the site is quietly publishing arithmetic
+  that does not work. Checked per row, so adding a second event cannot mask a
+  broken first one.
+- **no bare percentage in the visible text** — the denominator rule, mechanically.
+  It strips tags and comments first, so it reads what a person reads: a
+  percentage in a code comment is fine, one on the page is not.
 
-Run it locally, unchanged: `python3 .github/scripts/check_numbers.py`. It exits
-0 when clean and prints what is wrong when it isn't. Both failure modes are
-tested; so is the false positive it would otherwise hit on the `%20` escapes in
-the mailto link.
+Run it locally, unchanged: `python3 .github/scripts/check_numbers.py`. Four
+failure modes are tested — broken row arithmetic, a broken row hidden behind a
+second good one, a bare percentage anywhere on the page, and the counts section
+being renamed out from under it — plus the false positive it would otherwise hit
+on the `%20` escapes in the mailto link.
 
 It replaced `impact-placeholder.yml`, which watched for the placeholder sentence
 *"Our first numbers arrive with our first workshops"* and opened an issue if it
@@ -362,7 +382,7 @@ Monday after the deadline, and opened issue #1. A check that can only fire once
 is finished once, so it was retired for one that guards the mistakes you make
 while editing numbers, which is the only time anyone touches them.
 
-## Adding a guide## Adding a guide
+## Adding a guide
 
 1. Put the PDF in `assets/guides/`.
 2. Make a cover image from its first page, about 620px wide, saved as `.jpg`
@@ -470,7 +490,7 @@ These aren't decoration — please keep them when editing:
   suited the imprint, but the people this page is for should not have to squint
   at the navigation.
 - Every text/background pair on the rendered page meets WCAG AA. Verified in a
-  real browser rather than by eye: 80 visible text nodes measured at 1440, 768
+  real browser rather than by eye: 90 visible text nodes measured at 1440, 768
   and 390px, none below its threshold. Amber is light, so it always carries
   dark ink, never white.
 - Fully keyboard navigable, with a skip link and a visible focus ring that flips
@@ -487,6 +507,23 @@ These aren't decoration — please keep them when editing:
   spill past its own content box into the gutter while the document still
   measures clean — that is exactly how a real bug hid here once, so both checks
   now run.
+
+- **A word can overflow while the web font is still loading.** `font-display:
+  swap` paints the fallback face first, and the system-ui fallback runs about
+  16% wider than Atkinson — enough to push "Understanding" and the footer email
+  past the edge of a 320–450px phone and let the page scroll sideways until the
+  real font arrives. On library wifi that is seconds, not a flicker. Swept at
+  every 5px from 320 to 1920 with `**/*.woff2` blocked, which is the worst case.
+
+  The fix is `overflow-wrap` — but **`break-word` is not enough**, and that
+  distinction cost a round of debugging. `break-word` breaks a long word
+  visually while leaving the element's *min-content* width unchanged, so the
+  flex and grid items above it still refuse to shrink and the overflow
+  survives. `overflow-wrap: anywhere` reduces min-content too. Flex and grid
+  items also need `min-width: 0`, since they default to `min-width: auto` and
+  will not go below their content without it. Both are on the footer contact
+  links; headings get the simpler `break-word`, which is sufficient there
+  because they are not flex items.
 
 - **`rem` inside a media query does not mean what it looks like.** It always
   resolves against the browser's initial root font size of 16px and ignores

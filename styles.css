@@ -41,16 +41,17 @@
    9.  Three doors
    10. Our why
    11. What we do
-   12. What we measure — the numbers
-   13. The guides
-   14. The workshops
-   15. How we check it
-   16. Host
-   17. Volunteer
-   18. Photography slots
-   19. Facts, actions
-   20. Footer
-   21. Responsive
+   12. The work so far — counts
+   13. What we measure — the comprehension promise
+   14. The guides
+   15. The workshops
+   16. How we check it
+   17. Host
+   18. Volunteer
+   19. Photography slots
+   20. Facts, actions
+   21. Footer
+   22. Responsive
    ========================================================================== */
 
 /* ---------- 1. Fonts ------------------------------------------------------
@@ -153,7 +154,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 { margin: 0; color: var(--ink); text-wrap: balance; }
+/* overflow-wrap is a safety net, not a layout choice. With Atkinson loaded no
+   word on this page is ever wider than its line box — swept at every 5px from
+   320 to 1920. But `font-display: swap` paints the FALLBACK face first, and
+   the system-ui fallback runs about 16% wider than Atkinson, which is enough
+   to push "Understanding" past the edge of a 320-450px phone and let the page
+   scroll sideways until the real font arrives. On library wifi that is not a
+   flicker, it is a few seconds. This costs nothing when the font is loaded and
+   it never triggers. */
+h1, h2, h3 { margin: 0; color: var(--ink); text-wrap: balance; overflow-wrap: break-word; }
 h1 { font-size: var(--t1); font-weight: 800; line-height: .96; letter-spacing: -0.035em; }
 h2 { font-size: var(--t2); font-weight: 800; line-height: 1.06; letter-spacing: -0.028em; }
 h3 { font-size: 1.24rem; font-weight: 700; line-height: 1.28; letter-spacing: -0.012em; }
@@ -436,18 +445,53 @@ a:hover { color: var(--navy-deep); }
 .does__list h3 { margin-bottom: .5rem; }
 .does__list p { font-size: 1rem; color: var(--ink-2); }
 
-/* ---------- 12. What we measure — the numbers ----------------------------
-   One headline figure, a split under it, and the standing rule. The band is
-   the loudest thing on the page after the hero, which is right: it is the
-   only place MedLit says something that can be checked.
+/* ---------- 12. The work so far — counts -------------------------------
+   Counts, and only counts. The numeral column is `auto`, which in CSS Grid
+   sizes to the widest content across every row — so figures stay aligned
+   down the column as events are added, without hard-coding a width that a
+   four-digit number would blow out.
+   -------------------------------------------------------------------------- */
+.tally {
+  background: var(--stock-2);
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+}
+.tally__head { max-width: 42rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.tally__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.1rem; }
+
+.tally__list { list-style: none; }
+.tally__list > li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: .3rem clamp(1.5rem, 3vw, 2.75rem);
+  align-items: start;
+  padding-block: clamp(1.4rem, 2.5vw, 2rem);
+  border-top: 5px solid var(--amber);
+}
+.tally__list > li + li { margin-top: .35rem; }
+.tally__n {
+  font-size: clamp(2.9rem, 1.4rem + 4.4vw, 5.2rem);
+  font-weight: 800;
+  line-height: .88;
+  letter-spacing: -0.045em;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  margin: 0;
+}
+.tally__body h3 { margin-bottom: .45rem; }
+.tally__body p { margin: 0; font-size: 1.06rem; color: var(--ink-2); }
+/* The parts of the split. They are <b> so they carry weight without becoming
+   a second type size, and so check_numbers.py can find and add them up. */
+.tally__part { color: var(--navy-deep); font-weight: 800; }
+
+/* ---------- 13. What we measure — the comprehension promise -------------
+   This band is about SCORES, not counts. Counts live in "The work so far"
+   above. Keeping them in separate sections is what stops a number of guides
+   reading as a number of people helped.
 
    THE RULE THAT MUST SURVIVE: every number published here carries its
    denominator. "16 of 23", never "70%". A percentage without its bottom
    number is a claim the work has not earned.
-
-   The split exists to make the bilingual work visible. The site claims
-   English and Spanish in three other places; this is the only one that
-   proves it with a number.
    -------------------------------------------------------------------------- */
 .measure {
   background: var(--amber);
@@ -465,45 +509,16 @@ a:hover { color: var(--navy-deep); }
 }
 /* The number itself, when there is one. */
 .measure__figure b { color: var(--navy-deep); font-weight: 800; }
-
-/* The split. The heavy rule lives here rather than on the note below, so the
-   band has one horizontal division and not two competing ones. Baseline
-   alignment, not centre: the numeral and its label should sit on the same
-   line the way they would if you wrote them out. */
-.measure__split {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: .4rem clamp(1.75rem, 4vw, 3.5rem);
-  margin: 1.9rem 0 0;
-  padding-top: 1.5rem;
-  border-top: 4px solid var(--navy-deep);
-}
-.measure__split > li {
-  display: flex;
-  align-items: baseline;
-  gap: .55rem;
-  font-size: 1.06rem;
-  font-weight: 700;
-  color: var(--ink);
-}
-.measure__n {
-  font-size: clamp(1.6rem, 1.2rem + 1.3vw, 2.25rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.035em;
-  color: var(--navy-deep);
-  font-variant-numeric: tabular-nums;
-}
-
 .measure__note {
   font-size: 1.06rem;
   color: var(--navy-deep);
   max-width: 42rem;
-  margin: 1.5rem 0 0;
+  margin: 1.6rem 0 0;
+  padding-top: 1.4rem;
+  border-top: 4px solid var(--navy-deep);
 }
 
-/* ---------- 13. The guides ----------------------------------------------- */
+/* ---------- 14. The guides ----------------------------------------------- */
 .guides {
   background: var(--stock-2); border-top: 1px solid var(--rule);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
@@ -558,7 +573,7 @@ a:hover { color: var(--navy-deep); }
   }
 }
 
-/* ---------- 14. The workshops -------------------------------------------- */
+/* ---------- 15. The workshops -------------------------------------------- */
 .workshops { padding-block: clamp(3.25rem, 6vw, 5.5rem); }
 .workshops__grid {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
@@ -566,7 +581,7 @@ a:hover { color: var(--navy-deep); }
 }
 .workshops__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
 
-/* ---------- 15. How we check it ------------------------------------------ */
+/* ---------- 16. How we check it ------------------------------------------ */
 .review { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 5.5vw, 4.75rem); }
 .checks { list-style: none; margin-top: 2.25rem; }
 .checks > li {
@@ -581,7 +596,7 @@ a:hover { color: var(--navy-deep); }
 .checks > li > p  { grid-column: 2; grid-row: 2; margin: 0; font-size: 1rem; color: var(--ink-2); }
 .checks .callout { grid-column: 1; grid-row: 1; margin-top: .12em; }
 
-/* ---------- 16. Host ----------------------------------------------------- */
+/* ---------- 17. Host ----------------------------------------------------- */
 .host {
   background: var(--navy-deep); color: var(--on-navy);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
@@ -593,7 +608,7 @@ a:hover { color: var(--navy-deep); }
 .host h2 { color: var(--stock); }
 .host__body p { color: var(--on-navy); }
 
-/* ---------- 17. Volunteer ------------------------------------------------ */
+/* ---------- 18. Volunteer ------------------------------------------------ */
 .volunteer {
   background: var(--stock-2); border-top: 1px solid var(--rule);
   padding-block: clamp(3.25rem, 6vw, 5.5rem);
@@ -604,7 +619,7 @@ a:hover { color: var(--navy-deep); }
 }
 .volunteer__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
 
-/* ---------- 18. Photography slots ----------------------------------------
+/* ---------- 19. Photography slots ----------------------------------------
    There are no photographs on this site yet, and there is no placeholder
    pretending to be one. What exists is the layout that will hold them, so
    that adding the first real photograph is a markup change with no CSS to
@@ -644,7 +659,7 @@ a:hover { color: var(--navy-deep); }
   }
 }
 
-/* ---------- 19. Facts, actions ------------------------------------------- */
+/* ---------- 20. Facts, actions ------------------------------------------- */
 .facts { border-top: 3px solid var(--navy); }
 .facts > div {
   display: grid; grid-template-columns: 11rem minmax(0, 1fr);
@@ -690,7 +705,7 @@ a:hover { color: var(--navy-deep); }
 .act__fine { font-size: .92rem; color: var(--ink-2); }
 .host .act__fine { color: var(--on-navy-dim); }
 
-/* ---------- 20. Footer --------------------------------------------------- */
+/* ---------- 21. Footer --------------------------------------------------- */
 .foot {
   background: var(--navy-deep); color: var(--on-navy);
   padding-block: clamp(2.75rem, 5vw, 4rem) 1.9rem;
@@ -711,8 +726,22 @@ a:hover { color: var(--navy-deep); }
   text-transform: uppercase; color: var(--amber); margin: 0 0 .8rem;
 }
 .foot__contact ul { list-style: none; display: grid; gap: .25rem; }
+/* The same safety net as the headings, for the same reason: the email address
+   is 28 unbreakable characters, and in the wider fallback face it does not fit
+   a 320px screen, so the footer pushes the page sideways until Atkinson loads.
+
+   `anywhere`, not `break-word`, and the difference is the whole fix.
+   `break-word` breaks a long word visually but leaves the element's
+   MIN-CONTENT width unchanged — so the flex and grid items above still refuse
+   to shrink and the overflow survives. `anywhere` reduces min-content too,
+   which is what actually lets the column narrow. The min-width: 0 below does
+   the same job for the flex item, since a flex item defaults to
+   min-width: auto and will not go under its content otherwise. */
+.foot__brand, .foot__contact { min-width: 0; }
+.foot__contact ul, .foot__contact li { min-width: 0; }
 .foot__contact a {
   display: inline-flex; align-items: center; gap: .7rem; min-height: 44px;
+  min-width: 0; overflow-wrap: anywhere;
   color: var(--stock); text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, .4);
 }
@@ -728,7 +757,7 @@ a:hover { color: var(--navy-deep); }
   color: var(--on-navy-dim); font-size: .95rem; max-width: 46rem;
 }
 
-/* ---------- 21. Responsive ----------------------------------------------
+/* ---------- 22. Responsive ----------------------------------------------
    Fluid by default; these are the places that need help. Overflow is
    measured, not eyeballed — scrollWidth against innerWidth at 320, 360, 390,
    414, 768, 1024, 1280, 1440 and 1920px.
@@ -743,6 +772,12 @@ a:hover { color: var(--navy-deep); }
 }
 
 @media (max-width: 40rem) {
+  /* The numeral moves above its line rather than beside it. At 5.2rem it eats
+     a third of a phone screen, and the label beside it wraps to one word per
+     line. */
+  .tally__list > li { grid-template-columns: minmax(0, 1fr); }
+  .tally__n { font-size: clamp(2.6rem, 1.5rem + 4vw, 3.4rem); }
+
   .brand__mark { height: 2.6rem; }
   .brand__tagline { font-size: .9rem; padding-left: .75rem; }
   .topnav ul { gap: 0 1.2rem; }
