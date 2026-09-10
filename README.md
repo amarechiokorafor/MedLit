@@ -12,12 +12,37 @@ assets/favicon.png               browser tab icon
 assets/apple-touch-icon.png      iOS home-screen icon
 assets/fonts/                    self-hosted woff2 (2 files, ~65 KB total)
 assets/guides/                   guide PDFs and their cover images
+tools/repair-logo-interior.py    one-off: restores the white inside the mark
 ```
 
 Both lockups are cut from the official logo PDF at print resolution with
 transparent backgrounds. The favicon is the vertical lockup squared off — it
 keeps the wordmark, which a bottle-only icon would lose. In the footer the
 wordmark sits on a white chip, because navy-on-navy would disappear.
+
+**The white inside the mark is artwork, not background.** Cutting the logo out
+of the PDF deleted its white background, which was right outside the bottle and
+wrong inside it: the thin stripe between the lid and the bottle body went
+transparent too, and came back as a black gash on any dark surface — a dark
+browser tab, an iOS home screen. `tools/repair-logo-interior.py` fixes it and
+documents why the two obvious approaches don't:
+
+- `binary_fill_holes` only recovers *enclosed* regions. That stripe runs out
+  past the lid's overhang at both ends and reaches the canvas edge, so it reads
+  as background. It recovered 156 of 65,536 pixels.
+- A morphological close bridges the stripe, but at a radius wide enough to do
+  that it also bridges the gap under the dot of the "i" — letter spacing, which
+  then gets painted white and looks like a smear.
+
+What works is closing to find candidate gaps, then keeping only the ones the
+*bottle* encloses. The test is the colour of the artwork ringing each gap: the
+bottle is warm (R > B), the wordmark is navy (B > R). And the recovered pixels
+are **composited over white, not painted white** — a flat overwrite throws away
+the anti-aliased edges and changes how the mark looks on the white surfaces it
+actually sits on. Verified bit-identical on white, fixed on black.
+
+`apple-touch-icon.png` is flattened onto opaque white outright, because iOS
+composites a transparent home-screen icon onto **black**.
 
 ## The volunteer form
 
