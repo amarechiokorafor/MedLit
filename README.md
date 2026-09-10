@@ -22,24 +22,45 @@ wordmark sits on a white chip, because navy-on-navy would disappear.
 
 **The white inside the mark is artwork, not background.** Cutting the logo out
 of the PDF deleted its white background, which was right outside the bottle and
-wrong inside it: the thin stripe between the lid and the bottle body went
-transparent too, and came back as a black gash on any dark surface — a dark
-browser tab, an iOS home screen. `tools/repair-logo-interior.py` fixes it and
-documents why the two obvious approaches don't:
+wrong inside it. Two whites are drawn artwork and went transparent with
+everything else:
 
-- `binary_fill_holes` only recovers *enclosed* regions. That stripe runs out
-  past the lid's overhang at both ends and reaches the canvas edge, so it reads
-  as background. It recovered 156 of 65,536 pixels.
-- A morphological close bridges the stripe, but at a radius wide enough to do
-  that it also bridges the gap under the dot of the "i" — letter spacing, which
-  then gets painted white and looks like a smear.
+1. **The label** — the white band across the bottle carrying the wordmark and
+   the tagline. Losing it splits the bottle into two disconnected amber pieces
+   with the wordmark floating in a void.
+2. **The lid stripe** — the thin line between the lid and the bottle's
+   shoulder. Losing it puts a black gash across the neck.
 
-What works is closing to find candidate gaps, then keeping only the ones the
-*bottle* encloses. The test is the colour of the artwork ringing each gap: the
-bottle is warm (R > B), the wordmark is navy (B > R). And the recovered pixels
-are **composited over white, not painted white** — a flat overwrite throws away
-the anti-aliased edges and changes how the mark looks on the white surfaces it
-actually sits on. Verified bit-identical on white, fixed on black.
+On a white page neither is visible. On a dark browser tab, an iOS home screen or
+a dark-mode preview, both are. `tools/repair-logo-interior.py` fixes it, and
+records the three approaches that don't work, because each one looks right until
+you check:
+
+- **`binary_fill_holes`** only recovers *fully enclosed* regions. The lid stripe
+  runs past the lid's overhang to the canvas edge, and the label band has no
+  boundary left at all — the bottle's own edge lines through that band were
+  white too and went with it. Recovered 156 of 65,536 pixels.
+- **A morphological close** bridges the lid stripe, but at a radius wide enough
+  to do that it also bridges the gap under the dot of the "i" — letter spacing,
+  painted white, looking like a smear.
+- **Filtering those candidates by the colour ringing them** (bottle is warm,
+  wordmark is navy) fixes the smear and *still* misses the label band, because
+  that band is ringed by both the amber bottle and the navy wordmark sitting on
+  it.
+
+What works is rebuilding the bottle instead of hunting for gaps. The body is a
+single flat colour, `#F7C76D`, that nothing else in the mark uses. Take those
+pixels, drop specks, and the **convex hull** of what remains is the bottle — a
+rotated rectangle with a rounded base, convex enough that a hull traces it
+within a pixel or two. Every transparent pixel inside that hull is interior
+white. The lid stripe sits just outside the hull, so the close-and-colour-filter
+still earns its keep for that one.
+
+Recovered pixels are **composited over white, not painted white** — a flat
+overwrite discards anti-aliased edges and changes how the mark looks on the
+white surfaces it actually sits on. Verified bit-identical on white for all
+three assets, so the masthead, the footer chip and the sharing card are
+untouched.
 
 `apple-touch-icon.png` is flattened onto opaque white outright, because iOS
 composites a transparent home-screen icon onto **black**.
