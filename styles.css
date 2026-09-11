@@ -893,13 +893,26 @@ a:hover { color: var(--navy-deep); }
 
 /* Light sections: white warming to cream, the glows swapped between pairs
    so neighbouring sections never mirror each other. */
-.intro, .does, .review {
+.intro, .review {
   background:
     radial-gradient(38rem 22rem at 100% 0%, rgba(244, 168, 56, .12), transparent 70%),
     radial-gradient(34rem 22rem at 0% 100%, rgba(11, 62, 160, .07), transparent 70%),
     linear-gradient(180deg, var(--stock), #fbfaf7);
 }
-.why, .workshops {
+/* Intro, Our why and What we do sit back to back, so each gets a ground of
+   its own — white, then a cool blue, then a warm cream — and a faint rule
+   where it starts. Three near-identical off-whites read as one long section. */
+.why {
+  background:
+    radial-gradient(36rem 24rem at 100% 100%, rgba(244, 168, 56, .14), transparent 70%),
+    linear-gradient(180deg, #eef3fc, #e5ecf9);
+}
+.does {
+  background:
+    radial-gradient(40rem 24rem at 100% 0%, rgba(244, 168, 56, .16), transparent 70%),
+    linear-gradient(180deg, #f9f6ee, #f3efe4);
+}
+.workshops {
   background:
     radial-gradient(40rem 26rem at 0% 0%, rgba(11, 62, 160, .08), transparent 70%),
     radial-gradient(36rem 24rem at 100% 100%, rgba(244, 168, 56, .14), transparent 70%),
@@ -914,6 +927,8 @@ a:hover { color: var(--navy-deep); }
 /* The gradients already separate these; a hairline on top would be a
    second divider doing the same job. */
 .does, .review, .guides, .volunteer { border-top: 0; }
+.why  { border-top: 1px solid rgba(11, 62, 160, .12); }
+.does { border-top: 1px solid rgba(160, 90, 4, .14); }
 
 .intro::before, .why::before, .does::before, .workshops::before,
 .review::before, .guides::before, .volunteer::before {
