@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=20">
+  <link rel="stylesheet" href="styles.css?v=21">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -223,22 +223,60 @@
     </section>
 
     <!-- ============================================================
-         OUR WHY — one enormous statement and nothing else on screen. The
-         heading is small on purpose: the statement under it is the display
-         type, and two things that size would fight.
+         OUR WHY — the problem told twice: in words beside a photograph,
+         then in three figures underneath.
+
+         EVERY FIGURE HERE IS SOURCED, and its source line links to it.
+         Figures are written "1 in 8", never as a bare percentage —
+         check_numbers.py rejects those. If a figure changes, change its
+         source in the same edit.
+           - 75 million and 1 in 8 (12 percent proficient): U.S. Department
+             of Education, NCES, 2003 National Assessment of Adult Literacy.
+           - Nearly 1 in 2 (46.3 percent), and more than 1 in 3 among
+             adequate readers (37.7 percent): Davis et al., "Literacy and
+             Misunderstanding Prescription Drug Labels," Annals of Internal
+             Medicine 145(12), 2006.
          ============================================================ -->
     <section class="why" id="why" aria-labelledby="why-h">
-      <div class="read" data-reveal>
-        <h2 class="section-mark" id="why-h">Our why</h2>
-        <p class="why__statement">
-          You get handed a prescription label, a lab result, an insurance letter.
-          The print is small and the words are hard to understand. The person who
-          could explain it has already moved on to the next patient.
-        </p>
-        <p class="why__turn">
-          So you guess. And guessing about your own health is a risk no one should
-          have to take.
-        </p>
+      <div class="wide">
+        <div class="why__grid" data-reveal>
+          <div class="why__text">
+            <h2 id="why-h">Our why</h2>
+            <p class="why__statement">
+              You get handed a prescription label, a lab result, an insurance
+              letter. The print is small and the words are hard to understand.
+              The person who could explain it has already moved on to the next
+              patient.
+            </p>
+            <p class="why__turn">
+              So you guess. And guessing about your own health is a risk no one
+              should have to take.
+            </p>
+          </div>
+          <figure class="why__photo">
+            <img src="assets/why-photo.jpg"
+                 alt="An older man in glasses squinting at the label on a pill bottle."
+                 width="612" height="408" loading="lazy">
+          </figure>
+        </div>
+
+        <ul class="why__facts" role="list" data-reveal>
+          <li>
+            <p class="why__n">75 million</p>
+            <p class="why__label">U.S. adults have basic or below-basic health literacy.</p>
+            <p class="why__src"><a href="https://nces.ed.gov/naal/health_results.asp">U.S. Department of Education, 2003</a></p>
+          </li>
+          <li>
+            <p class="why__n">1 in 8</p>
+            <p class="why__label">Only about 1 in 8 U.S. adults have proficient health literacy.</p>
+            <p class="why__src"><a href="https://nces.ed.gov/use-work/resource-library/report/statistical-analysis-report/health-literacy-americas-adults-results-2003-national-assessment-adult-literacy">U.S. Department of Education, 2003</a></p>
+          </li>
+          <li>
+            <p class="why__n">1 in 2</p>
+            <p class="why__label">Nearly half of patients misread at least one instruction on common prescription labels. Even among strong readers, more than 1 in 3 did.</p>
+            <p class="why__src"><a href="https://www.acpjournals.org/doi/10.7326/0003-4819-145-12-200612190-00144">Annals of Internal Medicine, 2006</a></p>
+          </li>
+        </ul>
       </div>
     </section>
 

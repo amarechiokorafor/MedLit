@@ -504,25 +504,61 @@ a:hover { color: var(--navy-deep); }
 .intro__action { margin-top: 1.4rem; }
 
 /* ---------- 10. Our why -------------------------------------------------
-   A narrow measure, very large type, deep space, and nothing else on the
-   screen. The page's held breath.
+   The problem told twice: a big heading and a short statement beside a
+   photograph, then three sourced figures on navy cards underneath.
    -------------------------------------------------------------------------- */
 .why { padding-block: clamp(2.75rem, 5vw, 4.25rem); }
+.why__grid {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem); align-items: center;
+}
+.why h2 { font-size: clamp(2.2rem, 1.3rem + 3vw, 3.6rem); margin-bottom: 1.1rem; }
 .why__statement {
-  font-family: var(--display);
-  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.4rem);
-  font-weight: 600; line-height: 1.22; letter-spacing: -0.01em;
-  color: var(--ink); text-wrap: pretty;
+  font-size: clamp(1.05rem, 1rem + .35vw, 1.25rem);
+  line-height: 1.6; color: var(--ink); text-wrap: pretty;
 }
-/* The turn used to sit under a 4px amber slab. It doesn't need one: dropping a
-   size, changing colour and taking a full line of air says "and here is the
-   consequence" without drawing a line to say it. */
 .why__turn {
-  font-size: clamp(1.2rem, .95rem + 1.3vw, 1.85rem);
-  font-weight: 500; line-height: 1.35; color: var(--navy-deep);
-  margin-top: 1.5em;
-  text-wrap: pretty;
+  font-family: var(--display);
+  font-size: clamp(1.1rem, 1rem + .5vw, 1.35rem);
+  font-weight: 600; line-height: 1.4; color: var(--navy-deep);
+  margin-top: 1em; text-wrap: pretty;
 }
+.why__photo { margin: 0; }
+.why__photo img {
+  width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(20, 22, 28, .1), 0 24px 44px -24px rgba(6, 37, 99, .5);
+}
+
+/* The figures. Navy cards on the blue ground, the number in white at
+   display size, the source pinned to the bottom in amber so every card's
+   source lines up whatever the length of its sentence. */
+.why__facts {
+  list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem); margin-top: clamp(2rem, 4vw, 3rem);
+}
+.why__facts > li {
+  display: flex; flex-direction: column; gap: .5rem;
+  padding: clamp(1.4rem, 2.4vw, 1.9rem);
+  border-radius: 14px;
+  background:
+    radial-gradient(22rem 14rem at 100% 0%, rgba(11, 62, 160, .9), transparent 70%),
+    linear-gradient(160deg, var(--navy-deep), #08307f);
+  box-shadow: 0 18px 36px -22px rgba(6, 37, 99, .6);
+}
+.why__n {
+  margin: 0; font-family: var(--display);
+  font-size: clamp(2.2rem, 1.5rem + 2.2vw, 3.2rem);
+  font-weight: 700; line-height: 1; letter-spacing: -0.02em; color: var(--stock);
+}
+.why__label { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--on-navy); }
+.why__src {
+  margin: auto 0 0; padding-top: .6rem;
+  font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+}
+.why__src a { color: var(--amber); text-decoration: none; }
+.why__src a:hover { text-decoration: underline; }
+.why__facts :focus-visible { outline-color: var(--amber); }
 
 /* ---------- 11. What we do ----------------------------------------------- */
 .does { border-top: 1px solid var(--rule); padding-block: clamp(2.5rem, 4.5vw, 3.75rem); }
@@ -963,7 +999,8 @@ a:hover { color: var(--navy-deep); }
    414, 768, 1024, 1280, 1440 and 1920px.
    -------------------------------------------------------------------------- */
 @media (max-width: 60rem) {
-  .workshops__grid, .volunteer__grid, .host__grid { grid-template-columns: minmax(0, 1fr); }
+  .workshops__grid, .volunteer__grid, .host__grid,
+  .why__grid, .why__facts { grid-template-columns: minmax(0, 1fr); }
   .does__list { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
 
   .doors ul { grid-template-columns: minmax(0, 1fr); }
