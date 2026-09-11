@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="styles.css?v=14">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -156,23 +156,40 @@
   <main id="main">
 
     <!-- ============================================================
-         THE AMBER FIELD. The bottle's own colour at full strength, and the
-         largest type on the site.
+         HERO — a photograph with the claim set over it.
+         The photo is assets/hero-photo.jpg. alt="" on purpose: it is
+         decorative, and the headline carries the meaning. If the file is
+         missing, the section falls back to plain navy and still reads.
          ============================================================ -->
     <section class="hero" id="top">
-      <div class="wide">
-        <div class="hero__head">
-          <p class="kicker">Student-led nonprofit</p>
-          <!-- One non-breaking space, not two. It keeps "a" from being
-               stranded at the end of a line, which is the thing worth
-               preventing. Binding "privilege" on as well made a 14-character
-               unbreakable run wider than a 375px phone could hold. -->
-          <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a <em>privilege</em>.</h1>
-          <p class="hero__lede">
-            MedLit is a student-led nonprofit that makes health information
-            understandable. Free workshops and free plain-language guides.
-          </p>
-        </div>
+      <img class="hero__photo" src="assets/hero-photo.jpg" alt=""
+           width="2000" height="1334" fetchpriority="high"
+           onerror="this.remove()">
+      <div class="wide hero__inner">
+        <!-- One non-breaking space, not two. It keeps "a" from being
+             stranded at the end of a line, which is the thing worth
+             preventing. Binding "privilege" on as well made a 14-character
+             unbreakable run wider than a 375px phone could hold. -->
+        <h1>Understanding your own health shouldn&rsquo;t be&nbsp;a <em>privilege</em>.</h1>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHO WE ARE — one centred paragraph and one button, straight under
+         the photograph. The highlighted phrases are the three things a
+         skimmer should leave with.
+         ============================================================ -->
+    <section class="intro" aria-label="About MedLit">
+      <div class="wide intro__inner">
+        <p class="intro__text">
+          MedLit is a student-led nonprofit that makes health information
+          understandable. We take the documents people are handed at the
+          pharmacy, the lab, and the insurance office, and put them in plain
+          language through <span class="intro__hl">free workshops</span> and
+          <span class="intro__hl">free plain-language guides</span>, in
+          <span class="intro__hl">English and Spanish</span>.
+        </p>
+        <a class="action action--solid intro__action" href="#what-we-do">See what we do</a>
       </div>
     </section>
 
