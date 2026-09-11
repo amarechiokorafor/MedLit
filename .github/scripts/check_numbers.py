@@ -46,7 +46,7 @@ def main() -> int:
     band = re.search(r'<section class="tally".*?</section>', html, flags=re.S)
     if not band:
         failures.append(
-            'No <section class="tally"> found. Was "The work so far" renamed? '
+            'No <section class="tally"> found. Was "Our impact" renamed? '
             "If the counts moved, point this check at wherever they live now."
         )
     else:

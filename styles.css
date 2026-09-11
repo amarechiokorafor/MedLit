@@ -22,7 +22,8 @@
    printable. See the note at the top of index.html before rebuilding either.
 
    Rules worth keeping:
-     1. One typeface. Schibsted Grotesk, everywhere.
+     1. Two faces, no more. DM Sans for headings and big figures, Schibsted
+        Grotesk for everything else.
      2. Amber carries dark ink only. White on amber is 1.7:1.
      3. No decorative bars. Amber is a FIELD — the hero and the measure band —
         never a 4px slab stuck above a heading. Hierarchy comes from size,
@@ -68,8 +69,8 @@
    one set of letterforms across both.
 
    Atkinson Hyperlegible Next was here before it and is still in
-   assets/fonts/ if it ever comes back. Whatever sits here, keep it to ONE
-   family: the moment a display face joins it, the page starts performing
+   assets/fonts/ if it ever comes back. DM Sans, below, sets the headings.
+   Two families is the ceiling: a third and the page starts performing
    instead of reading.
    -------------------------------------------------------------------------- */
 @font-face {
@@ -81,6 +82,19 @@
   font-family: 'Schibsted';
   src: url('assets/fonts/schibsted-grotesk-italic.woff2') format('woff2');
   font-weight: 400 900; font-style: italic; font-display: swap;
+}
+/* DM Sans, for headings and the big figures only. Rounder and lighter than
+   Schibsted at display sizes, so headings can sit at 600-700 and still
+   lead. Variable, with an optical-size axis the browser sets on its own. */
+@font-face {
+  font-family: 'DM Sans';
+  src: url('assets/fonts/dm-sans-var.woff2') format('woff2');
+  font-weight: 100 1000; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('assets/fonts/dm-sans-italic.woff2') format('woff2');
+  font-weight: 100 1000; font-style: italic; font-display: swap;
 }
 /* ---------- 2. Tokens ----------------------------------------------------
    The navy and the amber are the logo's own. Everything else is stock, ink
@@ -121,8 +135,8 @@
 
   /* Extreme scale contrast, which is where the personality lives when there
      is only one typeface for language. --t1 is about six times body. */
-  --t1: clamp(2.9rem, 1rem + 8.1vw, 6.9rem);
-  --t2: clamp(1.85rem, 1.2rem + 2.6vw, 3.1rem);
+  --t1: clamp(2.6rem, 1rem + 6vw, 5.4rem);
+  --t2: clamp(1.6rem, 1.1rem + 1.9vw, 2.5rem);
   --t3: 1.2rem;
 
   --wide:   82rem;
@@ -130,6 +144,7 @@
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
 
   --sans: 'Schibsted', 'Schibsted Grotesk', 'Helvetica Neue', Arial, system-ui, sans-serif;
+  --display: 'DM Sans', 'Helvetica Neue', Arial, system-ui, sans-serif;
 
   --r: 4px;
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -166,13 +181,12 @@ body {
    it is a few seconds. This costs nothing when the font is loaded and it never
    triggers. */
 h1, h2, h3 { margin: 0; color: var(--ink); text-wrap: balance; overflow-wrap: break-word; }
-/* Schibsted is drawn tight already, so the tracking here is gentler than a
-   wider face would need. Going past about -0.02em closes the counters up at
-   display size and the headline stops being scannable. */
-h1 { font-size: var(--t1); font-weight: 800; line-height: 1; letter-spacing: -0.022em; }
-h2 { font-size: var(--t2); font-weight: 800; line-height: 1.08; letter-spacing: -0.018em; }
-h3 { font-size: 1.24rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.008em; }
-h1 em, h2 em, h3 em { font-style: italic; font-weight: 700; }
+/* Headings are DM Sans at 700, not 800 — confident without shouting. */
+h1, h2, h3 { font-family: var(--display); }
+h1 { font-size: var(--t1); font-weight: 700; line-height: 1.04; letter-spacing: -0.015em; }
+h2 { font-size: var(--t2); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
+h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.3; letter-spacing: 0; }
+h1 em, h2 em, h3 em { font-style: italic; font-weight: inherit; }
 
 p { margin: 0 0 1.1em; }
 p:last-child { margin-bottom: 0; }
@@ -318,7 +332,7 @@ a:hover { color: var(--navy-deep); }
     transform: none !important;
     transition: none !important;
   }
-  .masthead, .hero, .measure, .host, .foot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .masthead, .hero, .tally, .measure, .host, .foot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
 
 /* ---------- 6. Widths ---------------------------------------------------- */
@@ -419,10 +433,15 @@ a:hover { color: var(--navy-deep); }
      first line ran straight across the child's face; fully bottom-anchored,
      a 1920px screen cut off the tops of everyone's heads. */
   object-position: 50% 80%;
+  /* Softened so the headline is the sharpest thing in the frame. The scale
+     hides the blur's soft edge, which would otherwise show as a pale rim. */
+  filter: blur(3px) saturate(.85);
+  transform: scale(1.04);
 }
 .hero::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
   background:
+    linear-gradient(rgba(6, 37, 99, .42), rgba(6, 37, 99, .42)),
     linear-gradient(to top, rgba(6, 37, 99, .9) 0%, rgba(6, 37, 99, .55) 32%, rgba(6, 37, 99, 0) 62%),
     linear-gradient(to right, rgba(6, 37, 99, .45) 0%, rgba(6, 37, 99, 0) 55%);
 }
@@ -431,7 +450,7 @@ a:hover { color: var(--navy-deep); }
    down a step and holds to about three lines on desktop. */
 .hero h1 {
   color: var(--stock);
-  font-size: clamp(2.5rem, 1rem + 4vw, 4.4rem);
+  font-size: clamp(2.4rem, 1rem + 3.6vw, 4rem);
   max-width: 13ch;
 }
 .hero h1 em { color: var(--amber); }
@@ -481,8 +500,9 @@ a:hover { color: var(--navy-deep); }
    -------------------------------------------------------------------------- */
 .why { padding-block: clamp(4rem, 9vw, 7.5rem); }
 .why__statement {
-  font-size: clamp(1.65rem, 1.15rem + 2.4vw, 3rem);
-  font-weight: 800; line-height: 1.14; letter-spacing: -0.03em;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.4rem);
+  font-weight: 600; line-height: 1.22; letter-spacing: -0.01em;
   color: var(--ink); text-wrap: pretty;
 }
 /* The turn used to sit under a 4px amber slab. It doesn't need one: dropping a
@@ -516,39 +536,48 @@ a:hover { color: var(--navy-deep); }
    down the column as events are added, without hard-coding a width that a
    four-digit number would blow out.
    -------------------------------------------------------------------------- */
+/* Our impact: a navy band, centred, each event a row of big white figures
+   with an amber icon over each. The total and its parts are set the same
+   size on purpose — the split is as much the point as the total. */
 .tally {
-  background: var(--stock-2);
-  border-top: 1px solid var(--rule);
-  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+  background: var(--navy-deep); color: var(--stock);
+  padding-block: clamp(3.5rem, 7vw, 6rem);
+  text-align: center;
 }
-.tally__head { max-width: 42rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
-.tally__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.1rem; }
+.tally__head { max-width: 42rem; margin: 0 auto clamp(2.25rem, 4.5vw, 3.5rem); }
+.tally h2 { color: var(--stock); }
+.tally__lede { font-size: var(--t3); color: var(--on-navy); margin-top: .9rem; }
 
 .tally__list { list-style: none; }
 .tally__list > li {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: .3rem clamp(1.5rem, 3vw, 2.75rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 2rem clamp(1.25rem, 4vw, 3rem);
   align-items: start;
-  padding-block: clamp(1.4rem, 2.5vw, 2rem);
+  max-width: 60rem; margin-inline: auto;
 }
-/* A hairline between rows, and nothing above the first one. The amber slab
-   that used to head every row read as a bar chart nobody had plotted. */
-.tally__list > li + li { border-top: 1px solid var(--rule); }
-.tally__n {
-  font-size: clamp(2.9rem, 1.4rem + 4.4vw, 5.2rem);
-  font-weight: 800;
-  line-height: .88;
-  letter-spacing: -0.045em;
-  color: var(--navy);
+.tally__list > li + li {
+  margin-top: 3rem; padding-top: 3rem;
+  border-top: 1px solid rgba(255, 255, 255, .2);
+}
+.tally__stat { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+.tally__icon { width: 2.1rem; height: 2.1rem; color: var(--amber); margin-bottom: .3rem; }
+.tally__n, .tally__part {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--stock);
   font-variant-numeric: tabular-nums;
   margin: 0;
 }
-.tally__body h3 { margin-bottom: .45rem; }
-.tally__body p { margin: 0; font-size: 1.06rem; color: var(--ink-2); }
-/* The parts of the split. They are <b> so they carry weight without becoming
-   a second type size, and so check_numbers.py can find and add them up. */
-.tally__part { color: var(--navy-deep); font-weight: 800; }
+.tally__label { margin: 0; font-size: 1.06rem; color: var(--on-navy); }
+.tally__where {
+  grid-column: 1 / -1; margin: .25rem 0 0;
+  font-family: var(--display); font-style: italic; font-weight: 600;
+  font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem); color: var(--amber);
+}
 
 /* ---------- 13. What we measure — the comprehension promise -------------
    This band is about SCORES, not counts. Counts live in "The work so far"
@@ -569,8 +598,9 @@ a:hover { color: var(--navy-deep); }
    once. Keep the width cap on an inner element. */
 .measure__inner { max-width: 54rem; }
 .measure__figure {
-  font-size: clamp(1.7rem, 1.15rem + 2.5vw, 3.1rem);
-  font-weight: 800; line-height: 1.14; letter-spacing: -0.03em;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.4rem);
+  font-weight: 600; line-height: 1.22; letter-spacing: -0.01em;
   color: var(--ink); margin: 0; text-wrap: pretty;
 }
 /* The number itself, when there is one. */
@@ -833,11 +863,10 @@ a:hover { color: var(--navy-deep); }
 }
 
 @media (max-width: 40rem) {
-  /* The numeral moves above its line rather than beside it. At 5.2rem it eats
-     a third of a phone screen, and the label beside it wraps to one word per
-     line. */
-  .tally__list > li { grid-template-columns: minmax(0, 1fr); }
-  .tally__n { font-size: clamp(2.6rem, 1.5rem + 4vw, 3.4rem); }
+  /* Three across still fits a phone once the figures come down a size. */
+  .tally__list > li { gap: 1.5rem .75rem; }
+  .tally__n, .tally__part { font-size: 2.2rem; }
+  .tally__label { font-size: .92rem; }
 
   .brand__mark { height: 2.6rem; }
   .brand__tagline { font-size: .9rem; padding-left: .75rem; }
