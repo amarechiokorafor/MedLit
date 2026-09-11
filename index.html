@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -176,48 +176,26 @@
     </section>
 
     <!-- ============================================================
-         THREE DOORS — three big cards, straight under the photograph.
+         THREE DOORS — one strip of three, straight under the photograph.
          Three different people arrive on this page and each should reach
          their own thing in about five seconds without reading anything else.
-         The icons are aria-hidden; the words are the link text.
          ============================================================ -->
     <nav class="doors" aria-label="Start here">
       <ul class="wide">
         <li>
           <a href="#guides">
-            <span class="doors__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 19.5V5a2 2 0 0 1 2-2h13v16H6.5A2.5 2.5 0 0 0 4 21.5z"/>
-                <path d="M8 7h7M8 11h7"/>
-              </svg>
-            </span>
             <span class="doors__what">I need a guide</span>
             <span class="doors__who">Free to read, print, and hand out</span>
           </a>
         </li>
         <li>
           <a href="#host">
-            <span class="doors__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-            </span>
             <span class="doors__what">I want a workshop for my group</span>
             <span class="doors__who">Senior communities, libraries, food pantries</span>
           </a>
         </li>
         <li>
           <a href="#volunteer">
-            <span class="doors__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                   stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/>
-              </svg>
-            </span>
             <span class="doors__what">I want to volunteer</span>
             <span class="doors__who">Teach, write, or translate</span>
           </a>

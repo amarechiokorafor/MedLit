@@ -448,56 +448,41 @@ a:hover { color: var(--navy-deep); }
 }
 .hero h1 em { color: var(--amber); }
 
-/* ---------- 8b. Three doors — big cards under the photograph -------------
-   The first thing after the hero, so each card is large: an icon, a title
-   at display size, one line of who it is for, and an arrow pinned to the
-   bottom. Cards lift on hover; the whole card is the link.
+/* ---------- 8b. Three doors — one strip under the photograph -------------
+   Three columns split by hairlines: a bold title, one line of who it is
+   for, and an arrow on the right. The whole cell is the link; on hover it
+   lightens and an amber underline runs along its bottom edge.
    -------------------------------------------------------------------------- */
 .doors {
-  background:
-    radial-gradient(40rem 18rem at 50% 0%, rgba(11, 62, 160, .08), transparent 70%),
-    linear-gradient(180deg, #eef2fb, var(--stock));
-  padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+  background: linear-gradient(180deg, var(--stock-2), #f1efe9);
+  border-bottom: 1px solid var(--rule);
 }
+/* The middle door has the longest words, so it gets the widest column —
+   with three equal thirds its title and line both wrapped at 1440px. */
 .doors ul {
   list-style: none; display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2vw, 1.5rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
 }
-.doors li { display: flex; }
+.doors li + li { border-left: 1px solid var(--rule); }
 .doors a {
-  flex: 1;
-  display: flex; flex-direction: column; align-items: flex-start; gap: .5rem;
-  min-height: 13rem;
-  padding: clamp(1.4rem, 2.4vw, 2rem);
-  background: var(--stock);
-  border: 1px solid var(--rule); border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(20, 22, 28, .06), 0 14px 30px -20px rgba(6, 37, 99, .4);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center; gap: .3rem 1rem; min-height: 48px;
+  padding: clamp(1.1rem, 2vw, 1.5rem) clamp(1rem, 1.8vw, 1.5rem) clamp(1.1rem, 2vw, 1.5rem) 0;
   text-decoration: none;
-  transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+  border-bottom: 2px solid transparent;
+  transition: background-color .16s var(--ease), border-color .16s var(--ease);
 }
-.doors a:hover, .doors a:focus-visible {
-  transform: translateY(-3px);
-  border-color: var(--amber);
-  box-shadow: 0 1px 2px rgba(20, 22, 28, .08), 0 22px 38px -20px rgba(6, 37, 99, .5);
-}
-.doors__icon {
-  display: grid; place-items: center;
-  width: 3.4rem; height: 3.4rem; margin-bottom: .5rem;
-  border-radius: 50%;
-  background: linear-gradient(145deg, var(--amber-lt), #ffd083);
-  color: var(--navy-deep);
-}
-.doors__icon svg { width: 1.65rem; height: 1.65rem; }
+.doors li + li a { padding-left: clamp(1rem, 1.8vw, 1.5rem); }
+.doors a:hover, .doors a:focus-visible { background: var(--stock); border-bottom-color: var(--amber); }
 .doors__what {
   font-family: var(--display);
-  font-size: clamp(1.2rem, 1rem + .7vw, 1.5rem);
-  font-weight: 700; line-height: 1.2; color: var(--navy-deep);
+  font-size: clamp(1.05rem, .95rem + .3vw, 1.2rem);
+  font-weight: 700; line-height: 1.25; color: var(--navy-deep);
 }
-.doors__who { font-size: .98rem; color: var(--ink-2); }
+.doors__who { grid-column: 1; font-size: .95rem; color: var(--ink-2); }
 .doors a::after {
-  content: ''; margin-top: auto; align-self: flex-end;
-  width: .6rem; height: .6rem; margin-right: .35rem;
+  content: ''; grid-column: 2; grid-row: 1 / span 2;
+  width: .6rem; height: .6rem; margin-right: .3rem;
   border-right: 3px solid var(--navy); border-bottom: 3px solid var(--navy);
   transform: rotate(-45deg);
 }
@@ -982,7 +967,8 @@ a:hover { color: var(--navy-deep); }
   .does__list { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
 
   .doors ul { grid-template-columns: minmax(0, 1fr); }
-  .doors a { min-height: 0; }
+  .doors li + li { border-left: 0; border-top: 1px solid var(--rule); }
+  .doors a, .doors li + li a { padding: 1rem 0; }
 }
 
 @media (max-width: 40rem) {
