@@ -399,13 +399,19 @@ a:hover { color: var(--navy-deep); }
   align-items: flex-end;
   min-height: clamp(30rem, 82vh, 50rem);
   background: var(--navy-deep);
-  padding-block: clamp(3rem, 7vw, 5.5rem);
+  /* Bottom padding kept tight so the headline sits as low as it can: every
+     pixel it drops is a pixel further from the faces. */
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2.25rem, 4vw, 4rem);
 }
 .hero__photo {
   position: absolute; inset: 0; z-index: -2;
   width: 100%; height: 100%;
   object-fit: cover;
-  object-position: 50% 30%;
+  /* Near the bottom: on a wide screen the crop is vertical, and taking most
+     of it off the top lifts the faces clear of the headline. Centred, the
+     first line ran straight across the child's face; fully bottom-anchored,
+     a 1920px screen cut off the tops of everyone's heads. */
+  object-position: 50% 80%;
 }
 .hero::before {
   content: ''; position: absolute; inset: 0; z-index: -1;
@@ -418,7 +424,7 @@ a:hover { color: var(--navy-deep); }
    down a step and holds to about three lines on desktop. */
 .hero h1 {
   color: var(--stock);
-  font-size: clamp(2.5rem, 1rem + 5.2vw, 5.4rem);
+  font-size: clamp(2.5rem, 1rem + 4vw, 4.4rem);
   max-width: 13ch;
 }
 .hero h1 em { color: var(--amber); }
