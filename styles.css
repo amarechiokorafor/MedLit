@@ -261,6 +261,7 @@ a:hover { color: var(--navy-deep); }
 .skip:focus { transform: translate(-50%, 0); color: var(--stock); }
 
 :focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+.masthead :focus-visible,
 .hero :focus-visible,
 .host :focus-visible,
 .foot :focus-visible { outline-color: var(--amber); }
@@ -349,7 +350,13 @@ a:hover { color: var(--navy-deep); }
    amber field starts underneath it. Not sticky: a sticky bar costs a strip
    of a small screen permanently and buys little on a page this short.
    -------------------------------------------------------------------------- */
-.masthead { background: var(--stock); }
+/* Navy, to match the footer and bracket the page. The wordmark is navy too,
+   so it sits on a white chip here exactly as it does in the footer. */
+.masthead { background: var(--navy-deep); }
+.brand__chip {
+  display: inline-flex; flex: none;
+  background: var(--stock); padding: .4rem .55rem; border-radius: var(--r);
+}
 .masthead__inner {
   display: flex; flex-wrap: wrap; align-items: center;
   justify-content: space-between; gap: .75rem 2rem; padding-block: 1.15rem;
@@ -357,7 +364,7 @@ a:hover { color: var(--navy-deep); }
 .brand { display: flex; align-items: center; gap: .9rem; text-decoration: none; }
 .brand__mark { width: auto; height: 3rem; flex: none; }
 .brand__tagline {
-  font-size: .96rem; font-weight: 500; color: var(--ink-2);
+  font-size: .96rem; font-weight: 500; color: var(--stock);
   padding-left: .15rem;
 }
 .topnav ul {
@@ -365,12 +372,12 @@ a:hover { color: var(--navy-deep); }
 }
 .topnav a {
   display: inline-flex; align-items: center; min-height: 44px;
-  font-size: 1rem; font-weight: 700; color: var(--ink); text-decoration: none;
+  font-size: 1rem; font-weight: 700; color: var(--stock); text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: color .16s var(--ease), border-color .16s var(--ease);
 }
 .topnav a:hover, .topnav a:focus-visible {
-  color: var(--navy); border-bottom-color: var(--amber);
+  color: var(--amber); border-bottom-color: var(--amber);
 }
 
 /* ---------- 8. Hero — photograph with the claim over it ------------------
@@ -762,7 +769,7 @@ a:hover { color: var(--navy-deep); }
 
 /* ---------- 21. Footer --------------------------------------------------- */
 .foot {
-  background: var(--navy-deep); color: var(--on-navy);
+  background: var(--navy-deep); color: var(--stock);
   padding-block: clamp(2.75rem, 5vw, 4rem) 1.9rem;
 }
 .foot__inner {
@@ -774,7 +781,7 @@ a:hover { color: var(--navy-deep); }
    footer, where it would disappear. */
 .foot__chip { display: inline-flex; background: var(--stock); padding: .85rem 1.15rem; border-radius: var(--r); }
 .foot__chip img { width: auto; height: 3.2rem; }
-.foot__tagline { font-size: .96rem; color: var(--on-navy-dim); }
+.foot__tagline { font-size: .96rem; color: var(--stock); }
 .foot__contact h2 {
   font-size: .8rem; font-weight: 800; letter-spacing: .13em;
   text-transform: uppercase; color: var(--amber); margin: 0 0 .8rem;
@@ -808,7 +815,7 @@ a:hover { color: var(--navy-deep); }
 .foot__note {
   margin-top: 2.6rem; padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, .22);
-  color: var(--on-navy-dim); font-size: .95rem; max-width: 46rem;
+  color: var(--stock); font-size: .95rem; max-width: 46rem;
 }
 
 /* ---------- 22. Responsive ----------------------------------------------
