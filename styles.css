@@ -275,7 +275,6 @@ a:hover { color: var(--navy-deep); }
 .skip:focus { transform: translate(-50%, 0); color: var(--stock); }
 
 :focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
-.masthead :focus-visible,
 .hero :focus-visible,
 .host :focus-visible,
 .foot :focus-visible { outline-color: var(--amber); }
@@ -364,13 +363,7 @@ a:hover { color: var(--navy-deep); }
    amber field starts underneath it. Not sticky: a sticky bar costs a strip
    of a small screen permanently and buys little on a page this short.
    -------------------------------------------------------------------------- */
-/* Navy, to match the footer and bracket the page. The wordmark is navy too,
-   so it sits on a white chip here exactly as it does in the footer. */
-.masthead { background: var(--navy-deep); }
-.brand__chip {
-  display: inline-flex; flex: none;
-  background: var(--stock); padding: .4rem .55rem; border-radius: var(--r);
-}
+.masthead { background: var(--stock); }
 .masthead__inner {
   display: flex; flex-wrap: wrap; align-items: center;
   justify-content: space-between; gap: .75rem 2rem; padding-block: 1.15rem;
@@ -378,7 +371,7 @@ a:hover { color: var(--navy-deep); }
 .brand { display: flex; align-items: center; gap: .9rem; text-decoration: none; }
 .brand__mark { width: auto; height: 3rem; flex: none; }
 .brand__tagline {
-  font-size: .96rem; font-weight: 500; color: var(--stock);
+  font-size: .96rem; font-weight: 500; color: var(--ink-2);
   padding-left: .15rem;
 }
 .topnav ul {
@@ -386,12 +379,12 @@ a:hover { color: var(--navy-deep); }
 }
 .topnav a {
   display: inline-flex; align-items: center; min-height: 44px;
-  font-size: 1rem; font-weight: 700; color: var(--stock); text-decoration: none;
+  font-size: 1rem; font-weight: 700; color: var(--ink); text-decoration: none;
   border-bottom: 2px solid transparent;
   transition: color .16s var(--ease), border-color .16s var(--ease);
 }
 .topnav a:hover, .topnav a:focus-visible {
-  color: var(--amber); border-bottom-color: var(--amber);
+  color: var(--navy); border-bottom-color: var(--amber);
 }
 
 /* ---------- 8. Hero — photograph with the claim over it ------------------
@@ -418,7 +411,7 @@ a:hover { color: var(--navy-deep); }
   overflow: hidden;
   display: flex;
   align-items: flex-end;
-  min-height: clamp(30rem, 82vh, 50rem);
+  min-height: clamp(26rem, 72vh, 44rem);
   background: var(--navy-deep);
   /* Bottom padding kept tight so the headline sits as low as it can: every
      pixel it drops is a pixel further from the faces. */
@@ -455,50 +448,81 @@ a:hover { color: var(--navy-deep); }
 }
 .hero h1 em { color: var(--amber); }
 
-/* ---------- 8b. Intro — who we are -------------------------------------- */
-.intro {
+/* ---------- 8b. Three doors — big cards under the photograph -------------
+   The first thing after the hero, so each card is large: an icon, a title
+   at display size, one line of who it is for, and an arrow pinned to the
+   bottom. Cards lift on hover; the whole card is the link.
+   -------------------------------------------------------------------------- */
+.doors {
+  background:
+    radial-gradient(40rem 18rem at 50% 0%, rgba(11, 62, 160, .08), transparent 70%),
+    linear-gradient(180deg, #eef2fb, var(--stock));
+  padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+.doors ul {
+  list-style: none; display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.doors li { display: flex; }
+.doors a {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: flex-start; gap: .5rem;
+  min-height: 13rem;
+  padding: clamp(1.4rem, 2.4vw, 2rem);
   background: var(--stock);
-  padding-block: clamp(3.5rem, 7vw, 6rem);
+  border: 1px solid var(--rule); border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(20, 22, 28, .06), 0 14px 30px -20px rgba(6, 37, 99, .4);
+  text-decoration: none;
+  transition: transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+}
+.doors a:hover, .doors a:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--amber);
+  box-shadow: 0 1px 2px rgba(20, 22, 28, .08), 0 22px 38px -20px rgba(6, 37, 99, .5);
+}
+.doors__icon {
+  display: grid; place-items: center;
+  width: 3.4rem; height: 3.4rem; margin-bottom: .5rem;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--amber-lt), #ffd083);
+  color: var(--navy-deep);
+}
+.doors__icon svg { width: 1.65rem; height: 1.65rem; }
+.doors__what {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 1rem + .7vw, 1.5rem);
+  font-weight: 700; line-height: 1.2; color: var(--navy-deep);
+}
+.doors__who { font-size: .98rem; color: var(--ink-2); }
+.doors a::after {
+  content: ''; margin-top: auto; align-self: flex-end;
+  width: .6rem; height: .6rem; margin-right: .35rem;
+  border-right: 3px solid var(--navy); border-bottom: 3px solid var(--navy);
+  transform: rotate(-45deg);
+}
+
+/* ---------- 8c. Intro — who we are -------------------------------------- */
+.intro {
+  padding-block: clamp(2rem, 4vw, 3rem);
   text-align: center;
 }
 .intro__inner { display: flex; flex-direction: column; align-items: center; }
 .intro__text {
-  max-width: 50rem;
-  font-size: clamp(1.15rem, 1rem + .7vw, 1.5rem);
-  line-height: 1.6;
+  max-width: 44rem;
+  font-size: clamp(1rem, .95rem + .3vw, 1.12rem);
+  line-height: 1.65;
   color: var(--ink);
   text-wrap: pretty;
 }
 .intro__hl { color: var(--navy); font-weight: 600; }
-.intro__action { margin-top: clamp(1.8rem, 3vw, 2.4rem); }
-
-/* ---------- 9. Three doors ---------------------------------------------- */
-.doors { background: var(--stock-2); border-block: 1px solid var(--rule); }
-.doors ul { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.doors li + li { border-left: 1px solid var(--rule); }
-.doors a {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center; gap: .15rem 1rem; min-height: 48px;
-  padding: 1.15rem 1.35rem 1.15rem 0; text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: background-color .16s var(--ease), border-color .16s var(--ease);
-}
-.doors li + li a { padding-left: 1.35rem; }
-.doors a:hover, .doors a:focus-visible { background: var(--stock); border-bottom-color: var(--amber); }
-.doors__what { font-size: 1.1rem; font-weight: 800; color: var(--navy-deep); letter-spacing: -0.015em; }
-.doors__who { grid-column: 1; font-size: .92rem; color: var(--ink-2); }
-.doors a::after {
-  content: ''; grid-column: 2; grid-row: 1 / span 2;
-  width: .6rem; height: .6rem; margin-right: .3rem;
-  border-right: 3px solid var(--navy); border-bottom: 3px solid var(--navy);
-  transform: rotate(-45deg);
-}
+.intro__action { margin-top: 1.4rem; }
 
 /* ---------- 10. Our why -------------------------------------------------
    A narrow measure, very large type, deep space, and nothing else on the
    screen. The page's held breath.
    -------------------------------------------------------------------------- */
-.why { padding-block: clamp(4rem, 9vw, 7.5rem); }
+.why { padding-block: clamp(2.75rem, 5vw, 4.25rem); }
 .why__statement {
   font-family: var(--display);
   font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.4rem);
@@ -516,8 +540,8 @@ a:hover { color: var(--navy-deep); }
 }
 
 /* ---------- 11. What we do ----------------------------------------------- */
-.does { border-top: 1px solid var(--rule); padding-block: clamp(3.25rem, 6vw, 5.5rem); }
-.does__head { max-width: 42rem; margin-bottom: clamp(2.25rem, 4.5vw, 3.5rem); }
+.does { border-top: 1px solid var(--rule); padding-block: clamp(2.5rem, 4.5vw, 3.75rem); }
+.does__head { max-width: 42rem; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
 .does__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.1rem; }
 .does__list {
   list-style: none; display: grid;
@@ -540,13 +564,12 @@ a:hover { color: var(--navy-deep); }
    with an amber icon over each. The total and its parts are set the same
    size on purpose — the split is as much the point as the total. */
 .tally {
-  background: var(--navy-deep); color: var(--stock);
-  padding-block: clamp(3.5rem, 7vw, 6rem);
+  color: var(--stock);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
   text-align: center;
 }
-.tally__head { max-width: 42rem; margin: 0 auto clamp(2.25rem, 4.5vw, 3.5rem); }
+.tally__head { max-width: 42rem; margin: 0 auto clamp(1.5rem, 3vw, 2.25rem); }
 .tally h2 { color: var(--stock); }
-.tally__lede { font-size: var(--t3); color: var(--on-navy); margin-top: .9rem; }
 
 .tally__list { list-style: none; }
 .tally__list > li {
@@ -562,6 +585,8 @@ a:hover { color: var(--navy-deep); }
 }
 .tally__stat { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
 .tally__icon { width: 2.1rem; height: 2.1rem; color: var(--amber); margin-bottom: .3rem; }
+/* The language badges: an amber speech bubble with the code in navy. */
+.tally__icon--lang { width: 2.7rem; height: 2.35rem; }
 .tally__n, .tally__part {
   font-family: var(--display);
   font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.4rem);
@@ -590,7 +615,7 @@ a:hover { color: var(--navy-deep); }
    -------------------------------------------------------------------------- */
 .measure {
   background: var(--amber);
-  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
 }
 /* Nested inside .wide, never sharing its class. A max-width on the container
    itself overrides .wide's own and then `margin-inline: auto` centres the
@@ -615,9 +640,9 @@ a:hover { color: var(--navy-deep); }
 /* ---------- 14. The guides ----------------------------------------------- */
 .guides {
   background: var(--stock-2); border-top: 1px solid var(--rule);
-  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
 }
-.guides__head { max-width: 40rem; margin-bottom: clamp(2.25rem, 4.5vw, 3.5rem); }
+.guides__head { max-width: 40rem; margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
 .guides__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1rem; }
 .shelf {
   list-style: none; display: grid;
@@ -668,7 +693,7 @@ a:hover { color: var(--navy-deep); }
 }
 
 /* ---------- 15. The workshops -------------------------------------------- */
-.workshops { padding-block: clamp(3.25rem, 6vw, 5.5rem); }
+.workshops { padding-block: clamp(2.5rem, 4.5vw, 3.75rem); }
 .workshops__grid {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   gap: clamp(2rem, 5vw, 4.5rem); align-items: start;
@@ -676,7 +701,7 @@ a:hover { color: var(--navy-deep); }
 .workshops__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
 
 /* ---------- 16. How we check it ------------------------------------------ */
-.review { border-top: 1px solid var(--rule); padding-block: clamp(3rem, 5.5vw, 4.75rem); }
+.review { border-top: 1px solid var(--rule); padding-block: clamp(2.5rem, 4.5vw, 3.5rem); }
 .checks { list-style: none; margin-top: 2.25rem; }
 .checks > li {
   display: grid;
@@ -693,7 +718,7 @@ a:hover { color: var(--navy-deep); }
 /* ---------- 17. Host ----------------------------------------------------- */
 .host {
   background: var(--navy-deep); color: var(--on-navy);
-  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
 }
 .host__grid {
   display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
@@ -705,7 +730,7 @@ a:hover { color: var(--navy-deep); }
 /* ---------- 18. Volunteer ------------------------------------------------ */
 .volunteer {
   background: var(--stock-2); border-top: 1px solid var(--rule);
-  padding-block: clamp(3.25rem, 6vw, 5.5rem);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
 }
 .volunteer__grid {
   display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -800,7 +825,7 @@ a:hover { color: var(--navy-deep); }
 /* ---------- 21. Footer --------------------------------------------------- */
 .foot {
   background: var(--navy-deep); color: var(--stock);
-  padding-block: clamp(2.75rem, 5vw, 4rem) 1.9rem;
+  padding-block: clamp(2.25rem, 4vw, 3rem) 1.5rem;
 }
 .foot__inner {
   display: flex; flex-wrap: wrap; gap: 2.25rem 4rem;
@@ -848,6 +873,90 @@ a:hover { color: var(--navy-deep); }
   color: var(--stock); font-size: .95rem; max-width: 46rem;
 }
 
+/* ---------- 21b. Section grounds ----------------------------------------
+   No section is a flat colour. Each gets a soft gradient in its own family —
+   two faint glows, one amber and one blue, in opposite corners — and one
+   quiet ornament: a fading dot grid on the light sections, concentric rings
+   on the navy and amber ones.
+
+   Every ornament is a ::before at z-index -1 inside an isolated section, so
+   it sits behind the content and can never take a click. The glows are kept
+   faint enough that the contrast pairs in the tokens block still hold on the
+   darkest and lightest point of each gradient.
+
+   This block sits after the sections on purpose: it overrides their plain
+   backgrounds by source order, so each section's own rule stays about
+   layout.
+   -------------------------------------------------------------------------- */
+.intro, .why, .does, .workshops, .review, .guides, .volunteer,
+.tally, .measure, .host { position: relative; isolation: isolate; overflow: clip; }
+
+/* Light sections: white warming to cream, the glows swapped between pairs
+   so neighbouring sections never mirror each other. */
+.intro, .does, .review {
+  background:
+    radial-gradient(38rem 22rem at 100% 0%, rgba(244, 168, 56, .12), transparent 70%),
+    radial-gradient(34rem 22rem at 0% 100%, rgba(11, 62, 160, .07), transparent 70%),
+    linear-gradient(180deg, var(--stock), #fbfaf7);
+}
+.why, .workshops {
+  background:
+    radial-gradient(40rem 26rem at 0% 0%, rgba(11, 62, 160, .08), transparent 70%),
+    radial-gradient(36rem 24rem at 100% 100%, rgba(244, 168, 56, .14), transparent 70%),
+    linear-gradient(180deg, #fbfaf7, var(--stock));
+}
+.guides, .volunteer {
+  background:
+    radial-gradient(44rem 26rem at 100% 0%, rgba(11, 62, 160, .09), transparent 70%),
+    radial-gradient(40rem 26rem at 0% 100%, rgba(244, 168, 56, .18), transparent 70%),
+    linear-gradient(180deg, #f7f5ef, #f1eee6);
+}
+/* The gradients already separate these; a hairline on top would be a
+   second divider doing the same job. */
+.does, .review, .guides, .volunteer { border-top: 0; }
+
+.intro::before, .why::before, .does::before, .workshops::before,
+.review::before, .guides::before, .volunteer::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  width: 15rem; height: 11rem; top: 1.5rem; right: 1.5rem;
+  background-image: radial-gradient(rgba(11, 62, 160, .2) 1.3px, transparent 1.7px);
+  background-size: 18px 18px;
+  -webkit-mask-image: radial-gradient(closest-side, #000, transparent);
+          mask-image: radial-gradient(closest-side, #000, transparent);
+}
+.does::before, .guides::before, .review::before {
+  top: auto; right: auto; bottom: 1.5rem; left: 1.5rem;
+}
+
+/* Navy sections: deep to royal, with a warm glow low on one side. */
+.tally, .host, .foot {
+  background:
+    radial-gradient(46rem 28rem at 88% 0%, rgba(11, 62, 160, .85), transparent 70%),
+    radial-gradient(36rem 24rem at 0% 100%, rgba(244, 168, 56, .12), transparent 70%),
+    linear-gradient(160deg, var(--navy-deep), #08307f);
+}
+.tally::before, .host::before, .measure::before {
+  content: ''; position: absolute; z-index: -1; pointer-events: none;
+  width: 30rem; height: 30rem; right: -9rem; top: -12rem;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, .09);
+  box-shadow: 0 0 0 2.5rem rgba(255, 255, 255, .025), 0 0 0 5rem rgba(255, 255, 255, .02);
+}
+.host::before { right: auto; top: auto; left: -10rem; bottom: -14rem; }
+
+/* Amber: lit from the top right, deepening toward the bottom left. The
+   deepest point still carries navy-deep text at over 6:1. */
+.measure {
+  background:
+    radial-gradient(40rem 24rem at 100% 0%, rgba(255, 224, 168, .75), transparent 70%),
+    radial-gradient(40rem 26rem at 0% 100%, rgba(214, 130, 20, .35), transparent 70%),
+    var(--amber);
+}
+.measure::before {
+  border-color: rgba(255, 255, 255, .35);
+  box-shadow: 0 0 0 2.5rem rgba(255, 255, 255, .1), 0 0 0 5rem rgba(255, 255, 255, .06);
+}
+
 /* ---------- 22. Responsive ----------------------------------------------
    Fluid by default; these are the places that need help. Overflow is
    measured, not eyeballed — scrollWidth against innerWidth at 320, 360, 390,
@@ -858,8 +967,7 @@ a:hover { color: var(--navy-deep); }
   .does__list { grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
 
   .doors ul { grid-template-columns: minmax(0, 1fr); }
-  .doors li + li { border-left: 0; border-top: 1px solid var(--rule); }
-  .doors a, .doors li + li a { padding: 1rem 0; }
+  .doors a { min-height: 0; }
 }
 
 @media (max-width: 40rem) {
