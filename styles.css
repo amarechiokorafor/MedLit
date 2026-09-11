@@ -12,9 +12,8 @@
        bottle in the logo.
      - The numbered callout disc from the printed guide. A navy circle with a
        white numeral, pointing at something and saying what it means.
-     - Every word set in Atkinson Hyperlegible Next, the typeface the Braille
-       Institute drew for low-vision readers. Body copy and the 124px headline
-       alike.
+     - Every word set in Schibsted Grotesk, a newspaper face with open
+       apertures and a tall x-height. Body copy and the 124px headline alike.
 
    The page states what MedLit does and shows the guide that proves it. It
    does not demonstrate the product on itself. An interactive prescription
@@ -23,11 +22,14 @@
    printable. See the note at the top of index.html before rebuilding either.
 
    Rules worth keeping:
-     1. One typeface. Atkinson Hyperlegible Next, everywhere.
+     1. One typeface. Schibsted Grotesk, everywhere.
      2. Amber carries dark ink only. White on amber is 1.7:1.
-     3. Motion is opacity and transform, and it runs every time a block
+     3. No decorative bars. Amber is a FIELD — the hero and the measure band —
+        never a 4px slab stuck above a heading. Hierarchy comes from size,
+        weight and space. Hairlines are 1px and neutral.
+     4. Motion is opacity and transform, and it runs every time a block
         passes through the viewport, in and out.
-     4. Nothing needs JavaScript to be read.
+     5. Nothing needs JavaScript to be read.
 
    Contents
    1.  Fonts
@@ -55,29 +57,30 @@
    ========================================================================== */
 
 /* ---------- 1. Fonts ------------------------------------------------------
-   One family, self-hosted, latin subset, about 65 KB. That matters: this
+   One family, self-hosted, latin subset, about 97 KB. That matters: this
    loads on an old phone on library wifi.
 
-   Atkinson Hyperlegible Next is a variable font with a 200–800 weight axis,
-   which is the whole reason the page can hold an extreme type scale without
-   a second display family. The Braille Institute drew it for readers with
-   low vision — it pulls apart the character pairs that normally blur
-   together. Given who the workshops are for, it is the argument in a
-   typeface. Don't swap it out, and don't add a display face beside it.
+   Schibsted Grotesk, a variable face on a 400–900 weight axis. A Scandinavian
+   newspaper grotesque: open apertures, a tall x-height, a single-storey 'g'
+   and an 'a' that stays distinct at 18px, which is what the readers here need.
+   The wide weight axis is the whole reason the page can hold an extreme type
+   scale without a second display family — 400 for body, 900 for the headline,
+   one set of letterforms across both.
 
-   IBM Plex Mono used to sit beside it, for the transcribed documents in the
-   interactive label and the before/after panel. Both are gone, so it went too —
-   15 KB of weight on a page with nothing left to transcribe.
+   Atkinson Hyperlegible Next was here before it and is still in
+   assets/fonts/ if it ever comes back. Whatever sits here, keep it to ONE
+   family: the moment a display face joins it, the page starts performing
+   instead of reading.
    -------------------------------------------------------------------------- */
 @font-face {
-  font-family: 'Atkinson';
-  src: url('assets/fonts/atkinson-next-var.woff2') format('woff2');
-  font-weight: 200 800; font-style: normal; font-display: swap;
+  font-family: 'Schibsted';
+  src: url('assets/fonts/schibsted-grotesk-var.woff2') format('woff2');
+  font-weight: 400 900; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: 'Atkinson';
-  src: url('assets/fonts/atkinson-next-italic.woff2') format('woff2');
-  font-weight: 200 800; font-style: italic; font-display: swap;
+  font-family: 'Schibsted';
+  src: url('assets/fonts/schibsted-grotesk-italic.woff2') format('woff2');
+  font-weight: 400 900; font-style: italic; font-display: swap;
 }
 /* ---------- 2. Tokens ----------------------------------------------------
    The navy and the amber are the logo's own. Everything else is stock, ink
@@ -126,7 +129,7 @@
   --read:   44rem;
   --gutter: clamp(1.25rem, 4vw, 3.5rem);
 
-  --sans: 'Atkinson', 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+  --sans: 'Schibsted', 'Schibsted Grotesk', 'Helvetica Neue', Arial, system-ui, sans-serif;
 
   --r: 4px;
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -154,18 +157,21 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* overflow-wrap is a safety net, not a layout choice. With Atkinson loaded no
-   word on this page is ever wider than its line box — swept at every 5px from
-   320 to 1920. But `font-display: swap` paints the FALLBACK face first, and
-   the system-ui fallback runs about 16% wider than Atkinson, which is enough
-   to push "Understanding" past the edge of a 320-450px phone and let the page
-   scroll sideways until the real font arrives. On library wifi that is not a
-   flicker, it is a few seconds. This costs nothing when the font is loaded and
-   it never triggers. */
+/* overflow-wrap is a safety net, not a layout choice. With the real face
+   loaded no word on this page is ever wider than its line box — swept at every
+   5px from 320 to 1920. But `font-display: swap` paints the FALLBACK face
+   first, and the fallback stack runs wider, which is enough to push
+   "Understanding" past the edge of a 320-450px phone and let the page scroll
+   sideways until the real font arrives. On library wifi that is not a flicker,
+   it is a few seconds. This costs nothing when the font is loaded and it never
+   triggers. */
 h1, h2, h3 { margin: 0; color: var(--ink); text-wrap: balance; overflow-wrap: break-word; }
-h1 { font-size: var(--t1); font-weight: 800; line-height: .96; letter-spacing: -0.035em; }
-h2 { font-size: var(--t2); font-weight: 800; line-height: 1.06; letter-spacing: -0.028em; }
-h3 { font-size: 1.24rem; font-weight: 700; line-height: 1.28; letter-spacing: -0.012em; }
+/* Schibsted is drawn tight already, so the tracking here is gentler than a
+   wider face would need. Going past about -0.02em closes the counters up at
+   display size and the headline stops being scannable. */
+h1 { font-size: var(--t1); font-weight: 800; line-height: 1; letter-spacing: -0.022em; }
+h2 { font-size: var(--t2); font-weight: 800; line-height: 1.08; letter-spacing: -0.018em; }
+h3 { font-size: 1.24rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.008em; }
 h1 em, h2 em, h3 em { font-style: italic; font-weight: 700; }
 
 p { margin: 0 0 1.1em; }
@@ -180,36 +186,30 @@ a:hover { color: var(--navy-deep); }
 
 ::selection { background: var(--amber-lt); color: var(--ink); }
 
-/* The kicker. Small, letterspaced, with a short amber bar in front of it. */
+/* The kicker. Small, heavy, widely letterspaced.
+   It used to carry a short amber bar in front of it, and every section rule on
+   this page used to be a 4-6px amber slab. All of them are gone. The tracking
+   and the weight do the work now, and the page reads as type rather than as a
+   set of decorated boxes. Don't put the bars back. */
 .kicker {
-  display: flex; align-items: center; gap: .7rem;
+  display: block;
   font-size: .8rem; font-weight: 800; line-height: 1.3;
-  letter-spacing: .14em; text-transform: uppercase;
+  letter-spacing: .16em; text-transform: uppercase;
   color: var(--ink-2); margin: 0 0 1.4rem;
 }
-.kicker::before {
-  content: ''; width: 2.25rem; height: 4px; flex: none; background: var(--amber);
-}
 .hero .kicker { color: var(--navy-deep); }
-.hero .kicker::before { background: var(--navy-deep); }
 .host .kicker { color: var(--amber); }
-.host .kicker::before { background: var(--amber); }
-/* On the amber band the amber bar would be invisible, so both marks flip to
-   navy. */
 .measure .kicker, .measure .section-mark { color: var(--navy-deep); }
-.measure .kicker::before, .measure .section-mark::before { background: var(--navy-deep); }
 
 /* The section mark. The same device one size up, for a section whose body
    copy is the display type and so cannot also carry an h2 at --t2 without
    the two of them fighting. It is a real <h2>: the outline is honest, and
    nothing on this page is a heading hidden off-screen. */
 .section-mark {
-  display: flex; align-items: center; gap: .85rem;
-  font-size: 1.05rem; font-weight: 800; line-height: 1.3;
-  letter-spacing: -0.005em; color: var(--navy-deep); margin: 0 0 1.6rem;
-}
-.section-mark::before {
-  content: ''; width: 2.6rem; height: 5px; flex: none; background: var(--amber);
+  display: block;
+  font-size: .82rem; font-weight: 800; line-height: 1.3;
+  letter-spacing: .16em; text-transform: uppercase;
+  color: var(--navy); margin: 0 0 1.6rem;
 }
 
 /* ---------- 4. The callout disc — the repeating mark ---------------------
@@ -359,7 +359,7 @@ a:hover { color: var(--navy-deep); }
 .brand__mark { width: auto; height: 3rem; flex: none; }
 .brand__tagline {
   font-size: .96rem; font-weight: 500; color: var(--ink-2);
-  border-left: 2px solid var(--amber); padding-left: .9rem;
+  padding-left: .15rem;
 }
 .topnav ul {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0 1.75rem; list-style: none;
@@ -367,7 +367,7 @@ a:hover { color: var(--navy-deep); }
 .topnav a {
   display: inline-flex; align-items: center; min-height: 44px;
   font-size: 1rem; font-weight: 700; color: var(--ink); text-decoration: none;
-  border-bottom: 3px solid transparent;
+  border-bottom: 2px solid transparent;
   transition: color .16s var(--ease), border-color .16s var(--ease);
 }
 .topnav a:hover, .topnav a:focus-visible {
@@ -400,7 +400,7 @@ a:hover { color: var(--navy-deep); }
   display: grid; grid-template-columns: minmax(0, 1fr) auto;
   align-items: center; gap: .15rem 1rem; min-height: 48px;
   padding: 1.15rem 1.35rem 1.15rem 0; text-decoration: none;
-  border-bottom: 4px solid transparent;
+  border-bottom: 2px solid transparent;
   transition: background-color .16s var(--ease), border-color .16s var(--ease);
 }
 .doors li + li a { padding-left: 1.35rem; }
@@ -424,11 +424,13 @@ a:hover { color: var(--navy-deep); }
   font-weight: 800; line-height: 1.14; letter-spacing: -0.03em;
   color: var(--ink); text-wrap: pretty;
 }
+/* The turn used to sit under a 4px amber slab. It doesn't need one: dropping a
+   size, changing colour and taking a full line of air says "and here is the
+   consequence" without drawing a line to say it. */
 .why__turn {
   font-size: clamp(1.2rem, .95rem + 1.3vw, 1.85rem);
   font-weight: 500; line-height: 1.35; color: var(--navy-deep);
-  margin-top: 1.6em; padding-top: 1.5rem;
-  border-top: 4px solid var(--amber);
+  margin-top: 1.5em;
   text-wrap: pretty;
 }
 
@@ -441,7 +443,9 @@ a:hover { color: var(--navy-deep); }
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(1.75rem, 3.5vw, 3rem);
 }
-.does__list > li { border-top: 5px solid var(--amber); padding-top: 1.15rem; }
+/* A hairline, not the 5px amber slab that used to sit here. It is enough to
+   make the three read as one set rather than three loose paragraphs. */
+.does__list > li { border-top: 1px solid var(--rule); padding-top: 1.15rem; }
 .does__list h3 { margin-bottom: .5rem; }
 .does__list p { font-size: 1rem; color: var(--ink-2); }
 
@@ -466,9 +470,10 @@ a:hover { color: var(--navy-deep); }
   gap: .3rem clamp(1.5rem, 3vw, 2.75rem);
   align-items: start;
   padding-block: clamp(1.4rem, 2.5vw, 2rem);
-  border-top: 5px solid var(--amber);
 }
-.tally__list > li + li { margin-top: .35rem; }
+/* A hairline between rows, and nothing above the first one. The amber slab
+   that used to head every row read as a bar chart nobody had plotted. */
+.tally__list > li + li { border-top: 1px solid var(--rule); }
 .tally__n {
   font-size: clamp(2.9rem, 1.4rem + 4.4vw, 5.2rem);
   font-weight: 800;
@@ -513,9 +518,7 @@ a:hover { color: var(--navy-deep); }
   font-size: 1.06rem;
   color: var(--navy-deep);
   max-width: 42rem;
-  margin: 1.6rem 0 0;
-  padding-top: 1.4rem;
-  border-top: 4px solid var(--navy-deep);
+  margin: 1.8rem 0 0;
 }
 
 /* ---------- 14. The guides ----------------------------------------------- */
@@ -541,7 +544,7 @@ a:hover { color: var(--navy-deep); }
 }
 .guide__cover {
   display: block; max-width: 15rem;
-  border: 1px solid var(--rule); border-left: 6px solid var(--navy);
+  border: 1px solid var(--rule);
   box-shadow: 0 1px 2px rgba(20, 22, 28, .12), 0 16px 34px -16px rgba(20, 22, 28, .4);
   transition: transform .28s var(--ease), box-shadow .28s var(--ease);
 }
@@ -647,8 +650,6 @@ a:hover { color: var(--navy-deep); }
   font-size: .92rem;
   color: var(--ink-2);
   margin-top: .8rem;
-  padding-left: .9rem;
-  border-left: 4px solid var(--amber);
 }
 .host .shot figcaption { color: var(--on-navy-dim); }
 
@@ -660,7 +661,7 @@ a:hover { color: var(--navy-deep); }
 }
 
 /* ---------- 20. Facts, actions ------------------------------------------- */
-.facts { border-top: 3px solid var(--navy); }
+.facts { border-top: 1px solid var(--rule); }
 .facts > div {
   display: grid; grid-template-columns: 11rem minmax(0, 1fr);
   gap: .3rem 1.5rem; padding: .85rem 0; border-bottom: 1px solid var(--rule);
@@ -672,7 +673,7 @@ a:hover { color: var(--navy-deep); }
 .facts dd { color: var(--ink); }
 .facts dd strong { font-weight: 800; }
 .facts--wide > div { grid-template-columns: 12rem minmax(0, 1fr); }
-.host .facts { border-top-color: var(--amber); }
+.host .facts { border-top-color: rgba(255, 255, 255, .2); }
 .host .facts > div { border-bottom-color: rgba(255, 255, 255, .2); }
 .host .facts dt { color: var(--amber); }
 .host .facts dd { color: var(--on-navy); }
@@ -709,7 +710,6 @@ a:hover { color: var(--navy-deep); }
 .foot {
   background: var(--navy-deep); color: var(--on-navy);
   padding-block: clamp(2.75rem, 5vw, 4rem) 1.9rem;
-  border-top: 6px solid var(--amber);
 }
 .foot__inner {
   display: flex; flex-wrap: wrap; gap: 2.25rem 4rem;
@@ -728,7 +728,7 @@ a:hover { color: var(--navy-deep); }
 .foot__contact ul { list-style: none; display: grid; gap: .25rem; }
 /* The same safety net as the headings, for the same reason: the email address
    is 28 unbreakable characters, and in the wider fallback face it does not fit
-   a 320px screen, so the footer pushes the page sideways until Atkinson loads.
+   a 320px screen, so the footer pushes the page sideways until the face loads.
 
    `anywhere`, not `break-word`, and the difference is the whole fix.
    `break-word` breaks a long word visually but leaves the element's
