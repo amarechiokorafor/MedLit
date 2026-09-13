@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=22">
+  <link rel="stylesheet" href="styles.css?v=23">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -403,14 +403,16 @@
         <ul class="shelf" role="list" data-reveal>
 
           <li class="guide">
-            <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf">
+            <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf"
+               data-goatcounter-click="guide-open-en">
               <img src="assets/guides/what-does-my-prescription-label-say.jpg"
                    alt="First page of the guide: a prescription label with eleven
                         numbered callouts, each explaining one part of it."
                    width="620" height="802" loading="lazy">
             </a>
             <div class="guide__text">
-              <h3><a href="assets/guides/what-does-my-prescription-label-say.pdf">What Does My Prescription Label Say?</a></h3>
+              <h3><a href="assets/guides/what-does-my-prescription-label-say.pdf"
+                     data-goatcounter-click="guide-open-en">What Does My Prescription Label Say?</a></h3>
               <p class="guide__blurb">
                 Every part of a prescription label, explained one piece at a time.
                 Drug name, dose, directions, refills, dates.
@@ -421,14 +423,79 @@
                 <div><dt>Reviewed</dt><dd>Licensed healthcare professional</dd></div>
               </dl>
               <a class="action action--solid"
-                 href="assets/guides/what-does-my-prescription-label-say.pdf" download>
+                 href="assets/guides/what-does-my-prescription-label-say.pdf" download
+                 data-goatcounter-click="guide-download-en">
                 Download the guide
                 <span class="hidden">: What Does My Prescription Label Say? (PDF)</span>
               </a>
             </div>
           </li>
 
-          <!-- ADD NEW GUIDE CARDS HERE -->
+          <li class="guide">
+            <a class="guide__cover" href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf"
+               data-goatcounter-click="guide-open-es">
+              <img src="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.jpg"
+                   alt="Primera página de la guía: una etiqueta de medicamento con once
+                        partes numeradas, cada una explicada."
+                   lang="es" width="620" height="802" loading="lazy">
+            </a>
+            <div class="guide__text">
+              <h3 lang="es"><a href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf"
+                               data-goatcounter-click="guide-open-es">¿Qué dice la etiqueta de mi medicamento recetado?</a></h3>
+              <p class="guide__blurb">
+                The same guide in Spanish. Every part of a prescription label,
+                explained one piece at a time.
+              </p>
+              <dl class="facts">
+                <div><dt>Format</dt><dd>PDF, 1 page</dd></div>
+                <div><dt>Language</dt><dd>Spanish</dd></div>
+                <div><dt>Reviewed</dt><dd>Licensed healthcare professional</dd></div>
+              </dl>
+              <a class="action action--solid"
+                 href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf" download
+                 data-goatcounter-click="guide-download-es">
+                <span lang="es">Descargar la guía</span>
+                <span class="hidden">: ¿Qué dice la etiqueta de mi medicamento recetado? (PDF, Spanish)</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- ADD NEW GUIDE CARDS HERE. Give each link a data-goatcounter-click
+               name of its own (guide-open-xx, guide-download-xx) so its
+               downloads show up as a separate line in GoatCounter. -->
+
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         TESTIMONIALS — a plain stacked list: the quote, then who said it.
+         One placeholder for now. If there are ever more than four or five,
+         consider a carousel.
+
+         TO ADD ONE: copy a <li class="quote"> block and change the words,
+         the name, the title and the organization. No CSS. Delete the
+         placeholder once the first real one is in.
+         ============================================================ -->
+    <section class="voices" id="testimonials" aria-labelledby="voices-h">
+      <div class="read" data-reveal>
+        <h2 id="voices-h">What people are saying.</h2>
+        <ul class="quotes" role="list">
+
+          <li class="quote">
+            <blockquote>
+              <p>
+                &ldquo;Placeholder testimonial. Replace this with a real quote from a
+                workshop host, a participant, or a partner.&rdquo;
+              </p>
+            </blockquote>
+            <p class="quote__who">
+              <span class="quote__name">Full Name</span>
+              <span class="quote__role">Title, Organization</span>
+            </p>
+          </li>
+
+          <!-- ADD NEW TESTIMONIALS HERE -->
 
         </ul>
       </div>
@@ -691,6 +758,19 @@
       }
     })();
   </script>
+
+  <!-- Visit and download counts, through GoatCounter: free for nonprofits,
+       no cookies, no personal data, so no consent banner. It counts page
+       views on its own, and every link carrying data-goatcounter-click is
+       counted as a named event when someone clicks it — that is how guide
+       downloads show up.
+
+       SETUP: sign up at https://www.goatcounter.com/signup and pick the code
+       "medlit". If that code is taken, pick another and change "medlit" in
+       the URL below to match. Until the account exists this does nothing
+       and breaks nothing. -->
+  <script data-goatcounter="https://medlit.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
 
 </body>
 </html>

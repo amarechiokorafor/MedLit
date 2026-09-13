@@ -47,6 +47,7 @@
    12. The work so far — counts
    13. What we measure — the comprehension promise
    14. The guides
+   14b. Testimonials
    15. The workshops
    16. How we check it
    17. Host
@@ -702,6 +703,28 @@ a:hover { color: var(--navy-deep); }
     .shelf:has(> li:nth-child(1):last-child) .guide__blurb { font-size: 1.06rem; }
   }
 }
+
+/* ---------- 14b. Testimonials -------------------------------------------- */
+.voices {
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
+  background:
+    radial-gradient(36rem 22rem at 0% 100%, rgba(244, 168, 56, .12), transparent 70%),
+    linear-gradient(180deg, #eef3fc, #e8eefa);
+  border-top: 1px solid rgba(11, 62, 160, .14);
+}
+.quotes { list-style: none; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
+.quote + .quote {
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  padding-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  border-top: 1px solid rgba(11, 62, 160, .14);
+}
+.quote blockquote { margin: 0; }
+.quote blockquote p {
+  font-size: var(--t3); color: var(--ink); margin: 0; text-wrap: pretty;
+}
+.quote__who { margin: .9rem 0 0; font-size: 1rem; }
+.quote__name { display: block; font-weight: 700; color: var(--navy-deep); }
+.quote__role { display: block; color: var(--ink-2); }
 
 /* ---------- 15. The workshops -------------------------------------------- */
 .workshops { padding-block: clamp(2.5rem, 4.5vw, 3.75rem); }
