@@ -713,7 +713,6 @@ a:hover { color: var(--navy-deep); }
   border-top: 1px solid rgba(11, 62, 160, .14);
 }
 .quotes { list-style: none; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
-.quote + .quote {
   margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
   padding-top: clamp(1.75rem, 3.5vw, 2.5rem);
   border-top: 1px solid rgba(11, 62, 160, .14);
