@@ -712,16 +712,53 @@ a:hover { color: var(--navy-deep); }
     linear-gradient(180deg, #eef3fc, #e8eefa);
   border-top: 1px solid rgba(11, 62, 160, .14);
 }
-.quotes { list-style: none; margin-top: clamp(1.5rem, 3vw, 2.25rem); }
-  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
-  padding-top: clamp(1.75rem, 3.5vw, 2.5rem);
-  border-top: 1px solid rgba(11, 62, 160, .14);
+.voices__head {
+  display: flex; align-items: end; justify-content: space-between;
+  gap: 1rem; margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+.voices__nav { display: flex; gap: .6rem; flex-shrink: 0; }
+.voices__btn {
+  display: grid; place-items: center;
+  width: 2.9rem; height: 2.9rem; padding: 0;
+  border-radius: 50%; border: 1px solid rgba(11, 62, 160, .3);
+  background: var(--stock); color: var(--navy); cursor: pointer;
+  transition: background .2s var(--ease), color .2s var(--ease), opacity .2s;
+}
+.voices__btn svg { width: 1.2rem; height: 1.2rem; }
+.voices__btn:hover:not(:disabled) { background: var(--navy); color: #fff; }
+.voices__btn:disabled { opacity: .4; cursor: default; }
+
+/* The track. Scroll-snap does the carousel; the buttons only nudge it. The
+   negative margin and matching padding let the card shadows breathe
+   without being clipped by the scroll box. */
+.quotes {
+  list-style: none; margin: -.75rem; padding: .75rem;
+  display: grid; grid-auto-flow: column;
+  grid-auto-columns: minmax(min(22rem, 86%), calc((100% - 2 * 1.25rem) / 3));
+  gap: 1.25rem;
+  overflow-x: auto; overscroll-behavior-x: contain;
+  /* proximity, not mandatory: when the row overflows by less than a card,
+     mandatory snapping pulls it back to the start and the end is
+     unreachable. */
+  scroll-snap-type: x proximity; scroll-padding-inline: .75rem;
+  scroll-behavior: smooth; scrollbar-width: thin;
+}
+@media (prefers-reduced-motion: reduce) { .quotes { scroll-behavior: auto; } }
+.quote {
+  scroll-snap-align: start;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 1.5rem;
+  background: var(--stock); border: 1px solid var(--rule);
+  border-radius: var(--r); padding: clamp(1.35rem, 2.5vw, 2rem);
+  box-shadow: 0 1px 2px rgba(20, 22, 28, .06), 0 12px 28px -18px rgba(20, 22, 28, .3);
 }
 .quote blockquote { margin: 0; }
 .quote blockquote p {
   font-size: var(--t3); color: var(--ink); margin: 0; text-wrap: pretty;
 }
-.quote__who { margin: .9rem 0 0; font-size: 1rem; }
+.quote__who {
+  margin: 0; font-size: 1rem;
+  padding-top: 1rem; border-top: 1px solid var(--rule);
+}
 .quote__name { display: block; font-weight: 700; color: var(--navy-deep); }
 .quote__role { display: block; color: var(--ink-2); }
 

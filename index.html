@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=23">
+  <link rel="stylesheet" href="styles.css?v=25">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -469,29 +469,39 @@
     </section>
 
     <!-- ============================================================
-         TESTIMONIALS — a plain stacked list: the quote, then who said it.
-         One placeholder for now. If there are ever more than four or five,
-         consider a carousel.
+         TESTIMONIALS — a carousel of cards: the quote, then who said it.
+         Without JavaScript it is still a row you can swipe or scroll
+         sideways; the arrow buttons only appear once the script runs.
 
          TO ADD ONE: copy a <li class="quote"> block and change the words,
-         the name, the title and the organization. No CSS. Delete the
-         placeholder once the first real one is in.
+         the name, the title and the organization. No CSS, no JS. Delete
+         the placeholders as real ones come in.
          ============================================================ -->
     <section class="voices" id="testimonials" aria-labelledby="voices-h">
-      <div class="read" data-reveal>
-        <h2 id="voices-h">What people are saying.</h2>
-        <ul class="quotes" role="list">
+      <div class="wide" data-reveal>
+        <div class="voices__head">
+          <h2 id="voices-h">What people are saying.</h2>
+          <div class="voices__nav" hidden>
+            <button class="voices__btn" type="button" data-dir="-1" aria-label="Previous testimonial">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button class="voices__btn" type="button" data-dir="1" aria-label="Next testimonial">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <ul class="quotes" role="list" tabindex="0" aria-label="Testimonials">
 
           <li class="quote">
             <blockquote>
-              <p>
-                &ldquo;Placeholder testimonial. Replace this with a real quote from a
-                workshop host, a participant, or a partner.&rdquo;
-              </p>
+              <p>&ldquo;The MedLit students are providing our clients with useful and valuable
+                health education and we look forward to their returning to Cy-Fair
+                Helping Hands.&rdquo;</p>
             </blockquote>
             <p class="quote__who">
-              <span class="quote__name">Full Name</span>
-              <span class="quote__role">Title, Organization</span>
+              <span class="quote__name">Janet Ryan</span>
+              <span class="quote__role">Executive Director, Cy-Fair Helping Hands</span>
             </p>
           </li>
 
@@ -756,6 +766,36 @@
         // hiding blocks it may never get told to reveal.
         root.className = root.className.replace(/\bjs\b/, '');
       }
+    })();
+
+    // Testimonial carousel buttons. The row already scrolls and snaps on its
+    // own; this only shows the arrows, moves one card per press, and greys
+    // out an arrow at either end. The arrows stay visible even when every
+    // card fits; with a single card both are simply greyed out.
+    (function () {
+      var track = document.querySelector('.quotes');
+      var nav = document.querySelector('.voices__nav');
+      if (!track || !nav) return;
+      var btns = nav.querySelectorAll('.voices__btn');
+
+      function step() {
+        var card = track.querySelector('.quote');
+        return card ? card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0) : track.clientWidth;
+      }
+      function update() {
+        var max = track.scrollWidth - track.clientWidth - 2;
+        nav.hidden = false;
+        btns[0].disabled = track.scrollLeft <= 2;
+        btns[1].disabled = track.scrollLeft >= max;
+      }
+      Array.prototype.forEach.call(btns, function (b) {
+        b.addEventListener('click', function () {
+          track.scrollBy({ left: step() * Number(b.getAttribute('data-dir')) });
+        });
+      });
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+      update();
     })();
   </script>
 
