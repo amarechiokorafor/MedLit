@@ -47,7 +47,11 @@
    12. The work so far — counts
    13. What we measure — the comprehension promise
    14. The guides
+   14a. Sifting the guides — search and chips
    14b. Testimonials
+   14c. The language badges on a guide
+   14d. Large print
+   14e. Where to find our guides — the partners
    15. The workshops
    16. How we check it
    17. Host
@@ -709,6 +713,293 @@ a:hover { color: var(--navy-deep); }
   }
 }
 
+/* ---------- 14a. Sifting the guides — search and chips -------------------
+   The whole bar is injected-visible: it carries `hidden` in the markup and
+   the script removes it. With JavaScript off there is no search box that
+   swallows what you type and no chip that does nothing, and every guide is
+   on the page anyway.
+
+   The chips are <button>s, not links and not checkboxes, because they toggle
+   state on this page and change nothing you could bookmark.
+   -------------------------------------------------------------------------- */
+.sift {
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  padding-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  border-bottom: 1px solid var(--rule);
+}
+
+.sift__search { position: relative; display: flex; align-items: center; }
+.sift__icon {
+  position: absolute; left: 1rem; width: 1.15rem; height: 1.15rem;
+  color: var(--ink-2); pointer-events: none;
+}
+.sift__input {
+  width: 100%; min-height: 3.25rem;
+  padding: .8rem 1rem .8rem 2.9rem;
+  font: inherit; font-size: 1.02rem; color: var(--ink);
+  background: var(--stock);
+  border: 2px solid var(--rule-firm); border-radius: var(--r);
+  transition: border-color .16s var(--ease), box-shadow .16s var(--ease);
+}
+.sift__input::placeholder { color: var(--ink-2); }
+.sift__input:focus {
+  outline: none;
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(11, 62, 160, .18);
+}
+/* Safari paints its own little x inside a type=search. Ours says what it
+   does in words and is 44px tall, so the native one is removed. */
+.sift__input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.sift__clear {
+  position: absolute; right: .5rem;
+  min-height: 2.4rem; padding: .3rem .9rem;
+  font: inherit; font-size: .95rem; font-weight: 600;
+  color: var(--navy); background: transparent;
+  border: 0; border-radius: var(--r); cursor: pointer;
+}
+.sift__clear:hover { background: rgba(11, 62, 160, .09); }
+
+.sift__sets {
+  display: flex; flex-wrap: wrap; gap: 1rem 2.5rem;
+  margin-top: 1.1rem;
+}
+.sift__set { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .85rem; }
+.sift__legend { font-size: .95rem; font-weight: 600; color: var(--ink-2); }
+.sift__chips { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: .45rem;
+  min-height: 2.5rem; padding: .4rem 1rem;
+  font: inherit; font-size: .95rem; font-weight: 600; line-height: 1.2;
+  color: var(--ink); background: var(--stock);
+  border: 2px solid var(--rule-firm); border-radius: 999px;
+  cursor: pointer;
+  transition: background-color .16s var(--ease), border-color .16s var(--ease),
+              color .16s var(--ease);
+}
+.chip:hover { border-color: var(--navy); color: var(--navy); }
+/* Pressed is navy on white, not amber: amber would read as a warning next to
+   the amber the page already spends on the guide badges. */
+.chip[aria-pressed="true"] {
+  background: var(--navy); border-color: var(--navy); color: var(--stock);
+}
+.chip[aria-pressed="true"]:hover { background: var(--navy-deep); border-color: var(--navy-deep); color: var(--stock); }
+/* The count of matching guides, carried on the chip itself, so you can see
+   that "Vietnamese" is empty before you press it. */
+.chip__n { font-size: .85rem; font-weight: 700; opacity: .72; font-variant-numeric: tabular-nums; }
+/* A chip nothing matches stays on the page and stays pressable — hiding it
+   would make the row jump every keystroke. */
+.chip[data-empty] { opacity: .45; }
+
+.sift__count {
+  margin-top: 1rem; font-size: .95rem; font-weight: 600; color: var(--ink-2);
+}
+.sift__empty {
+  margin-top: 1.5rem; padding: clamp(1.5rem, 4vw, 2.5rem);
+  background: var(--stock); border: 1px dashed var(--rule-firm);
+  border-radius: var(--r);
+  font-size: var(--t3); color: var(--ink-2); text-align: center;
+}
+
+/* A card filtered out is removed from the layout, not dimmed: a greyed row
+   of things you cannot have is worse than a shorter list. */
+.guide[hidden] { display: none; }
+
+/* ---------- 14c. The language badges on a guide --------------------------
+   One badge per language, and pressing it downloads that language's PDF.
+   Nobody should open a page and then hunt for a file.
+
+   Amber field, dark ink. White on amber is 1.7:1 and is never used.
+   -------------------------------------------------------------------------- */
+.guide__langs-label {
+  margin: 1.4rem 0 .65rem;
+  font-size: .95rem; font-weight: 600; color: var(--ink-2);
+}
+.guide__langs { display: flex; flex-wrap: wrap; gap: .6rem; }
+.lang {
+  display: inline-flex; align-items: center; gap: .55rem;
+  min-height: 2.9rem; padding: .5rem 1.1rem .5rem .6rem;
+  background: var(--amber-lt); color: var(--ink);
+  border: 2px solid var(--amber); border-radius: 999px;
+  font-size: 1rem; font-weight: 700; text-decoration: none;
+  transition: background-color .16s var(--ease), border-color .16s var(--ease),
+              transform .1s var(--ease);
+}
+.lang:hover, .lang:focus-visible { background: var(--amber); border-color: var(--amber-dk); }
+.lang:active { transform: translateY(1px); }
+.lang__code {
+  display: grid; place-items: center;
+  width: 1.9rem; height: 1.9rem;
+  background: var(--navy-deep); color: var(--stock);
+  border-radius: 50%;
+  font-family: var(--display); font-size: .75rem; font-weight: 700;
+  letter-spacing: 0;
+}
+.lang__name { padding-right: .15rem; }
+/* The download arrow, so a badge reads as a file and not as a filter. */
+.lang::after {
+  content: ''; width: .45rem; height: .45rem;
+  border-right: 2.5px solid var(--amber-dk); border-bottom: 2.5px solid var(--amber-dk);
+  transform: translateY(-.12em) rotate(45deg);
+}
+
+/* ---------- 14d. Large print ---------------------------------------------- */
+.guide__tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  margin-top: .9rem; padding: .3rem .75rem;
+  background: rgba(11, 62, 160, .09); color: var(--navy-deep);
+  border-radius: 999px;
+  font-size: .88rem; font-weight: 700;
+}
+
+/* ---------- 14e. Where to find our guides — the partners ------------------
+   Counts, then the names moving past, then a card each.
+   -------------------------------------------------------------------------- */
+.where {
+  background: var(--stock); border-top: 1px solid var(--rule);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
+}
+.where__head { max-width: 42rem; }
+.where__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1rem; }
+
+/* The stats strip. Three figures on a hairline rule, in the page's own
+   display face at the same weight as the "Our impact" numerals. */
+.where__stats {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem clamp(1.5rem, 4vw, 3.5rem);
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--rule);
+}
+.where__n {
+  font-family: var(--display); font-weight: 700; line-height: .95;
+  font-size: clamp(2.4rem, 1.2rem + 3.2vw, 4rem);
+  color: var(--navy); margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+.where__label {
+  margin: .5rem 0 0; font-size: .98rem; color: var(--ink-2); text-wrap: balance;
+}
+
+/* ---- the ribbon --------------------------------------------------------
+   One list printed twice, slid left by exactly half the track, forever. The
+   second copy is aria-hidden in the markup and exists only so the seam
+   lands off-screen; the whole band is aria-hidden anyway, because the cards
+   below say the same names to a screen reader in a form it can use.
+
+   It pauses on hover and on keyboard focus inside the section, and under
+   prefers-reduced-motion it does not move at all — see section 5.
+   -------------------------------------------------------------------------- */
+.ribbon {
+  overflow: hidden;
+  margin-block: clamp(2rem, 4vw, 3rem);
+  padding-block: clamp(.9rem, 1.8vw, 1.4rem);
+  background: var(--navy-deep); color: var(--amber);
+  border-block: 1px solid var(--navy);
+  /* The names fade out into the navy at both edges instead of being chopped
+     off by the viewport. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.ribbon__track {
+  display: flex; width: max-content;
+  animation: ribbon-slide 42s linear infinite;
+}
+.ribbon:hover .ribbon__track { animation-play-state: paused; }
+.ribbon__set {
+  list-style: none; display: flex; align-items: center;
+  margin: 0; padding: 0;
+}
+.ribbon__set > li {
+  display: flex; align-items: center; white-space: nowrap;
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(1.3rem, .7rem + 1.6vw, 2.1rem);
+  line-height: 1.1; letter-spacing: -0.015em;
+  padding-inline: clamp(1.1rem, 2.5vw, 2.2rem);
+}
+/* The separator is the callout disc, shrunk to a dot: the same mark the
+   printed guide uses, not a decorative bar. */
+.ribbon__set > li::after {
+  content: ''; flex: none;
+  width: .5rem; height: .5rem; margin-left: clamp(1.1rem, 2.5vw, 2.2rem);
+  background: var(--amber); border-radius: 50%;
+}
+@keyframes ribbon-slide {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
+}
+
+/* ---- the cards ---------------------------------------------------------- */
+.partners {
+  list-style: none;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.partner {
+  display: flex; flex-direction: column;
+  background: var(--stock-2); border: 1px solid var(--rule);
+  border-radius: var(--r); padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  /* The amber edge is the only thing that moves on hover. */
+  border-left: 4px solid var(--amber);
+  transition: transform .22s var(--ease), box-shadow .22s var(--ease),
+              border-left-color .22s var(--ease);
+}
+@media (hover: hover) and (pointer: fine) {
+  .partner:hover {
+    transform: translateY(-3px);
+    border-left-color: var(--navy);
+    box-shadow: 0 1px 2px rgba(20, 22, 28, .07), 0 18px 34px -20px rgba(20, 22, 28, .45);
+  }
+}
+.partner > h3 { font-size: 1.18rem; line-height: 1.25; margin: 0; text-wrap: balance; }
+.partner__where {
+  margin: .5rem 0 0; font-size: .92rem; font-weight: 700; color: var(--navy);
+}
+.partner__what {
+  margin: .5rem 0 0; font-size: .98rem; color: var(--ink-2); text-wrap: pretty;
+}
+.partner__link { margin: auto 0 0; padding-top: 1rem; font-size: .95rem; }
+.partner__link a { color: var(--navy); overflow-wrap: anywhere; }
+
+/* The slot for a logo, for the day a partner says yes in writing. Drop an
+   <img class="partner__logo"> in above the <h3> and nothing else changes. */
+.partner__logo { height: 2.5rem; width: auto; margin-bottom: .9rem; }
+
+.where__ask {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: clamp(1.5rem, 3vw, 2rem);
+  border-top: 1px solid var(--rule);
+  max-width: var(--read);
+}
+.where__ask-text { font-size: var(--t3); color: var(--ink-2); }
+.where__ask .act { margin-top: 1.4rem; }
+
+/* Reduced motion. The global rule in section 5 collapses every animation to
+   .01ms, which for an infinite loop means it restarts forever at zero
+   duration — busy work for the compositor and a flicker on some machines.
+   So the ribbon is taken off the animation entirely and becomes what it
+   always was underneath: a row of names. The duplicate copy is dropped,
+   since without movement a seam is just the list printed twice. */
+@media (prefers-reduced-motion: reduce) {
+  .ribbon { -webkit-mask-image: none; mask-image: none; }
+  .ribbon__track {
+    animation: none;
+    width: auto; flex-wrap: wrap; justify-content: center;
+  }
+  .ribbon__set { flex-wrap: wrap; justify-content: center; }
+  .ribbon__set:last-child { display: none; }
+}
+
+/* Tabbing a link inside this section stops the ribbon too. Nothing in the
+   ribbon is focusable, but a name sliding past behind the card you are
+   reading is movement you did not ask for. */
+.where:focus-within .ribbon__track { animation-play-state: paused; }
+
+/* The ribbon is a decoration with no information in it that the cards below
+   do not carry, so it does not go to the printer. */
+@media print { .ribbon { display: none; } }
+
 /* ---------- 14b. Testimonials -------------------------------------------- */
 .voices {
   padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
@@ -1079,6 +1370,24 @@ a:hover { color: var(--navy-deep); }
 
   .facts > div, .facts--wide > div { grid-template-columns: minmax(0, 1fr); gap: .1rem; }
   .facts dt { padding-top: 0; }
+}
+
+@media (max-width: 52rem) {
+  /* Three figures across a phone would set each number at about 2rem and
+     wrap every label to three lines. Two up, with the third spanning, keeps
+     the numerals big enough to read at arm's length. */
+  .where__stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+  .where__stats > li:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 40rem) {
+  /* The chip rows stack under their own legends rather than running the
+     legend and six chips into one ragged line. */
+  .sift__sets { gap: 1.1rem; }
+  .sift__set { flex-direction: column; align-items: flex-start; gap: .55rem; }
+  /* At a phone width a 42s loop crawls, because the track is no shorter but
+     the window is. Same speed on screen, shorter trip. */
+  .ribbon__track { animation-duration: 26s; }
 }
 
 @media (max-width: 34rem) {

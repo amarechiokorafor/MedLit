@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=26">
+  <link rel="stylesheet" href="styles.css?v=27">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -146,6 +146,7 @@
         <ul>
           <li><a href="#what-we-do">What we do</a></li>
           <li><a href="#guides">Guides</a></li>
+          <li><a href="#partners">Partners</a></li>
           <li><a href="#workshops">Workshops</a></li>
           <li><a href="#host">Host a workshop</a></li>
         </ul>
@@ -457,6 +458,37 @@
             <p class="tally__where">At MESA outreach</p>
           </li>
 
+          <li>
+            <div class="tally__stat">
+              <svg class="tally__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+                <path d="M14 3v5h5M9 13h6M9 17h6"/>
+              </svg>
+              <p class="tally__n">220</p>
+              <p class="tally__label">Guides handed out</p>
+            </div>
+            <div class="tally__stat">
+              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
+                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
+                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
+                      font-size="10" font-weight="700" fill="#062563">EN</text>
+              </svg>
+              <p class="tally__part">120</p>
+              <p class="tally__label">In English</p>
+            </div>
+            <div class="tally__stat">
+              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
+                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
+                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
+                      font-size="10" font-weight="700" fill="#062563">ES</text>
+              </svg>
+              <p class="tally__part">100</p>
+              <p class="tally__label">In Spanish</p>
+            </div>
+            <p class="tally__where">At Cy-Fair Helping Hands</p>
+          </li>
+
           <!-- ADD THE NEXT EVENT HERE -->
 
         </ul>
@@ -468,10 +500,36 @@
          only real proof of work here and the best-designed thing the
          organisation owns.
 
+         ONE CARD PER GUIDE, NOT PER LANGUAGE. A translation is the same
+         guide, so it is a badge on the card, not a second card. Clicking a
+         badge downloads that language's PDF — nobody should have to open a
+         page and then hunt for the file.
+
          TO ADD A GUIDE: drop the PDF in assets/guides/, render its first
          page to a .jpg alongside it, then copy one <li class="guide">
-         block and change the title, the alt text, the description, the
-         three facts, the cover src and both hrefs. No CSS, ever.
+         block. That block is the whole entry — the search box, the filter
+         chips and the result count all read themselves off these cards, so
+         a new guide adds its own chips and nothing else is edited. The
+         attributes that matter:
+
+           data-topic     one of: medications, lab-results, insurance,
+                          chronic-conditions. Add a new value here and the
+                          topic chip for it appears on its own.
+           data-keywords  words someone might actually type that are not
+                          already in the title or the blurb ("pills",
+                          "bottle", "bloodwork"). Add the translated title
+                          here too, so searching in Spanish finds the card.
+           data-large-print  add this attribute (no value) only when a
+                          large-print version genuinely exists.
+
+         TO ADD A LANGUAGE: add one <a class="lang"> inside .guide__langs
+         with its own data-lang (the ISO code), data-lang-name (the language
+         in its own script — Español, Tiếng Việt, Türkçe, فارسی, so people
+         can find their language without reading English) and a
+         data-goatcounter-click name of its own. The language filter chip
+         appears on its own.
+
+         No CSS, ever.
          ============================================================ -->
     <section class="guides" id="guides" aria-labelledby="guides-h">
       <div class="wide">
@@ -480,9 +538,44 @@
           <p class="guides__lede">No sign-up. No email address. No catch.</p>
         </div>
 
+        <!-- The filter bar starts hidden and the script at the end of the
+             body unhides it. Without JavaScript there is no dead search box
+             and no chip that does nothing — every guide is simply on the
+             page, which is the point of rule 4. -->
+        <div class="sift" id="sift" hidden>
+          <div class="sift__search">
+            <svg class="sift__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false">
+              <circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4 4"/>
+            </svg>
+            <label class="hidden" for="sift-q">Search the guides</label>
+            <input id="sift-q" class="sift__input" type="search" autocomplete="off"
+                   placeholder="Search the guides — try &ldquo;pills&rdquo; or &ldquo;bloodwork&rdquo;">
+            <button class="sift__clear" type="button" hidden>Clear</button>
+          </div>
+
+          <div class="sift__sets">
+            <div class="sift__set" role="group" aria-label="Filter by language">
+              <span class="sift__legend">Language</span>
+              <div class="sift__chips" data-chips="lang"></div>
+            </div>
+            <div class="sift__set" role="group" aria-label="Filter by topic">
+              <span class="sift__legend">Topic</span>
+              <div class="sift__chips" data-chips="topic"></div>
+            </div>
+          </div>
+
+          <!-- aria-live, so a screen reader hears the count change instead of
+               wondering whether anything happened. -->
+          <p class="sift__count" role="status" aria-live="polite"></p>
+        </div>
+
         <ul class="shelf" role="list" data-reveal>
 
-          <li class="guide">
+          <li class="guide"
+              data-topic="medications"
+              data-keywords="pills pill bottle pharmacy prescription label dose dosage directions refills sig
+                             medicine medication ¿Qué dice la etiqueta de mi medicamento recetado? receta farmacia">
             <a class="guide__cover" href="assets/guides/what-does-my-prescription-label-say.pdf"
                data-goatcounter-click="guide-open-en">
               <img src="assets/guides/what-does-my-prescription-label-say.jpg"
@@ -499,52 +592,235 @@
               </p>
               <dl class="facts">
                 <div><dt>Format</dt><dd>PDF, 1 page</dd></div>
-                <div><dt>Language</dt><dd>English</dd></div>
                 <div><dt>Reviewed</dt><dd>Licensed healthcare professional</dd></div>
               </dl>
-              <a class="action action--solid"
-                 href="assets/guides/what-does-my-prescription-label-say.pdf" download
-                 data-goatcounter-click="guide-download-en">
-                Download the guide
-                <span class="hidden">: What Does My Prescription Label Say? (PDF)</span>
-              </a>
+
+              <p class="guide__langs-label">Download it in</p>
+              <div class="guide__langs">
+                <a class="lang" data-lang="en" data-lang-name="English"
+                   href="assets/guides/what-does-my-prescription-label-say.pdf" download
+                   data-goatcounter-click="guide-download-en">
+                  <span class="lang__code">EN</span>
+                  <span class="lang__name">English</span>
+                  <span class="hidden">— What Does My Prescription Label Say? (PDF)</span>
+                </a>
+                <a class="lang" data-lang="es" data-lang-name="Español"
+                   href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf" download
+                   data-goatcounter-click="guide-download-es">
+                  <span class="lang__code">ES</span>
+                  <span class="lang__name" lang="es">Español</span>
+                  <span class="hidden">— ¿Qué dice la etiqueta de mi medicamento recetado? (PDF, Spanish)</span>
+                </a>
+              </div>
             </div>
           </li>
 
-          <li class="guide">
-            <a class="guide__cover" href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf"
-               data-goatcounter-click="guide-open-es">
-              <img src="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.jpg"
-                   alt="Primera página de la guía: una etiqueta de medicamento con once
-                        partes numeradas, cada una explicada."
-                   lang="es" width="620" height="802" loading="lazy">
+          <li class="guide"
+              data-topic="lab-results"
+              data-keywords="lab labs bloodwork blood work test results reference range flag high low
+                             hemoglobin CBC specimen units report">
+            <a class="guide__cover" href="assets/guides/how-do-i-read-a-lab-report.pdf"
+               data-goatcounter-click="guide-open-lab-en">
+              <img src="assets/guides/how-do-i-read-a-lab-report.jpg"
+                   alt="First page of the guide: a sample lab report with eleven numbered
+                        callouts, each explaining one part of it, beside four notes about
+                        reference ranges, flags, trends and units."
+                   width="992" height="1240" loading="lazy">
             </a>
             <div class="guide__text">
-              <h3 lang="es"><a href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf"
-                               data-goatcounter-click="guide-open-es">¿Qué dice la etiqueta de mi medicamento recetado?</a></h3>
+              <h3><a href="assets/guides/how-do-i-read-a-lab-report.pdf"
+                     data-goatcounter-click="guide-open-lab-en">How Do I Read a Lab Report?</a></h3>
               <p class="guide__blurb">
-                The same guide in Spanish. Every part of a prescription label,
-                explained one piece at a time.
+                Your lab report has a structure. Patient details, test name, result,
+                units, reference range, flags — one piece at a time.
               </p>
               <dl class="facts">
                 <div><dt>Format</dt><dd>PDF, 1 page</dd></div>
-                <div><dt>Language</dt><dd>Spanish</dd></div>
                 <div><dt>Reviewed</dt><dd>Licensed healthcare professional</dd></div>
               </dl>
-              <a class="action action--solid"
-                 href="assets/guides/que-dice-la-etiqueta-de-mi-medicamento.pdf" download
-                 data-goatcounter-click="guide-download-es">
-                <span lang="es">Descargar la guía</span>
-                <span class="hidden">: ¿Qué dice la etiqueta de mi medicamento recetado? (PDF, Spanish)</span>
-              </a>
+
+              <p class="guide__langs-label">Download it in</p>
+              <div class="guide__langs">
+                <a class="lang" data-lang="en" data-lang-name="English"
+                   href="assets/guides/how-do-i-read-a-lab-report.pdf" download
+                   data-goatcounter-click="guide-download-lab-en">
+                  <span class="lang__code">EN</span>
+                  <span class="lang__name">English</span>
+                  <span class="hidden">— How Do I Read a Lab Report? (PDF)</span>
+                </a>
+              </div>
             </div>
           </li>
 
-          <!-- ADD NEW GUIDE CARDS HERE. Give each link a data-goatcounter-click
-               name of its own (guide-open-xx, guide-download-xx) so its
-               downloads show up as a separate line in GoatCounter. -->
+          <!-- ADD NEW GUIDE CARDS HERE. Give every link a
+               data-goatcounter-click name of its own (guide-open-…,
+               guide-download-…) so its downloads show up as a separate line
+               in GoatCounter. -->
 
         </ul>
+
+        <!-- Shown only when a search or a chip combination matches nothing.
+             The script fills in the language name, so someone filtering on
+             Español is told in Spanish. -->
+        <p class="sift__empty" id="sift-empty" hidden></p>
+      </div>
+    </section>
+
+
+    <!-- ============================================================
+         WHERE TO FIND OUR GUIDES — the partners.
+
+         Most people arriving here want the nearest place, not a list of
+         logos. So the section is: what the network adds up to, the names
+         moving past at size, then one card per partner with the city, what
+         they actually are, and a link to their own site.
+
+         THE RIBBON is the only thing on this page that moves on its own. It
+         earns that because the names ARE the content — five organisations
+         that said yes. It is one list, printed twice: the second copy is
+         aria-hidden and exists only so the loop has somewhere to go. It
+         pauses on hover and on keyboard focus, and under
+         `prefers-reduced-motion` it does not move at all and becomes a
+         plain wrapped row. Do not add a second moving thing to this page.
+
+         LOGOS: names only, until a partner says yes in writing. A name is a
+         fact; a logo is a borrowed endorsement. There is a .partner__logo
+         slot ready in the CSS for when one does.
+
+         NO MAP YET. A pin per partner needs either a paid tile key or an
+         embedded iframe that ships third-party cookies onto a site that
+         currently has none and therefore needs no consent banner. Five
+         cards with a city on each do the same job today. If the list grows
+         past a dozen, revisit it.
+
+         TO ADD A PARTNER: copy one <li class="partner">, and add the same
+         name to the ribbon list. Both read top to bottom in the same order.
+         The partner count in the stats strip counts the cards itself.
+         ============================================================ -->
+    <section class="where" id="partners" aria-labelledby="where-h">
+      <div class="wide">
+        <div class="where__head" data-reveal>
+          <p class="kicker">Our partners</p>
+          <h2 id="where-h">Where to find our guides.</h2>
+          <p class="where__lede">
+            We do not hand guides out on our own. These are the pantries, the
+            outreach centers and the senior programs that put them in front of
+            the people who need them.
+          </p>
+        </div>
+
+        <!-- The counts are not typed in twice. .where__n carries a fallback
+             that is correct as written; the script re-reads the totals out
+             of the "Our impact" rows above so the two can never drift. -->
+        <ul class="where__stats" role="list" data-reveal>
+          <li>
+            <p class="where__n" data-count="partners">5</p>
+            <p class="where__label">Partner organizations</p>
+          </li>
+          <li>
+            <p class="where__n" data-count="guides">438</p>
+            <p class="where__label">Guides handed out through them</p>
+          </li>
+          <li>
+            <p class="where__n" data-count="languages">4</p>
+            <p class="where__label">Languages handed out so far</p>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Full bleed on purpose: it sits outside .wide so the names run off
+           both edges and the loop has no visible seam. -->
+      <div class="ribbon" aria-hidden="true">
+        <div class="ribbon__track">
+          <ul class="ribbon__set" role="list">
+            <li>Cy-Fair Helping Hands</li>
+            <li>MESA Outreach</li>
+            <li>Abba&rsquo;s House</li>
+            <li>Tomball Emergency Assistance Ministries</li>
+            <li>Fort Bend Seniors Meals on Wheels</li>
+          </ul>
+          <ul class="ribbon__set" role="list">
+            <li>Cy-Fair Helping Hands</li>
+            <li>MESA Outreach</li>
+            <li>Abba&rsquo;s House</li>
+            <li>Tomball Emergency Assistance Ministries</li>
+            <li>Fort Bend Seniors Meals on Wheels</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wide">
+        <ul class="partners" role="list" data-reveal>
+
+          <li class="partner">
+            <h3>Cy-Fair Helping Hands</h3>
+            <p class="partner__where">Houston, TX</p>
+            <p class="partner__what">Food pantry and emergency assistance</p>
+            <p class="partner__link">
+              <a href="https://www.cyfairhelpinghands.org/">cyfairhelpinghands.org</a>
+            </p>
+          </li>
+
+          <li class="partner">
+            <h3>MESA Outreach</h3>
+            <p class="partner__where">Houston, TX</p>
+            <p class="partner__what">Food pantry and community outreach</p>
+            <p class="partner__link">
+              <a href="https://www.mesa-outreach.org/">mesa-outreach.org</a>
+            </p>
+          </li>
+
+          <li class="partner">
+            <h3>Abba&rsquo;s House</h3>
+            <p class="partner__where">Houston, TX</p>
+            <p class="partner__what">Refugee and newcomer services</p>
+            <!-- NO LINK YET, on purpose. Every other address here was checked
+                 against the organisation's own site before it was published,
+                 and this one could not be. Add it the moment you have it
+                 from them directly:
+                 <p class="partner__link"><a href="https://…">…</a></p>
+                 A card without a link still reads; a card with the wrong
+                 link sends someone to a stranger. -->
+          </li>
+
+          <li class="partner">
+            <h3>Tomball Emergency Assistance Ministries</h3>
+            <p class="partner__where">Tomball, TX</p>
+            <p class="partner__what">Food pantry and emergency assistance &mdash; TEAM</p>
+            <p class="partner__link">
+              <a href="https://teamtomball.com/">teamtomball.com</a>
+            </p>
+          </li>
+
+          <li class="partner">
+            <h3>Fort Bend Seniors Meals on Wheels</h3>
+            <p class="partner__where">Rosenberg, TX</p>
+            <p class="partner__what">Senior meals and senior centers</p>
+            <p class="partner__link">
+              <a href="https://www.fortbendseniors.org/">fortbendseniors.org</a>
+            </p>
+          </li>
+
+          <!-- ADD A NEW PARTNER HERE, and add the name to both ribbon lists
+               above so the loop stays seamless. -->
+
+        </ul>
+
+        <div class="where__ask" data-reveal>
+          <p class="where__ask-text">
+            If you run a pantry, a clinic waiting room, a library or a senior
+            center, we will send you guides to put on your front desk. Free,
+            printed or as files you print yourself.
+          </p>
+          <p class="act">
+            <a class="action action--solid"
+               href="mailto:medliterateofficial@gmail.com?subject=Becoming%20a%20MedLit%20partner"
+               data-goatcounter-click="partner-email">
+              Become a partner
+            </a>
+            <span class="act__fine">medliterateofficial@gmail.com</span>
+          </p>
+        </div>
       </div>
     </section>
 
@@ -876,6 +1152,250 @@
       track.addEventListener('scroll', update, { passive: true });
       window.addEventListener('resize', update);
       update();
+    })();
+
+    // ----------------------------------------------------------------
+    // SIFTING THE GUIDES — the search box and the filter chips.
+    //
+    // THE CARDS ARE THE DATA. There is no second list to keep in sync: the
+    // chips, the counts and the empty message all read themselves off the
+    // <li class="guide"> blocks. Add a guide with a Vietnamese badge and a
+    // Tiếng Việt chip appears, labelled in its own script, with nothing else
+    // edited.
+    //
+    // Everything here is additive. The bar is `hidden` in the markup and is
+    // only unhidden once the cards have been read, so a throw anywhere in
+    // this block leaves a page with every guide on it and no dead controls.
+    // ----------------------------------------------------------------
+    (function () {
+      var bar = document.getElementById('sift');
+      var shelf = document.querySelector('.shelf');
+      if (!bar || !shelf) return;
+
+      var cards = Array.prototype.slice.call(shelf.querySelectorAll('.guide'));
+      if (cards.length < 2) return;  // one guide needs no filter.
+
+      var input = document.getElementById('sift-q');
+      var clearBtn = bar.querySelector('.sift__clear');
+      var countEl = bar.querySelector('.sift__count');
+      var emptyEl = document.getElementById('sift-empty');
+
+      // Topic slugs are written on the cards; these are the words for them.
+      // A slug with no entry falls back to its own slug with the hyphens
+      // taken out, so a new topic is never blank — just unpolished until
+      // someone adds a line here.
+      var TOPIC_WORDS = {
+        'medications': 'Medications',
+        'lab-results': 'Lab results',
+        'insurance': 'Insurance',
+        'chronic-conditions': 'Chronic conditions'
+      };
+      function topicWord(slug) {
+        return TOPIC_WORDS[slug] || slug.replace(/-/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
+      }
+
+      // --- read the cards ------------------------------------------------
+      // normalise() strips accents, so "espanol" finds Español and "que dice"
+      // finds "¿Qué dice…". People search in the alphabet their keyboard is
+      // set to, which is often not the one the title is in.
+      function normalise(s) {
+        s = (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
+        return s.normalize ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s;
+      }
+
+      var langOrder = [];      // codes, in the order they first appear
+      var langWords = {};      // code -> the language in its own script
+
+      var items = cards.map(function (card) {
+        var topic = card.getAttribute('data-topic') || '';
+        var langs = [];
+        Array.prototype.forEach.call(card.querySelectorAll('.lang'), function (a) {
+          var code = (a.getAttribute('data-lang') || '').toLowerCase();
+          if (!code) return;
+          langs.push(code);
+          if (!langWords[code]) {
+            langWords[code] = a.getAttribute('data-lang-name') || code.toUpperCase();
+            langOrder.push(code);
+          }
+        });
+
+        var title = (card.querySelector('h3') || {}).textContent || '';
+        var blurb = (card.querySelector('.guide__blurb') || {}).textContent || '';
+        var hay = normalise([
+          title, blurb,
+          card.getAttribute('data-keywords') || '',
+          topicWord(topic),
+          langs.map(function (c) { return langWords[c]; }).join(' '),
+          card.hasAttribute('data-large-print') ? 'large print' : ''
+        ].join(' '));
+
+        return { el: card, topic: topic, langs: langs, hay: hay };
+      });
+
+      // "Large print available" is a tag, not a filter — there is no second
+      // file, only a note on the card. It is written in from here so the
+      // markup for a guide stays one attribute.
+      items.forEach(function (it) {
+        if (!it.el.hasAttribute('data-large-print')) return;
+        var tag = document.createElement('p');
+        tag.className = 'guide__tag';
+        tag.textContent = 'Large print available';
+        var langs = it.el.querySelector('.guide__langs');
+        if (langs) langs.parentNode.insertBefore(tag, langs.nextSibling);
+      });
+
+      // --- build the chips -----------------------------------------------
+      var state = { lang: {}, topic: {}, q: '' };
+
+      function makeChips(kind, values, labelFor) {
+        var host = bar.querySelector('[data-chips="' + kind + '"]');
+        if (!host) return [];
+        return values.map(function (value) {
+          var b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'chip';
+          b.setAttribute('aria-pressed', 'false');
+          b.setAttribute('data-value', value);
+          var label = document.createElement('span');
+          label.textContent = labelFor(value);
+          // Keep a translated name in its own language for a screen reader,
+          // so "Español" is not read out in an English voice.
+          if (kind === 'lang' && value !== 'en') label.setAttribute('lang', value);
+          var n = document.createElement('span');
+          n.className = 'chip__n';
+          b.appendChild(label);
+          b.appendChild(n);
+          b._n = n;
+          b.addEventListener('click', function () {
+            if (state[kind][value]) delete state[kind][value];
+            else state[kind][value] = true;
+            apply();
+          });
+          host.appendChild(b);
+          return b;
+        });
+      }
+
+      var topicOrder = [];
+      items.forEach(function (it) {
+        if (it.topic && topicOrder.indexOf(it.topic) < 0) topicOrder.push(it.topic);
+      });
+
+      var langChips = makeChips('lang', langOrder, function (c) { return langWords[c]; });
+      var topicChips = makeChips('topic', topicOrder, topicWord);
+
+      // --- filtering ------------------------------------------------------
+      // Within one row the chips are OR — English or Spanish. Across the two
+      // rows they are AND — Spanish AND medications. Nothing selected in a
+      // row means that row is not filtering at all, which is what an
+      // untouched filter should do.
+      function on(bag) { return Object.keys(bag); }
+
+      function matches(it, skip) {
+        if (state.q && it.hay.indexOf(state.q) < 0) return false;
+        if (skip !== 'lang') {
+          var ls = on(state.lang);
+          if (ls.length && !ls.some(function (c) { return it.langs.indexOf(c) >= 0; })) return false;
+        }
+        if (skip !== 'topic') {
+          var ts = on(state.topic);
+          if (ts.length && ts.indexOf(it.topic) < 0) return false;
+        }
+        return true;
+      }
+
+      function apply() {
+        var shown = 0;
+        items.forEach(function (it) {
+          var hit = matches(it);
+          it.el.hidden = !hit;
+          if (hit) shown++;
+        });
+
+        // The number on each chip is how many guides you would get if you
+        // pressed it now, given everything else that is set. A zero tells
+        // you "Vietnamese" is empty before you spend a click on it.
+        function tally(chips, kind, test) {
+          chips.forEach(function (b) {
+            var v = b.getAttribute('data-value');
+            var n = items.filter(function (it) { return matches(it, kind) && test(it, v); }).length;
+            b._n.textContent = n;
+            b.setAttribute('aria-pressed', state[kind][v] ? 'true' : 'false');
+            if (n) b.removeAttribute('data-empty'); else b.setAttribute('data-empty', '');
+          });
+        }
+        tally(langChips, 'lang', function (it, v) { return it.langs.indexOf(v) >= 0; });
+        tally(topicChips, 'topic', function (it, v) { return it.topic === v; });
+
+        countEl.textContent = shown === 1 ? '1 guide' : shown + ' guides';
+        clearBtn.hidden = !input.value;
+
+        if (shown) {
+          emptyEl.hidden = true;
+          emptyEl.textContent = '';
+        } else {
+          // Name the language they asked for, in their own script. Someone
+          // who filtered on فارسی and got nothing should see فارسی in the
+          // sentence, not a generic shrug.
+          var picked = on(state.lang).map(function (c) { return langWords[c]; });
+          emptyEl.textContent = picked.length
+            ? 'No guides in ' + picked.join(' or ') + ' yet. Try another language — '
+              + 'or write to us and tell us which one you need.'
+            : 'No results. Try another language, or fewer words.';
+          emptyEl.hidden = false;
+        }
+      }
+
+      input.addEventListener('input', function () {
+        state.q = normalise(input.value.trim());
+        apply();
+      });
+      // Escape clears, the way a search box is expected to.
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && input.value) { input.value = ''; state.q = ''; apply(); }
+      });
+      clearBtn.addEventListener('click', function () {
+        input.value = ''; state.q = ''; apply(); input.focus();
+      });
+
+      apply();
+      bar.hidden = false;   // last: the controls appear only once they work.
+    })();
+
+    // ----------------------------------------------------------------
+    // THE PARTNER STATS STRIP.
+    //
+    // Three numbers that are all already on this page somewhere else, so
+    // none of them is typed in twice: the partner count is the number of
+    // cards, the guide total is the sum of the "Our impact" headline
+    // figures, and the language count is the number of distinct language
+    // badges across those same rows. The HTML fallbacks are correct as
+    // written; this only keeps them from drifting the next time a row is
+    // added upstairs and this section is forgotten.
+    // ----------------------------------------------------------------
+    (function () {
+      var strip = document.querySelector('.where__stats');
+      if (!strip) return;
+
+      function set(name, value) {
+        var el = strip.querySelector('[data-count="' + name + '"]');
+        if (el && value) el.textContent = value;
+      }
+
+      set('partners', document.querySelectorAll('.partner').length);
+
+      var rows = document.querySelectorAll('.tally__list > li');
+      var total = 0, langs = {};
+      Array.prototype.forEach.call(rows, function (row) {
+        var n = row.querySelector('.tally__n');
+        if (n) total += parseInt(n.textContent.replace(/[^\d]/g, ''), 10) || 0;
+        // The language of a part is the code inside its badge: EN, ES, TR, FA.
+        Array.prototype.forEach.call(row.querySelectorAll('.tally__icon--lang text'), function (t) {
+          langs[t.textContent.trim()] = true;
+        });
+      });
+      set('guides', total);
+      set('languages', Object.keys(langs).length);
     })();
   </script>
 

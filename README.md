@@ -370,10 +370,16 @@ line gets blurred.
 
 ### The work so far — counts
 
-Guides handed out, sessions run, places visited. Today that is **160 guides at
-Cy-Fair Helping Hands, 90 in English and 70 in Spanish**. The split does real
-work: the site claims English and Spanish in three other places, and this is the
-only one that proves it with a number.
+Guides handed out, sessions run, places visited. Today that is **438 guides
+across four distributions** — two at Cy-Fair Helping Hands (160, then 220), one
+at Abba's House (18, in four languages) and one at MESA Outreach (40). The split
+does real work: the site claims English and Spanish in three other places, and
+this is the only one that proves it with a number.
+
+A second visit to a place we have already been is **its own row**, not an edit
+to the first one. The first row is what happened in that month and it stays
+true; overwriting it would quietly delete the history and leave the page unable
+to say the partnership continued.
 
 A count is a fact you can stand on, and it is not an outcome.
 
@@ -430,19 +436,81 @@ while editing numbers, which is the only time anyone touches them.
 
 ## Adding a guide
 
+**One card per guide, not per language.** A translation is the same guide, so it
+is a badge on the card and not a second card. Pressing a badge downloads that
+language's PDF — nobody should open a page and then hunt for the file.
+
 1. Put the PDF in `assets/guides/`.
 2. Make a cover image from its first page, about 620px wide, saved as `.jpg`
-   next to the PDF.
+   next to the PDF. With no `pdftoppm` on the machine, macOS does it alone:
+   `sips -s format png guide.pdf --out cover.png`, then
+   `sips -s format jpeg -s formatOptions 85 -Z 1240 cover.png --out guide.jpg`.
 3. In `index.html`, find `<!-- ADD NEW GUIDE CARDS HERE -->` and copy the
    `<li class="guide">` block above it.
-4. Change the title, the alt text, the description, the three `<dd>` facts, the
-   cover `src`, and both `href`s.
+4. Change the title, the alt text, the description, the `<dd>` facts, the cover
+   `src`, and the `href` on every link. Give each link its own
+   `data-goatcounter-click` name.
+5. Set `data-topic` (`medications`, `lab-results`, `insurance`,
+   `chronic-conditions`) and `data-keywords` — the words someone would actually
+   type that are not already in the title or the blurb. Put the translated
+   title in `data-keywords` too, so a search in Spanish finds the card.
+
+**That block is the whole entry.** The search box, the filter chips and the
+result count all read themselves off the cards, so a new guide brings its own
+chips with it. A new topic slug gets a Topic chip; a new `<a class="lang">` with
+its own `data-lang` and `data-lang-name` gets a Language chip, labelled in its
+own script (Español, Tiếng Việt, Türkçe, فارسی) so people can find their
+language without reading English. There is no second list to keep in sync.
+
+A `data-large-print` attribute on a card adds the "Large print available" tag.
+Only put it there when a large-print version genuinely exists.
+
+The filter bar is `hidden` in the markup and the script unhides it once the
+cards have been read. Without JavaScript there is no search box that swallows
+what you type and no chip that does nothing — every guide is simply on the page,
+which is rule 4 doing its job.
 
 No CSS changes, ever. While there is only one guide it gets the full width and a
 large cover, because the guides are the only real proof of work on the page and a
 lone one shouldn't sit in a half-empty row. Add a second and both fall back to an
 even grid; add ten and they wrap. That switch is a single `:has()` rule in
 `styles.css` under "The guide shelf".
+
+## Adding a partner
+
+"Where to find our guides" is one card per partner: name, city, what they
+actually are, and a link to their own site.
+
+1. Copy one `<li class="partner">` in `.partners`.
+2. Add the same name to **both** `<ul class="ribbon__set">` lists above it, in
+   the same order. The ribbon is one list printed twice — the second copy is
+   only there so the loop's seam lands off-screen, and a name missing from one
+   of them makes the loop jump.
+
+**Check the link against the organisation's own site before publishing it.** A
+card without a link still reads; a card with the wrong link sends someone to a
+stranger. Abba's House has no link for exactly this reason.
+
+**Logos only after the partner says yes in writing.** A name is a fact; a logo
+is a borrowed endorsement. There is a `.partner__logo` slot ready in the CSS for
+the day one agrees.
+
+**No map yet.** A pin per partner needs either a paid tile key or an embedded
+iframe that ships third-party cookies onto a site that currently has none and
+therefore needs no consent banner. Five cards with a city on each do the same
+job today. Revisit it past a dozen partners.
+
+The three figures in the stats strip are not typed in twice: the partner count
+is the number of cards, the guide total is the sum of the `.tally__n` headlines
+in "Our impact", and the language count is the number of distinct badge codes
+across those rows. The HTML values are correct as written and the script keeps
+them from drifting.
+
+**The ribbon is the only thing on this page that moves on its own.** It earns
+that because the names *are* the content. It pauses on hover and on keyboard
+focus inside the section, it does not go to the printer, and under
+`prefers-reduced-motion` it stops entirely and becomes a plain wrapped row of
+names. Do not add a second moving thing to this page.
 
 ## When you have photographs
 
