@@ -373,8 +373,10 @@ line gets blurred.
 Guides handed out, sessions run, places visited. Today that is **438 guides
 across four distributions** — two at Cy-Fair Helping Hands (160, then 220), one
 at Abba's House (18, in four languages) and one at MESA Outreach (40). The split
-does real work: the site claims English and Spanish in three other places, and
-this is the only one that proves it with a number.
+does real work: the site claims its languages in two other places, and this is
+the only one that proves them with a number. Keep the two in step — a language
+named in the intro and in "What we do" but never in a row here is a claim with
+nothing behind it.
 
 A second visit to a place we have already been is **its own row**, not an edit
 to the first one. The first row is what happened in that month and it stays
