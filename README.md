@@ -373,8 +373,9 @@ line gets blurred.
 Guides handed out, sessions run, places visited. Today that is **438 guides
 across four distributions** — two at Cy-Fair Helping Hands (160, then 220), one
 at Abba's House (18, in four languages) and one at MESA Outreach (40). The split
-does real work: the site claims its languages in two other places, and this is
-the only one that proves them with a number. Keep the two in step — a language
+does real work: the site claims its languages in three other places — the
+intro, "What we do" and "Reviewed before release" — and this is the only one
+that proves them with a number. Keep the two in step — a language
 named in the intro and in "What we do" but never in a row here is a claim with
 nothing behind it.
 
