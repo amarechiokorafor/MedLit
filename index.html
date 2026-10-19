@@ -217,7 +217,8 @@
           pharmacy, the lab, and the insurance office, and put them in plain
           language through <span class="intro__hl">free workshops</span> and
           <span class="intro__hl">free plain-language guides</span>, in
-          <span class="intro__hl">English, Spanish, and Vietnamese</span>.
+          <span class="intro__hl">English, Spanish, Vietnamese, Turkish,
+          and Persian</span>.
         </p>
         <a class="action action--solid intro__action" href="#what-we-do">See what we do</a>
       </div>
@@ -307,8 +308,8 @@
           <li>
             <h3>Free guides</h3>
             <p>
-              One page each, in English, Spanish, and Vietnamese. Read them on your
-              phone, print them, hand them out at the front desk.
+              One page each, in English, Spanish, Vietnamese, Turkish, and Persian.
+              Read them on your phone, print them, hand them out at the front desk.
             </p>
           </li>
           <li>
@@ -626,7 +627,9 @@
           <li class="guide"
               data-topic="lab-results"
               data-keywords="lab labs bloodwork blood work test results reference range flag high low
-                             hemoglobin CBC specimen units report">
+                             hemoglobin CBC specimen units report
+                             Laboratuvar raporumu nasıl okurum? laboratuvar rapor sonuc referans aralığı tahlil
+                             چگونه برگه آزمایش خود را بخوانم؟ آزمایش برگه نتیجه محدوده مرجع">
             <a class="guide__cover" href="assets/guides/how-do-i-read-a-lab-report.pdf"
                data-goatcounter-click="guide-open-lab-en">
               <img src="assets/guides/how-do-i-read-a-lab-report.jpg"
@@ -655,6 +658,25 @@
                   <span class="lang__code">EN</span>
                   <span class="lang__name">English</span>
                   <span class="hidden">— How Do I Read a Lab Report? (PDF)</span>
+                </a>
+                <a class="lang" data-lang="tr" data-lang-name="Türkçe"
+                   href="assets/guides/laboratuvar-raporumu-nasil-okurum.pdf" download
+                   data-goatcounter-click="guide-download-lab-tr">
+                  <span class="lang__code">TR</span>
+                  <span class="lang__name" lang="tr">Türkçe</span>
+                  <span class="hidden">— Laboratuvar raporumu nasıl okurum? (PDF, Turkish)</span>
+                </a>
+                <!-- Persian is right-to-left. The dir on the name is not
+                     decoration: without it the question mark in the hidden
+                     title lands on the wrong end, and the script copies this
+                     same dir onto the فارسی filter chip so the chip reads
+                     correctly too. -->
+                <a class="lang" data-lang="fa" data-lang-name="فارسی"
+                   href="assets/guides/chegune-barge-azmayesh-khod-ra-bekhanam.pdf" download
+                   data-goatcounter-click="guide-download-lab-fa">
+                  <span class="lang__code">FA</span>
+                  <span class="lang__name" lang="fa" dir="rtl">فارسی</span>
+                  <span class="hidden" lang="fa" dir="rtl">— چگونه برگه آزمایش خود را بخوانم؟ (PDF, Persian)</span>
                 </a>
               </div>
             </div>
@@ -1208,11 +1230,19 @@
       // set to, which is often not the one the title is in.
       function normalise(s) {
         s = (s || '').toLowerCase().replace(/\s+/g, ' ').trim();
-        return s.normalize ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s;
+        if (s.normalize) s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        // NFD splits a letter into a base plus an accent, and the line above
+        // throws the accent away — which is why "que dice" finds "¿Qué dice".
+        // These two have no accent to split off: Turkish dotless ı and
+        // Vietnamese đ are separate letters, so NFD leaves them whole and a
+        // US keyboard can never type them. Folded by hand, "nasil" finds
+        // "nasıl" and "dung" finds "đúng".
+        return s.replace(/\u0131/g, 'i').replace(/\u0111/g, 'd');
       }
 
       var langOrder = [];      // codes, in the order they first appear
       var langWords = {};      // code -> the language in its own script
+      var langDirs = {};       // code -> 'rtl', for the ones that need it
 
       var items = cards.map(function (card) {
         var topic = card.getAttribute('data-topic') || '';
@@ -1223,6 +1253,12 @@
           langs.push(code);
           if (!langWords[code]) {
             langWords[code] = a.getAttribute('data-lang-name') || code.toUpperCase();
+            // Read off the badge rather than kept in a list of RTL languages
+            // here: the markup already has to say it, and one source beats
+            // two that can disagree.
+            var nameEl = a.querySelector('.lang__name');
+            var dir = nameEl && nameEl.getAttribute('dir');
+            if (dir) langDirs[code] = dir;
             langOrder.push(code);
           }
         });
@@ -1268,7 +1304,10 @@
           label.textContent = labelFor(value);
           // Keep a translated name in its own language for a screen reader,
           // so "Español" is not read out in an English voice.
-          if (kind === 'lang' && value !== 'en') label.setAttribute('lang', value);
+          if (kind === 'lang' && value !== 'en') {
+            label.setAttribute('lang', value);
+            if (langDirs[value]) label.setAttribute('dir', langDirs[value]);
+          }
           var n = document.createElement('span');
           n.className = 'chip__n';
           b.appendChild(label);
@@ -1345,11 +1384,26 @@
           // Name the language they asked for, in their own script. Someone
           // who filtered on فارسی and got nothing should see فارسی in the
           // sentence, not a generic shrug.
-          var picked = on(state.lang).map(function (c) { return langWords[c]; });
-          emptyEl.textContent = picked.length
-            ? 'No guides in ' + picked.join(' or ') + ' yet. Try another language — '
-              + 'or write to us and tell us which one you need.'
-            : 'No results. Try another language, or fewer words.';
+          var picked = on(state.lang);
+          emptyEl.textContent = '';
+          if (picked.length) {
+            emptyEl.appendChild(document.createTextNode('No guides in '));
+            picked.forEach(function (c, i) {
+              if (i) emptyEl.appendChild(document.createTextNode(' or '));
+              // Each name is its own span carrying its language and, for
+              // Persian, its direction — otherwise فارسی dropped into an
+              // English sentence drags the punctuation around with it.
+              var span = document.createElement('span');
+              span.textContent = langWords[c];
+              if (c !== 'en') span.setAttribute('lang', c);
+              if (langDirs[c]) span.setAttribute('dir', langDirs[c]);
+              emptyEl.appendChild(span);
+            });
+            emptyEl.appendChild(document.createTextNode(
+              ' yet. Try another language — or write to us and tell us which one you need.'));
+          } else {
+            emptyEl.textContent = 'No results. Try another language, or fewer words.';
+          }
           emptyEl.hidden = false;
         }
       }
