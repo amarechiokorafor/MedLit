@@ -377,9 +377,19 @@ page said 160 was 90 and 70 added together.
 
 The counts belong to the partners, so they sit on the partner cards now: the
 running total on the face of each card, the distributions behind a `<details>`
-disclosure. Today that is **438 guides across four distributions** — two at
-Cy-Fair Helping Hands (160, then 220), one at Abba's House (18, in four
-languages) and one at MESA Outreach (40).
+disclosure. Today that is **448 guides across five distributions** — two at
+Cy-Fair Helping Hands (160 on 5 September 2026, then 220 on 17 October), one at
+Abba's House (18, in four languages), one at MESA Outreach (40) and one at TEAM
+(10).
+
+**Every distribution carries its date** in a `<time datetime="…">`, so the
+machine-readable date and the printed one can never say different things. A
+distribution with no date is not published with a guessed one — a wrong date on
+a funder-facing count is worse than no date at all.
+
+**Dates go in, operational notes stay out.** How a drop happened — courier,
+dropped off in person, left with a named staff member — is internal and does
+not belong on a public page.
 
 A second visit to a place we have already been is **its own `<li>`**, not an
 edit to the first one. The first is what happened that month and it stays true;

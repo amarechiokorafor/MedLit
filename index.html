@@ -609,7 +609,7 @@
             <p class="where__label">Partner organizations</p>
           </li>
           <li>
-            <p class="where__n" data-count="guides">438</p>
+            <p class="where__n" data-count="guides">448</p>
             <p class="where__label">Guides handed out through them</p>
           </li>
           <li>
@@ -662,13 +662,7 @@
               </summary>
               <ul class="drops" role="list">
                 <li>
-                  <p class="drop__when">
-                    <!-- DATE GOES HERE, once it is known. Write it as:
-                         <time datetime="2026-07-18">18 July 2026</time>
-                         Leave the whole paragraph out rather than guess —
-                         a wrong date on a funder-facing count is worse
-                         than no date. -->
-                  </p>
+                  <p class="drop__when"><time datetime="2026-09-05">September 5, 2026</time></p>
                   <div class="drop__fig">
                     <p class="tally__n">160</p>
                     <p class="drop__unit">guides handed&nbsp;out</p>
@@ -688,13 +682,7 @@
                   </div>
                 </li>
                 <li>
-                  <p class="drop__when">
-                    <!-- DATE GOES HERE, once it is known. Write it as:
-                         <time datetime="2026-07-18">18 July 2026</time>
-                         Leave the whole paragraph out rather than guess —
-                         a wrong date on a funder-facing count is worse
-                         than no date. -->
-                  </p>
+                  <p class="drop__when"><time datetime="2026-10-17">October 17, 2026</time></p>
                   <div class="drop__fig">
                     <p class="tally__n">220</p>
                     <p class="drop__unit">guides handed&nbsp;out</p>
@@ -739,13 +727,7 @@
               </summary>
               <ul class="drops" role="list">
                 <li>
-                  <p class="drop__when">
-                    <!-- DATE GOES HERE, once it is known. Write it as:
-                         <time datetime="2026-07-18">18 July 2026</time>
-                         Leave the whole paragraph out rather than guess —
-                         a wrong date on a funder-facing count is worse
-                         than no date. -->
-                  </p>
+                  <p class="drop__when"><time datetime="2026-09-22">September 22, 2026</time></p>
                   <div class="drop__fig">
                     <p class="tally__n">40</p>
                     <p class="drop__unit">guides handed&nbsp;out</p>
@@ -790,13 +772,7 @@
               </summary>
               <ul class="drops" role="list">
                 <li>
-                  <p class="drop__when">
-                    <!-- DATE GOES HERE, once it is known. Write it as:
-                         <time datetime="2026-07-18">18 July 2026</time>
-                         Leave the whole paragraph out rather than guess —
-                         a wrong date on a funder-facing count is worse
-                         than no date. -->
-                  </p>
+                  <p class="drop__when"><time datetime="2026-09-21">September 21, 2026</time></p>
                   <div class="drop__fig">
                     <p class="tally__n">18</p>
                     <p class="drop__unit">guides handed&nbsp;out</p>
@@ -837,13 +813,40 @@
           </li>
 
           <li class="partner">
-            <div class="partner__plain">
+            <details class="partner__panel">
+              <summary class="partner__summary">
               <span class="partner__head">
                 <span class="partner__name">Tomball Emergency Assistance Ministries</span>
                 <span class="partner__where">Tomball, TX</span>
                 <span class="partner__what">Food pantry and emergency assistance &mdash; TEAM</span>
               </span>
-            </div>
+                <span class="partner__count">
+                  <span class="partner__count-n">10</span>
+                  <span class="partner__count-w">guides, over 1 distribution</span>
+                </span>
+                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <ul class="drops" role="list">
+                <li>
+                  <p class="drop__when"><time datetime="2026-10-13">October 13, 2026</time></p>
+                  <div class="drop__fig">
+                    <p class="tally__n">10</p>
+                    <p class="drop__unit">guides handed&nbsp;out</p>
+                  </div>
+                  <div class="drop__bar" aria-hidden="true" hidden></div>
+                  <div class="drop__key">
+                    <div class="key">
+                      <span class="key__code">EN</span>
+                      <p class="tally__part">10</p>
+                      <span class="key__lang">English</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </details>
             <p class="partner__link">
               <a href="https://teamtomball.com/">teamtomball.com</a>
             </p>
@@ -866,8 +869,13 @@
                above so the loop stays seamless. A partner with counted
                distributions gets a <details>; one without gets the plain
                card, and grows a <details> the first time there is something
-               to put behind it. -->
+               to put behind it.
 
+               TO ADD A DISTRIBUTION to a partner that already has one: copy
+               one <li> inside its <ul class="drops">, in date order. Keep the
+               <li> bare and never nest another <li> inside it — that is what
+               .github/scripts/check_numbers.py splits on, and it will stop
+               checking a row written any other way. -->
         </ul>
 
         <div class="where__ask" data-reveal>
