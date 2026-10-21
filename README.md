@@ -364,32 +364,54 @@ own voice, and there is nothing left on the page being transcribed.
 
 ## The work so far, and what we measure
 
-**Two kinds of number, two separate sections, on purpose.** A count of guides is
+**Two kinds of number, two separate places, on purpose.** A count of guides is
 not a count of people helped, and putting them under one heading is how that
 line gets blurred.
 
-### The work so far — counts
+### The counts live on the partners
 
-Guides handed out, sessions run, places visited. Today that is **438 guides
-across four distributions** — two at Cy-Fair Helping Hands (160, then 220), one
-at Abba's House (18, in four languages) and one at MESA Outreach (40). The split
-does real work: the site claims its languages in three other places — the
-intro, "What we do" and "Reviewed before release" — and this is the only one
-that proves them with a number. Keep the two in step — a language
-named in the intro and in "What we do" but never in a row here is a claim with
-nothing behind it.
+There is no "Our impact" band any more. It was four events, each five centred
+stat blocks, about four screens of scrolling, with "Guides handed out" printed
+four times and the total set the same size as its own parts — so nothing on the
+page said 160 was 90 and 70 added together.
 
-A second visit to a place we have already been is **its own row**, not an edit
-to the first one. The first row is what happened in that month and it stays
-true; overwriting it would quietly delete the history and leave the page unable
-to say the partnership continued.
+The counts belong to the partners, so they sit on the partner cards now: the
+running total on the face of each card, the distributions behind a `<details>`
+disclosure. Today that is **448 guides across five distributions** — two at
+Cy-Fair Helping Hands (160 on 5 September 2026, then 220 on 17 October), one at
+Abba's House (18, in four languages), one at MESA Outreach (40) and one at TEAM
+(10).
 
-A count is a fact you can stand on, and it is not an outcome.
+**Every distribution carries its date** in a `<time datetime="…">`, so the
+machine-readable date and the printed one can never say different things. A
+distribution with no date is not published with a guessed one — a wrong date on
+a funder-facing count is worse than no date at all.
 
-**To add an event**, copy one `<li>` in `.tally__list` and change the number, the
-place and the split. The numeral column is `auto`, which in CSS Grid sizes to the
-widest content across every row — so figures stay aligned down the column as
-events are added, without hard-coding a width a four-digit number would blow out.
+**Dates go in, operational notes stay out.** How a drop happened — courier,
+dropped off in person, left with a named staff member — is internal and does
+not belong on a public page.
+
+A second visit to a place we have already been is **its own `<li>`**, not an
+edit to the first one. The first is what happened that month and it stays true;
+overwriting it would quietly delete the history and leave the page unable to
+say the partnership continued.
+
+The split does real work: the site claims its languages in three other places —
+the intro, "What we do" and "Reviewed before release" — and this is the only
+one that proves them with a number. Keep the two in step: a language named up
+there but never in a distribution down here is a claim with nothing behind it.
+
+**The bar is drawn by the script from the figures printed under it**, as
+flex-grow set to the raw counts, so it cannot drift from them and there is no
+percentage to recompute. With JavaScript off it never appears and the figures
+stand alone, which were always the real content.
+
+**`check_numbers.py` watches `<section class="where">`** now that the counts
+moved there. It still splits on a literal `<li>` and still reads
+`class="tally__n"` and `class="tally__part"` — which is why those `<li>` carry
+no attributes, never nest another `<li>`, and why neither class takes a second
+class name. This matters more than it did: a broken split now sits behind a
+dropdown, so nobody sees it until they open that card.
 
 ### What we measure — the comprehension promise
 

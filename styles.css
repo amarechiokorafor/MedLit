@@ -44,14 +44,13 @@
    9.  Three doors
    10. Our why
    11. What we do
-   12. The work so far — counts
    13. What we measure — the comprehension promise
    14. The guides
    14a. Sifting the guides — search and chips
    14b. Testimonials
    14c. The language badges on a guide
    14d. Large print
-   14e. Where to find our guides — the partners
+   14e. Where to find our guides — the partners, and what we handed out
    15. The workshops
    16. How we check it
    17. Host
@@ -570,61 +569,6 @@ a:hover { color: var(--navy-deep); }
 .does__list h3 { margin-bottom: .5rem; }
 .does__list p { font-size: 1rem; color: var(--ink-2); }
 
-/* ---------- 12. The work so far — counts -------------------------------
-   Counts, and only counts. The numeral column is `auto`, which in CSS Grid
-   sizes to the widest content across every row — so figures stay aligned
-   down the column as events are added, without hard-coding a width that a
-   four-digit number would blow out.
-   -------------------------------------------------------------------------- */
-/* Our impact: a navy band, centred, each event a row of big white figures
-   with an amber icon over each. The total and its parts are set the same
-   size on purpose — the split is as much the point as the total. */
-.tally {
-  color: var(--stock);
-  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
-  text-align: center;
-}
-.tally__head { max-width: 42rem; margin: 0 auto clamp(1.5rem, 3vw, 2.25rem); }
-.tally h2 { color: var(--stock); }
-
-.tally__list { list-style: none; }
-/* Flex-wrap, not a fixed three-column grid: a row carries a total and one
-   figure per language, so a four-language event has five figures and a
-   two-language one has three. They stay centred either way, and wrap onto a
-   second line rather than squeezing. */
-.tally__list > li {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: 2rem clamp(1.25rem, 4vw, 3rem);
-  align-items: start;
-  max-width: 60rem; margin-inline: auto;
-}
-.tally__stat { flex: 1 1 8rem; max-width: 14rem; }
-.tally__where { flex-basis: 100%; }
-.tally__list > li + li {
-  margin-top: 3rem; padding-top: 3rem;
-  border-top: 1px solid rgba(255, 255, 255, .2);
-}
-.tally__stat { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
-.tally__icon { width: 2.1rem; height: 2.1rem; color: var(--amber); margin-bottom: .3rem; }
-/* The language badges: an amber speech bubble with the code in navy. */
-.tally__icon--lang { width: 2.7rem; height: 2.35rem; }
-.tally__n, .tally__part {
-  font-family: var(--display);
-  font-size: clamp(2.6rem, 1.6rem + 3.4vw, 4.4rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--stock);
-  font-variant-numeric: tabular-nums;
-  margin: 0;
-}
-.tally__label { margin: 0; font-size: 1.06rem; color: var(--on-navy); }
-.tally__where {
-  grid-column: 1 / -1; margin: .25rem 0 0;
-  font-family: var(--display); font-style: italic; font-weight: 600;
-  font-size: clamp(1.1rem, 1rem + .6vw, 1.4rem); color: var(--amber);
-}
-
 /* ---------- 13. What we measure — the comprehension promise -------------
    This band is about SCORES, not counts. Counts live in "The work so far"
    above. Keeping them in separate sections is what stops a number of guides
@@ -906,7 +850,6 @@ a:hover { color: var(--navy-deep); }
   display: flex; width: max-content;
   animation: ribbon-slide 42s linear infinite;
 }
-.ribbon:hover .ribbon__track { animation-play-state: paused; }
 .ribbon__set {
   list-style: none; display: flex; align-items: center;
   margin: 0; padding: 0;
@@ -935,11 +878,15 @@ a:hover { color: var(--navy-deep); }
   list-style: none;
   display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
   gap: clamp(1rem, 2vw, 1.5rem);
+  /* Cards size to their own content. Without this, opening one stretches
+     every other card in its row to match, and four cards grow a column of
+     blank beige because a fifth was expanded. */
+  align-items: start;
 }
 .partner {
   display: flex; flex-direction: column;
   background: var(--stock-2); border: 1px solid var(--rule);
-  border-radius: var(--r); padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  border-radius: var(--r); overflow: hidden;
   /* The amber edge is the only thing that moves on hover. */
   border-left: 4px solid var(--amber);
   transition: transform .22s var(--ease), box-shadow .22s var(--ease),
@@ -952,19 +899,146 @@ a:hover { color: var(--navy-deep); }
     box-shadow: 0 1px 2px rgba(20, 22, 28, .07), 0 18px 34px -20px rgba(20, 22, 28, .45);
   }
 }
-.partner > h3 { font-size: 1.18rem; line-height: 1.25; margin: 0; text-wrap: balance; }
 .partner__where {
-  margin: .5rem 0 0; font-size: .92rem; font-weight: 700; color: var(--navy);
+  display: block; margin-top: .5rem;
+  font-size: .92rem; font-weight: 700; color: var(--navy);
 }
 .partner__what {
-  margin: .5rem 0 0; font-size: .98rem; color: var(--ink-2); text-wrap: pretty;
+  display: block; margin-top: .5rem;
+  font-size: .98rem; color: var(--ink-2); text-wrap: pretty;
 }
-.partner__link { margin: auto 0 0; padding-top: 1rem; font-size: .95rem; }
+.partner__link { margin: auto 0 0; font-size: .95rem; }
 .partner__link a { color: var(--navy); overflow-wrap: anywhere; }
 
 /* The slot for a logo, for the day a partner says yes in writing. Drop an
    <img class="partner__logo"> in above the <h3> and nothing else changes. */
 .partner__logo { height: 2.5rem; width: auto; margin-bottom: .9rem; }
+
+/* ---- the disclosure ------------------------------------------------------
+   The counts used to be a band of their own — four events, each five centred
+   stat blocks, roughly four screens of it, with "Guides handed out" printed
+   four times and the total set the same size as its own parts so nothing
+   said 160 was 90 and 70 added together.
+
+   They belong to the partners, so they live on the partners now: one card
+   per organisation, the running total on the face of it, the distributions
+   behind a disclosure. <details> and <summary>, so it opens with no
+   JavaScript, takes the keyboard for free and tells a screen reader whether
+   it is open.
+   -------------------------------------------------------------------------- */
+.partner:has(.partner__panel) { padding: 0; }
+.partner__panel { display: flex; flex-direction: column; }
+.partner__summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: .9rem 1rem; align-items: start;
+  padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  cursor: pointer; list-style: none;
+}
+/* Safari draws its own triangle through ::-webkit-details-marker, and every
+   other engine through the summary's own list-style. Both go; the chevron
+   below is the control, and it points the way it is about to move. */
+.partner__summary::-webkit-details-marker { display: none; }
+.partner__summary::marker { content: ''; }
+.partner__summary:hover .partner__name { color: var(--navy); }
+.partner__summary:focus-visible { outline: 3px solid var(--navy); outline-offset: -3px; }
+
+.partner__head { grid-column: 1; display: block; min-width: 0; }
+.partner__plain { padding: clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem) 0; }
+.partner__name {
+  display: block;
+  font-family: var(--display); font-weight: 700;
+  font-size: 1.18rem; line-height: 1.25; color: var(--ink);
+  text-wrap: balance;
+}
+
+/* The number on the face of the card. Navy, not amber: amber is the mark
+   this page spends on language badges, and a count is not a language. */
+.partner__count { grid-column: 1; display: block; }
+.partner__count-n {
+  font-family: var(--display); font-weight: 700; line-height: 1;
+  font-size: 1.9rem; color: var(--navy);
+  font-variant-numeric: tabular-nums;
+}
+.partner__count-w { font-size: .92rem; color: var(--ink-2); margin-left: .45rem; }
+
+.partner__cue {
+  grid-column: 2; grid-row: 1 / 3; align-self: center;
+  width: 1.6rem; height: 1.6rem; flex: none; color: var(--navy);
+  transition: transform .22s var(--ease);
+}
+.partner__panel[open] .partner__cue { transform: rotate(180deg); }
+
+/* ---- one distribution ----------------------------------------------------
+   The total leads at size and its parts sit under the bar, so the hierarchy
+   matches the arithmetic: the big number is the sum of the small ones.
+   -------------------------------------------------------------------------- */
+.drops {
+  list-style: none;
+  margin: 0 clamp(1.25rem, 2.2vw, 1.75rem);
+  padding-bottom: .4rem;
+  border-top: 1px solid var(--rule);
+}
+.drops > li { padding-block: 1.1rem; }
+.drops > li + li { border-top: 1px solid var(--rule); }
+.drop__when { margin: 0 0 .5rem; font-size: .88rem; font-weight: 700; color: var(--ink-2); }
+.drop__when:empty { display: none; }
+.drop__fig { display: flex; align-items: baseline; gap: .5rem; }
+.tally__n {
+  margin: 0;
+  font-family: var(--display); font-weight: 700; line-height: 1;
+  font-size: 2.1rem; letter-spacing: -0.02em;
+  color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.drop__unit { margin: 0; font-size: .92rem; color: var(--ink-2); }
+
+/* THE BAR IS DATA, NOT A DECORATIVE SLAB. Rule 3 bans amber slabs above
+   headings; this is not one. Its length IS the split, and it is drawn by the
+   script from the very figures printed under it, so it cannot drift from
+   them. With the script off it never appears and the figures — always the
+   real content — stand alone.
+
+   The two ambers only keep touching segments apart; identity is on the label
+   under each one, never in the hue. A 2px gap separates them, never a
+   stroke, which would add ink that is not data. */
+.drop__bar {
+  display: flex; gap: 2px;
+  height: .55rem; margin: .8rem 0 .75rem;
+  border-radius: 999px;
+}
+.drop__bar > span { display: block; min-width: 3px; background: var(--amber); }
+.drop__bar > span:nth-child(even) { background: #ffd08a; }
+.drop__bar > span:first-child { border-radius: 999px 0 0 999px; }
+.drop__bar > span:last-child  { border-radius: 0 999px 999px 0; }
+.drop__bar > span:only-child  { border-radius: 999px; }
+
+.drop__key { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
+.key { display: flex; align-items: baseline; gap: .4rem; }
+/* The swatch that ties a figure to its segment. Amber carries dark ink. */
+.key__code {
+  align-self: center;
+  display: grid; place-items: center;
+  width: 1.6rem; height: 1.6rem; border-radius: 50%; flex: none;
+  background: var(--amber); color: var(--navy-deep);
+  font-family: var(--display); font-size: .65rem; font-weight: 700;
+}
+.key:nth-child(even) .key__code { background: #ffd08a; }
+.tally__part {
+  margin: 0;
+  font-family: var(--display); font-weight: 700; line-height: 1;
+  font-size: 1.15rem; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.key__lang { font-size: .88rem; color: var(--ink-2); }
+
+.partner:has(.partner__panel) .partner__link { padding: 0 clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem); }
+.partner:has(.partner__plain) .partner__link { padding: 0 clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem); }
+
+/* Everything is open on paper — a dropdown is a screen affordance and a
+   printed page has no one to click it. */
+@media print {
+  .partner__panel > .drops { display: block !important; }
+  .partner__cue { display: none; }
+}
 
 .where__ask {
   margin-top: clamp(2rem, 4vw, 3rem);
@@ -991,9 +1065,14 @@ a:hover { color: var(--navy-deep); }
   .ribbon__set:last-child { display: none; }
 }
 
-/* Tabbing a link inside this section stops the ribbon too. Nothing in the
-   ribbon is focusable, but a name sliding past behind the card you are
-   reading is movement you did not ask for. */
+/* IT DOES NOT PAUSE ON HOVER, on purpose — asked for, and the mouse
+   passes over this band on the way to the cards below constantly, so
+   pausing made it stutter rather than read as a continuous ribbon.
+
+   Keyboard focus still stops it. That is a different case: someone tabbing
+   through the partner links is reading, not passing through, and a name
+   sliding past behind the card they are on is movement they did not ask
+   for. Under prefers-reduced-motion it does not move at all — see below. */
 .where:focus-within .ribbon__track { animation-play-state: paused; }
 
 /* The ribbon is a decoration with no information in it that the cards below
@@ -1359,10 +1438,12 @@ a:hover { color: var(--navy-deep); }
 }
 
 @media (max-width: 40rem) {
-  /* Three across still fits a phone once the figures come down a size. */
-  .tally__list > li { gap: 1.5rem .75rem; }
-  .tally__n, .tally__part { font-size: 2.2rem; }
-  .tally__label { font-size: .92rem; }
+  /* Inside an open partner card a phone has about 280px to work with, so the
+     distribution figures come down a step and the language chips wrap onto
+     their own line rather than squeezing the count. */
+  .tally__n { font-size: 1.85rem; }
+  .tally__part { font-size: 1.05rem; }
+  .drop__key { gap: .45rem 1rem; }
 
   .brand__mark { height: 2.6rem; }
   .brand__tagline { font-size: .9rem; padding-left: .75rem; }

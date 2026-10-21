@@ -6,11 +6,15 @@ quiet the moment it was replaced. These two never expire, because they guard
 mistakes you make while EDITING the numbers, which is the only time they get
 touched:
 
-  1. EVERY ROW'S SPLIT MUST ADD UP. Publish "160" over "90 in English,
-     70 in Spanish" and then update one number without the others, and the site
-     is quietly publishing arithmetic that does not work. A funder or a library
-     programming lead will add it up. Checked per row, so adding a second event
-     cannot mask a broken first one.
+  1. EVERY DISTRIBUTION'S SPLIT MUST ADD UP. Publish "160" over "90 in
+     English, 70 in Spanish" and then update one number without the others, and
+     the site is quietly publishing arithmetic that does not work. A funder or a
+     library programming lead will add it up. Checked per distribution, so
+     adding a second one cannot mask a broken first.
+
+     This matters MORE now than when the counts were a band of their own: they
+     sit behind a dropdown, so a broken split is not visible until someone
+     opens the card it is in.
 
   2. NO BARE PERCENTAGE IN THE VISIBLE TEXT. "16 of 23", never "70%". A
      percentage with no bottom number is a claim the work has not earned. The
@@ -43,11 +47,18 @@ def main() -> int:
     failures = []
 
     # --- 1. every row's split adds up to that row's headline ---------------
-    band = re.search(r'<section class="tally".*?</section>', html, flags=re.S)
+    # The counts used to live in their own "Our impact" band. They now sit
+    # inside the partner cards, one <li> per distribution, behind the
+    # disclosure on each partner — so this watches <section class="where">
+    # instead. Everything below is unchanged: it still splits on a literal
+    # <li> and still reads class="tally__n" and class="tally__part", which is
+    # why those <li> carry no attributes and never nest another <li>.
+    band = re.search(r'<section class="where".*?</section>', html, flags=re.S)
     if not band:
         failures.append(
-            'No <section class="tally"> found. Was "Our impact" renamed? '
-            "If the counts moved, point this check at wherever they live now."
+            'No <section class="where"> found. Was "Where to find our guides" '
+            "renamed? If the counts moved again, point this check at wherever "
+            "they live now."
         )
     else:
         rows = re.findall(r"<li>(.*?)</li>", band.group(0), flags=re.S)
