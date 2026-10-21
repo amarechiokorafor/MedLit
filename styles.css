@@ -157,6 +157,21 @@
 /* ---------- 3. Base and type scale --------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* THE hidden ATTRIBUTE HAS TO WIN. The browser's own `[hidden]` rule is a
+   plain attribute selector, so any class rule that sets `display` out-ranks
+   it — and this page hides several things with the attribute and shows them
+   from the script: the filter bar, the panel close buttons, the ribbon
+   arrows, and the split bar on a distribution with only one language.
+
+   Without this, every one of those renders anyway: a stray close button
+   floating over the page, an empty amber strip under a single-language
+   count. Each could be fixed one at a time with `.thing[hidden]` guards, and
+   the next one added would quietly break again. One rule, once.
+
+   `!important` is doing real work here and is not laziness: it has to beat
+   class rules that come later in this file. */
+[hidden] { display: none !important; }
+
 html {
   /* 18px minimum body text — readers include older adults, and this is a
      hard floor. Everything scales from here in rem. */
@@ -826,34 +841,32 @@ a:hover { color: var(--navy-deep); }
   margin: .5rem 0 0; font-size: .98rem; color: var(--ink-2); text-wrap: balance;
 }
 
-/* ---- the ribbon --------------------------------------------------------
-   One list printed twice, slid left by exactly half the track, forever. The
-   second copy is aria-hidden in the markup and exists only so the seam
-   lands off-screen; the whole band is aria-hidden anyway, because the cards
-   below say the same names to a screen reader in a form it can use.
-
-   It pauses on hover and on keyboard focus inside the section, and under
-   prefers-reduced-motion it does not move at all — see section 5.
+/* ---- the ribbon ----------------------------------------------------------
+   A scroll container the script nudges, not a CSS animation. One mechanism
+   serves all four behaviours: hover stops it, a trackpad or finger scroll
+   moves the same scrollLeft the loop moves, the arrows move it too, and
+   resuming "from where they left it" is just the loop carrying on from
+   whatever scrollLeft now is.
    -------------------------------------------------------------------------- */
 .ribbon {
-  overflow: hidden;
+  position: relative; display: flex; align-items: center;
   margin-block: clamp(2rem, 4vw, 3rem);
-  padding-block: clamp(.9rem, 1.8vw, 1.4rem);
   background: var(--navy-deep); color: var(--amber);
   border-block: 1px solid var(--navy);
-  /* The names fade out into the navy at both edges instead of being chopped
-     off by the viewport. */
+}
+.ribbon__view {
+  flex: 1; min-width: 0;
+  padding-block: clamp(.9rem, 1.8vw, 1.4rem);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  /* The names fade into the navy at both edges rather than being chopped off
+     by the viewport. */
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  scrollbar-width: none;
 }
-.ribbon__track {
-  display: flex; width: max-content;
-  animation: ribbon-slide 42s linear infinite;
-}
-.ribbon__set {
-  list-style: none; display: flex; align-items: center;
-  margin: 0; padding: 0;
-}
+.ribbon__view::-webkit-scrollbar { display: none; }
+.ribbon__track { display: flex; width: max-content; }
+.ribbon__set { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
 .ribbon__set > li {
   display: flex; align-items: center; white-space: nowrap;
   font-family: var(--display); font-weight: 700;
@@ -861,122 +874,213 @@ a:hover { color: var(--navy-deep); }
   line-height: 1.1; letter-spacing: -0.015em;
   padding-inline: clamp(1.1rem, 2.5vw, 2.2rem);
 }
-/* The separator is the callout disc, shrunk to a dot: the same mark the
-   printed guide uses, not a decorative bar. */
+/* The separator is the callout disc shrunk to a dot: the printed guide's own
+   mark, not a decorative bar. */
 .ribbon__set > li::after {
   content: ''; flex: none;
   width: .5rem; height: .5rem; margin-left: clamp(1.1rem, 2.5vw, 2.2rem);
   background: var(--amber); border-radius: 50%;
 }
-@keyframes ribbon-slide {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
 
-/* ---- the cards ---------------------------------------------------------- */
+/* Mouse affordances, sitting over the faded edges. They carry tabindex="-1"
+   and live inside an aria-hidden band on purpose: every name here is a card
+   below with more besides, so the keyboard and the screen reader get the
+   real thing instead of a duplicate. */
+.ribbon__arrow {
+  position: absolute; z-index: 2; top: 50%; transform: translateY(-50%);
+  display: grid; place-items: center;
+  width: 2.5rem; height: 2.5rem; padding: 0;
+  border: 1px solid rgba(244, 168, 56, .45); border-radius: 50%;
+  background: rgba(6, 37, 99, .82); color: var(--amber);
+  cursor: pointer;
+  transition: background-color .16s var(--ease), color .16s var(--ease);
+}
+.ribbon__arrow svg { width: 1.1rem; height: 1.1rem; }
+.ribbon__arrow:hover { background: var(--amber); color: var(--navy-deep); }
+.ribbon__arrow--prev { left: clamp(.4rem, 1.5vw, 1rem); }
+.ribbon__arrow--next { right: clamp(.4rem, 1.5vw, 1rem); }
+@media (max-width: 34rem) { .ribbon__arrow { display: none; } }
+
+/* Reduced motion: the script never starts the loop, so there is nothing to
+   stop here. The band stays a row of names you can still push by hand. */
+@media print { .ribbon { display: none; } }
+
+/* ---- the cards ----------------------------------------------------------
+   Small, even, and obviously clickable: the lift, the pointer and the
+   "View details" line all say the same thing three ways, because one of
+   them alone is a convention people miss.
+   -------------------------------------------------------------------------- */
 .partners {
   list-style: none;
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr));
-  gap: clamp(1rem, 2vw, 1.5rem);
-  /* Cards size to their own content. Without this, opening one stretches
-     every other card in its row to match, and four cards grow a column of
-     blank beige because a fifth was expanded. */
-  align-items: start;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(14rem, 100%), 1fr));
+  gap: clamp(.9rem, 1.8vw, 1.25rem);
+  align-items: stretch;
 }
-.partner {
-  display: flex; flex-direction: column;
+.pcard {
+  display: flex; flex-direction: column; height: 100%;
+  padding: clamp(1.1rem, 2vw, 1.4rem);
   background: var(--stock-2); border: 1px solid var(--rule);
-  border-radius: var(--r); overflow: hidden;
-  /* The amber edge is the only thing that moves on hover. */
-  border-left: 4px solid var(--amber);
-  transition: transform .22s var(--ease), box-shadow .22s var(--ease),
-              border-left-color .22s var(--ease);
+  border-left: 4px solid var(--amber); border-radius: var(--r);
+  text-decoration: none; cursor: pointer;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease),
+              border-left-color .2s var(--ease);
 }
 @media (hover: hover) and (pointer: fine) {
-  .partner:hover {
+  .pcard:hover {
     transform: translateY(-3px);
     border-left-color: var(--navy);
     box-shadow: 0 1px 2px rgba(20, 22, 28, .07), 0 18px 34px -20px rgba(20, 22, 28, .45);
   }
+  .pcard:hover .pcard__more { color: var(--navy-deep); }
 }
-.partner__where {
-  display: block; margin-top: .5rem;
-  font-size: .92rem; font-weight: 700; color: var(--navy);
+.pcard:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
+
+/* The monogram standing in for a logo. Navy disc, white letters — not amber,
+   which on this page means "language". */
+.pcard__logo {
+  display: grid; place-items: center;
+  width: 2.6rem; height: 2.6rem; margin-bottom: .9rem;
+  border-radius: 50%; background: var(--navy); color: var(--stock);
+  font-family: var(--display); font-size: .85rem; font-weight: 700;
+  letter-spacing: .01em;
 }
-.partner__what {
-  display: block; margin-top: .5rem;
-  font-size: .98rem; color: var(--ink-2); text-wrap: pretty;
-}
-.partner__link { margin: auto 0 0; font-size: .95rem; }
-.partner__link a { color: var(--navy); overflow-wrap: anywhere; }
-
-/* The slot for a logo, for the day a partner says yes in writing. Drop an
-   <img class="partner__logo"> in above the <h3> and nothing else changes. */
-.partner__logo { height: 2.5rem; width: auto; margin-bottom: .9rem; }
-
-/* ---- the disclosure ------------------------------------------------------
-   The counts used to be a band of their own — four events, each five centred
-   stat blocks, roughly four screens of it, with "Guides handed out" printed
-   four times and the total set the same size as its own parts so nothing
-   said 160 was 90 and 70 added together.
-
-   They belong to the partners, so they live on the partners now: one card
-   per organisation, the running total on the face of it, the distributions
-   behind a disclosure. <details> and <summary>, so it opens with no
-   JavaScript, takes the keyboard for free and tells a screen reader whether
-   it is open.
-   -------------------------------------------------------------------------- */
-.partner:has(.partner__panel) { padding: 0; }
-.partner__panel { display: flex; flex-direction: column; }
-.partner__summary {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: .9rem 1rem; align-items: start;
-  padding: clamp(1.25rem, 2.2vw, 1.75rem);
-  cursor: pointer; list-style: none;
-}
-/* Safari draws its own triangle through ::-webkit-details-marker, and every
-   other engine through the summary's own list-style. Both go; the chevron
-   below is the control, and it points the way it is about to move. */
-.partner__summary::-webkit-details-marker { display: none; }
-.partner__summary::marker { content: ''; }
-.partner__summary:hover .partner__name { color: var(--navy); }
-.partner__summary:focus-visible { outline: 3px solid var(--navy); outline-offset: -3px; }
-
-.partner__head { grid-column: 1; display: block; min-width: 0; }
-.partner__plain { padding: clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem) 0; }
-.partner__name {
-  display: block;
+img.pcard__logo { border-radius: 0; background: none; width: auto; height: 2.6rem; object-fit: contain; }
+.pcard__name {
   font-family: var(--display); font-weight: 700;
-  font-size: 1.18rem; line-height: 1.25; color: var(--ink);
+  font-size: 1.05rem; line-height: 1.25; color: var(--ink);
   text-wrap: balance;
 }
+.pcard__city { margin-top: .35rem; font-size: .9rem; font-weight: 700; color: var(--navy); }
+/* margin-top:auto pins this to the bottom so the line sits level across a row
+   of cards whose names run to different numbers of lines. */
+.pcard__more {
+  margin-top: auto; padding-top: 1rem;
+  font-size: .92rem; font-weight: 700; color: var(--navy);
+  transition: color .2s var(--ease);
+}
 
-/* The number on the face of the card. Navy, not amber: amber is the mark
-   this page spends on language badges, and a count is not a language. */
-.partner__count { grid-column: 1; display: block; }
-.partner__count-n {
-  font-family: var(--display); font-weight: 700; line-height: 1;
-  font-size: 1.9rem; color: var(--navy);
+/* ---- the panel ----------------------------------------------------------
+   One block per partner, sitting in the page. The script lifts the one you
+   asked for into a <dialog> and puts it back on close, so there is exactly
+   one copy of this content and no duplicate to keep in sync.
+
+   WITHOUT THE SCRIPT the panels are simply open, stacked under the cards,
+   and the card links are jump links to them. Nothing is stranded.
+   -------------------------------------------------------------------------- */
+.pdetails { margin-top: clamp(2rem, 4vw, 3rem); display: grid; gap: 1.5rem; }
+.pdetail {
+  background: var(--stock); border: 1px solid var(--rule);
+  border-radius: var(--r); padding: clamp(1.4rem, 3vw, 2.25rem);
+  scroll-margin-top: 2rem;
+}
+/* Once the script is running the panels stop being page furniture: they only
+   ever appear inside the dialog. Gated on .js so that a page whose script
+   never ran keeps them visible. */
+.js .pdetails { display: none; }
+
+.pdetail__kind { margin: 0; font-size: .92rem; font-weight: 700; color: var(--navy); }
+.pdetail__name {
+  margin: .3rem 0 0;
+  font-size: clamp(1.4rem, 1.1rem + 1vw, 1.9rem); line-height: 1.15;
+  text-wrap: balance;
+}
+.pdetail__city { margin: .3rem 0 0; font-size: 1rem; color: var(--ink-2); }
+
+.pdetail__block { margin-top: clamp(1.4rem, 2.5vw, 1.9rem); }
+.pdetail__block > h4 {
+  margin: 0 0 .5rem; font-size: .92rem; font-weight: 700;
+  color: var(--ink-2); font-family: var(--sans);
+}
+.pdetail__block > p { margin: 0; color: var(--ink); text-wrap: pretty; }
+.pdetail__link a { color: var(--navy); overflow-wrap: anywhere; }
+
+/* The close button. 44px of target, and it only exists once the script that
+   can act on it is running. */
+.pdetail__x {
+  position: absolute; top: .65rem; right: .65rem; z-index: 2;
+  display: grid; place-items: center;
+  width: 2.75rem; height: 2.75rem; padding: 0;
+  border: 1px solid var(--rule); border-radius: 50%;
+  background: var(--stock); color: var(--ink); cursor: pointer;
+  transition: background-color .16s var(--ease), color .16s var(--ease);
+}
+.pdetail__x svg { width: 1.2rem; height: 1.2rem; }
+.pdetail__x:hover { background: var(--navy); border-color: var(--navy); color: var(--stock); }
+
+/* ---- the impact box -----------------------------------------------------
+   First thing in the panel, and the one place on this page a count is
+   allowed to be loud. Amber field, dark ink — white on amber is 1.7:1 and is
+   never used here.
+   -------------------------------------------------------------------------- */
+.impact {
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  padding: clamp(1.1rem, 2.4vw, 1.6rem);
+  background: var(--amber-lt); border: 2px solid var(--amber);
+  border-radius: var(--r);
+}
+.impact__n {
+  margin: 0; font-family: var(--display); font-weight: 700;
+  font-size: clamp(2.6rem, 1.8rem + 3vw, 4rem); line-height: .9;
+  letter-spacing: -0.02em; color: var(--navy-deep);
   font-variant-numeric: tabular-nums;
 }
-.partner__count-w { font-size: .92rem; color: var(--ink-2); margin-left: .45rem; }
-
-.partner__cue {
-  grid-column: 2; grid-row: 1 / 3; align-self: center;
-  width: 1.6rem; height: 1.6rem; flex: none; color: var(--navy);
-  transition: transform .22s var(--ease);
+.impact__u { margin: .45rem 0 0; font-size: 1rem; color: var(--ink); }
+.impact__none { margin: 0; font-size: 1rem; color: var(--ink); text-wrap: pretty; }
+.impact__langs {
+  list-style: none; display: flex; flex-wrap: wrap; gap: .5rem 1.4rem;
+  margin: 1.1rem 0 0; padding-top: 1rem;
+  border-top: 1px solid rgba(6, 37, 99, .22);
 }
-.partner__panel[open] .partner__cue { transform: rotate(180deg); }
+.impact__langs > li { display: flex; align-items: baseline; gap: .4rem; }
+.impact__langs .key__code { background: var(--navy-deep); color: var(--amber); }
+.impact__ln {
+  font-family: var(--display); font-weight: 700; font-size: 1.25rem;
+  color: var(--navy-deep); font-variant-numeric: tabular-nums;
+}
+.impact__lw { font-size: .9rem; color: var(--ink); }
+
+/* ---- the dialog ---------------------------------------------------------
+   <dialog> + showModal(), so Escape, the backdrop, the focus trap and
+   making the rest of the page inert are the browser's job rather than four
+   more things to get wrong. Clicking outside is the one piece it does not
+   give you; the script adds it.
+   -------------------------------------------------------------------------- */
+.pmodal {
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: min(86svh, 54rem);
+  padding: 0; overflow: auto; overscroll-behavior: contain;
+  border: 1px solid var(--rule-firm); border-radius: var(--r);
+  background: var(--stock); color: var(--ink);
+  box-shadow: 0 24px 70px -20px rgba(6, 37, 99, .55);
+}
+.pmodal::backdrop { background: rgba(6, 37, 99, .62); }
+.pmodal .pdetail {
+  position: relative; border: 0; border-radius: 0;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  padding-right: clamp(3.75rem, 6vw, 4.5rem);   /* clear of the close button */
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pmodal[open] { animation: pmodal-in .22s var(--ease); }
+  @keyframes pmodal-in {
+    from { opacity: 0; transform: translateY(8px) scale(.985); }
+  }
+}
+/* A phone gets the panel as a sheet off the bottom edge: full width, square
+   top corners, and the close button where a thumb already is. */
+@media (max-width: 34rem) {
+  .pmodal {
+    width: 100vw; max-width: 100vw; max-height: 88svh;
+    margin: auto auto 0; border-radius: var(--r) var(--r) 0 0;
+    border-bottom: 0;
+  }
+}
 
 /* ---- one distribution ----------------------------------------------------
    The total leads at size and its parts sit under the bar, so the hierarchy
    matches the arithmetic: the big number is the sum of the small ones.
    -------------------------------------------------------------------------- */
 .drops {
-  list-style: none;
-  margin: 0 clamp(1.25rem, 2.2vw, 1.75rem);
-  padding-bottom: .4rem;
+  list-style: none; margin: 0;
   border-top: 1px solid var(--rule);
 }
 .drops > li { padding-block: 1.1rem; }
@@ -1013,7 +1117,7 @@ a:hover { color: var(--navy-deep); }
 .drop__bar > span:only-child  { border-radius: 999px; }
 
 .drop__key { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; }
-.key { display: flex; align-items: baseline; gap: .4rem; }
+.key { display: inline-flex; align-items: baseline; gap: .4rem; }
 /* The swatch that ties a figure to its segment. Amber carries dark ink. */
 .key__code {
   align-self: center;
@@ -1030,14 +1134,12 @@ a:hover { color: var(--navy-deep); }
 }
 .key__lang { font-size: .88rem; color: var(--ink-2); }
 
-.partner:has(.partner__panel) .partner__link { padding: 0 clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem); }
-.partner:has(.partner__plain) .partner__link { padding: 0 clamp(1.25rem, 2.2vw, 1.75rem) clamp(1.25rem, 2.2vw, 1.75rem); }
-
-/* Everything is open on paper — a dropdown is a screen affordance and a
-   printed page has no one to click it. */
+/* Everything is open on paper. A dialog is a screen affordance and a printed
+   page has no one to click it, so the panels print as the blocks they are —
+   which is exactly what they already are without the script. */
 @media print {
-  .partner__panel > .drops { display: block !important; }
-  .partner__cue { display: none; }
+  .js .pdetails { display: grid !important; }
+  .pdetail__x, .pcard__more { display: none; }
 }
 
 .where__ask {
@@ -1055,16 +1157,6 @@ a:hover { color: var(--navy-deep); }
    So the ribbon is taken off the animation entirely and becomes what it
    always was underneath: a row of names. The duplicate copy is dropped,
    since without movement a seam is just the list printed twice. */
-@media (prefers-reduced-motion: reduce) {
-  .ribbon { -webkit-mask-image: none; mask-image: none; }
-  .ribbon__track {
-    animation: none;
-    width: auto; flex-wrap: wrap; justify-content: center;
-  }
-  .ribbon__set { flex-wrap: wrap; justify-content: center; }
-  .ribbon__set:last-child { display: none; }
-}
-
 /* IT DOES NOT PAUSE ON HOVER, on purpose — asked for, and the mouse
    passes over this band on the way to the cards below constantly, so
    pausing made it stutter rather than read as a continuous ribbon.
@@ -1073,7 +1165,6 @@ a:hover { color: var(--navy-deep); }
    through the partner links is reading, not passing through, and a name
    sliding past behind the card they are on is movement they did not ask
    for. Under prefers-reduced-motion it does not move at all — see below. */
-.where:focus-within .ribbon__track { animation-play-state: paused; }
 
 /* The ribbon is a decoration with no information in it that the cards below
    do not carry, so it does not go to the printer. */

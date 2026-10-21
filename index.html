@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=28">
+  <link rel="stylesheet" href="styles.css?v=30">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -619,48 +619,206 @@
         </ul>
       </div>
 
-      <!-- Full bleed on purpose: it sits outside .wide so the names run off
-           both edges and the loop has no visible seam. -->
+      <!-- THE RIBBON. Full bleed on purpose: it sits outside .wide so the
+           names run off both edges and the loop has no visible seam.
+
+           It is a scroll container now, not a CSS animation, which is what
+           lets all four behaviours share one mechanism: the script nudges
+           scrollLeft frame by frame, so a trackpad swipe, a finger drag and
+           the arrows all move the same property, and "resume from where they
+           left it" needs no bookkeeping — it just carries on from wherever
+           scrollLeft happens to be.
+
+           The whole band is aria-hidden, arrows included. Every name in it is
+           a card below with the same name and more besides, so a screen
+           reader gets the real thing rather than a duplicate it cannot act
+           on. The arrows are mouse affordances and are deliberately not in
+           the tab order.
+
+           With the script off nothing moves and the row is still scrollable
+           by hand. Under prefers-reduced-motion the script never starts the
+           loop at all — see section 14e in the stylesheet. -->
       <div class="ribbon" aria-hidden="true">
-        <div class="ribbon__track">
-          <ul class="ribbon__set" role="list">
+        <button class="ribbon__arrow ribbon__arrow--prev" type="button" tabindex="-1" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor"
+                  stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div class="ribbon__view">
+          <div class="ribbon__track">
+            <ul class="ribbon__set" role="list">
             <li>Cy-Fair Helping Hands</li>
             <li>MESA Outreach</li>
             <li>Abba&rsquo;s House</li>
             <li>Tomball Emergency Assistance Ministries</li>
             <li>Fort Bend Seniors Meals on Wheels</li>
-          </ul>
-          <ul class="ribbon__set" role="list">
+            </ul>
+            <ul class="ribbon__set" role="list">
             <li>Cy-Fair Helping Hands</li>
             <li>MESA Outreach</li>
             <li>Abba&rsquo;s House</li>
             <li>Tomball Emergency Assistance Ministries</li>
             <li>Fort Bend Seniors Meals on Wheels</li>
-          </ul>
+            </ul>
+          </div>
         </div>
+
+        <button class="ribbon__arrow ribbon__arrow--next" type="button" tabindex="-1" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor"
+                  stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
       </div>
 
       <div class="wide">
         <ul class="partners" role="list" data-reveal>
 
           <li class="partner">
-            <details class="partner__panel">
-              <summary class="partner__summary">
-              <span class="partner__head">
-                <span class="partner__name">Cy-Fair Helping Hands</span>
-                <span class="partner__where">Houston, TX</span>
-                <span class="partner__what">Food pantry and emergency assistance</span>
-              </span>
-                <span class="partner__count">
-                  <span class="partner__count-n">380</span>
-                  <span class="partner__count-w">guides, over 2 distributions</span>
-                </span>
-                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
-                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </summary>
-              <ul class="drops" role="list">
+            <!-- A real link to the panel below, not a button: with the script
+                 off it jumps to a panel that is simply open on the page. The
+                 script upgrades the same click into the dialog. -->
+            <a class="pcard" href="#p-cyfair" data-opens="p-cyfair">
+              <!-- LOGO SLOT. A monogram stands in until a partner says yes in
+                   writing to their logo being used; a name is a fact, a logo is
+                   a borrowed endorsement. Drop an <img class="pcard__logo">
+                   in place of this span and nothing else changes. -->
+              <span class="pcard__logo" aria-hidden="true">CF</span>
+              <span class="pcard__name">Cy-Fair Helping Hands</span>
+              <span class="pcard__city">Houston, TX</span>
+              <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+
+          <li class="partner">
+            <!-- A real link to the panel below, not a button: with the script
+                 off it jumps to a panel that is simply open on the page. The
+                 script upgrades the same click into the dialog. -->
+            <a class="pcard" href="#p-mesa" data-opens="p-mesa">
+              <!-- LOGO SLOT. A monogram stands in until a partner says yes in
+                   writing to their logo being used; a name is a fact, a logo is
+                   a borrowed endorsement. Drop an <img class="pcard__logo">
+                   in place of this span and nothing else changes. -->
+              <span class="pcard__logo" aria-hidden="true">MO</span>
+              <span class="pcard__name">MESA Outreach</span>
+              <span class="pcard__city">Houston, TX</span>
+              <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+
+          <li class="partner">
+            <!-- A real link to the panel below, not a button: with the script
+                 off it jumps to a panel that is simply open on the page. The
+                 script upgrades the same click into the dialog. -->
+            <a class="pcard" href="#p-abbas" data-opens="p-abbas">
+              <!-- LOGO SLOT. A monogram stands in until a partner says yes in
+                   writing to their logo being used; a name is a fact, a logo is
+                   a borrowed endorsement. Drop an <img class="pcard__logo">
+                   in place of this span and nothing else changes. -->
+              <span class="pcard__logo" aria-hidden="true">AH</span>
+              <span class="pcard__name">Abba&rsquo;s House</span>
+              <span class="pcard__city">Houston, TX</span>
+              <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+
+          <li class="partner">
+            <!-- A real link to the panel below, not a button: with the script
+                 off it jumps to a panel that is simply open on the page. The
+                 script upgrades the same click into the dialog. -->
+            <a class="pcard" href="#p-team" data-opens="p-team">
+              <!-- LOGO SLOT. A monogram stands in until a partner says yes in
+                   writing to their logo being used; a name is a fact, a logo is
+                   a borrowed endorsement. Drop an <img class="pcard__logo">
+                   in place of this span and nothing else changes. -->
+              <span class="pcard__logo" aria-hidden="true">TM</span>
+              <span class="pcard__name">Tomball Emergency Assistance Ministries</span>
+              <span class="pcard__city">Tomball, TX</span>
+              <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+
+          <li class="partner">
+            <!-- A real link to the panel below, not a button: with the script
+                 off it jumps to a panel that is simply open on the page. The
+                 script upgrades the same click into the dialog. -->
+            <a class="pcard" href="#p-fortbend" data-opens="p-fortbend">
+              <!-- LOGO SLOT. A monogram stands in until a partner says yes in
+                   writing to their logo being used; a name is a fact, a logo is
+                   a borrowed endorsement. Drop an <img class="pcard__logo">
+                   in place of this span and nothing else changes. -->
+              <span class="pcard__logo" aria-hidden="true">FB</span>
+              <span class="pcard__name">Fort Bend Seniors Meals on Wheels</span>
+              <span class="pcard__city">Rosenberg, TX</span>
+              <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+
+          <!-- ADD A NEW PARTNER HERE: one <li> with its .pcard, and one
+               matching .pdetail panel below, sharing the same id. Add the name
+               to both ribbon lists above so the loop stays seamless. -->
+        </ul>
+
+        <!-- THE PANELS. They are ordinary blocks on the page, and the script
+             lifts the one you asked for into a <dialog> and puts it back when
+             you close it. With the script off they stay where they are, open
+             and readable, and the card links are plain jump links to them —
+             which is rule 4 doing its job. -->
+        <div class="pdetails">
+
+        <div class="pdetail" id="p-cyfair" aria-labelledby="h-cyfair">
+          <button class="pdetail__x" type="button" hidden>
+            <span class="hidden">Close</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+          <p class="pdetail__kind">Food pantry and emergency assistance</p>
+          <h3 class="pdetail__name" id="h-cyfair">Cy-Fair Helping Hands</h3>
+          <p class="pdetail__city">Houston, TX</p>
+
+          <!-- THE IMPACT BOX LEADS. The amber field is the one place on this
+               page a count gets to be loud, and it is the first thing in the
+               panel because it is the reason the panel exists. The totals are
+               summed by the script from the dated distributions further down,
+               so this box can never claim something those rows do not. -->
+          <div class="impact">
+            <p class="impact__n" data-sum="total">380</p>
+            <p class="impact__u">guides handed out, over
+               <span data-sum="drops">2</span>
+               distributions</p>
+            <ul class="impact__langs" role="list">
+              <li>
+                <span class="key__code">EN</span>
+                <span class="impact__ln">210</span>
+                <span class="impact__lw">English</span>
+              </li>
+              <li>
+                <span class="key__code">ES</span>
+                <span class="impact__ln">170</span>
+                <span class="impact__lw">Spanish</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>About</h4>
+            <p>A food pantry and emergency assistance program serving families across northwest Harris County.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Who they serve</h4>
+            <p>Anyone in the area with a need for food.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>When we have been</h4>
+            <ul class="drops" role="list">
                 <li>
                   <p class="drop__when"><time datetime="2026-09-05">September 5, 2026</time></p>
                   <div class="drop__fig">
@@ -669,16 +827,16 @@
                   </div>
                   <div class="drop__bar" aria-hidden="true" hidden></div>
                   <div class="drop__key">
-                    <div class="key">
+                    <span class="key">
                       <span class="key__code">EN</span>
                       <p class="tally__part">90</p>
                       <span class="key__lang">English</span>
-                    </div>
-                    <div class="key">
+                    </span>
+                    <span class="key">
                       <span class="key__code">ES</span>
                       <p class="tally__part">70</p>
                       <span class="key__lang">Spanish</span>
-                    </div>
+                    </span>
                   </div>
                 </li>
                 <li>
@@ -689,43 +847,76 @@
                   </div>
                   <div class="drop__bar" aria-hidden="true" hidden></div>
                   <div class="drop__key">
-                    <div class="key">
+                    <span class="key">
                       <span class="key__code">EN</span>
                       <p class="tally__part">120</p>
                       <span class="key__lang">English</span>
-                    </div>
-                    <div class="key">
+                    </span>
+                    <span class="key">
                       <span class="key__code">ES</span>
                       <p class="tally__part">100</p>
                       <span class="key__lang">Spanish</span>
-                    </div>
+                    </span>
                   </div>
                 </li>
-              </ul>
-            </details>
-            <p class="partner__link">
-              <a href="https://www.cyfairhelpinghands.org/">cyfairhelpinghands.org</a>
-            </p>
-          </li>
+            </ul>
+          </div>
+          <div class="pdetail__block">
+            <h4>Find them</h4>
+            <p class="pdetail__link"><a href="https://www.cyfairhelpinghands.org/">cyfairhelpinghands.org</a></p>
+          </div>
+        </div>
 
-          <li class="partner">
-            <details class="partner__panel">
-              <summary class="partner__summary">
-              <span class="partner__head">
-                <span class="partner__name">MESA Outreach</span>
-                <span class="partner__where">Houston, TX</span>
-                <span class="partner__what">Food pantry and community outreach</span>
-              </span>
-                <span class="partner__count">
-                  <span class="partner__count-n">40</span>
-                  <span class="partner__count-w">guides, over 1 distribution</span>
-                </span>
-                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
-                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </summary>
-              <ul class="drops" role="list">
+        <div class="pdetail" id="p-mesa" aria-labelledby="h-mesa">
+          <button class="pdetail__x" type="button" hidden>
+            <span class="hidden">Close</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+          <p class="pdetail__kind">Food pantry and community outreach</p>
+          <h3 class="pdetail__name" id="h-mesa">MESA Outreach</h3>
+          <p class="pdetail__city">Houston, TX</p>
+
+          <!-- THE IMPACT BOX LEADS. The amber field is the one place on this
+               page a count gets to be loud, and it is the first thing in the
+               panel because it is the reason the panel exists. The totals are
+               summed by the script from the dated distributions further down,
+               so this box can never claim something those rows do not. -->
+          <div class="impact">
+            <p class="impact__n" data-sum="total">40</p>
+            <p class="impact__u">guides handed out, over
+               <span data-sum="drops">1</span>
+               distribution</p>
+            <ul class="impact__langs" role="list">
+              <li>
+                <span class="key__code">EN</span>
+                <span class="impact__ln">22</span>
+                <span class="impact__lw">English</span>
+              </li>
+              <li>
+                <span class="key__code">ES</span>
+                <span class="impact__ln">18</span>
+                <span class="impact__lw">Spanish</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>About</h4>
+            <p>A northwest Houston food pantry and outreach organization, founded in 2009 and renamed MESA &mdash; Spanish for &ldquo;table&rdquo; &mdash; in 2016.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Who they serve</h4>
+            <p>Families across eight ZIP codes, through one of the few evening pantries in Harris County.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>When we have been</h4>
+            <ul class="drops" role="list">
                 <li>
                   <p class="drop__when"><time datetime="2026-09-22">September 22, 2026</time></p>
                   <div class="drop__fig">
@@ -734,43 +925,86 @@
                   </div>
                   <div class="drop__bar" aria-hidden="true" hidden></div>
                   <div class="drop__key">
-                    <div class="key">
+                    <span class="key">
                       <span class="key__code">EN</span>
                       <p class="tally__part">22</p>
                       <span class="key__lang">English</span>
-                    </div>
-                    <div class="key">
+                    </span>
+                    <span class="key">
                       <span class="key__code">ES</span>
                       <p class="tally__part">18</p>
                       <span class="key__lang">Spanish</span>
-                    </div>
+                    </span>
                   </div>
                 </li>
-              </ul>
-            </details>
-            <p class="partner__link">
-              <a href="https://www.mesa-outreach.org/">mesa-outreach.org</a>
-            </p>
-          </li>
+            </ul>
+          </div>
+          <div class="pdetail__block">
+            <h4>Find them</h4>
+            <p class="pdetail__link"><a href="https://www.mesa-outreach.org/">mesa-outreach.org</a></p>
+          </div>
+        </div>
 
-          <li class="partner">
-            <details class="partner__panel">
-              <summary class="partner__summary">
-              <span class="partner__head">
-                <span class="partner__name">Abba&rsquo;s House</span>
-                <span class="partner__where">Houston, TX</span>
-                <span class="partner__what">Refugee and newcomer services</span>
-              </span>
-                <span class="partner__count">
-                  <span class="partner__count-n">18</span>
-                  <span class="partner__count-w">guides, over 1 distribution</span>
-                </span>
-                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
-                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </summary>
-              <ul class="drops" role="list">
+        <div class="pdetail" id="p-abbas" aria-labelledby="h-abbas">
+          <button class="pdetail__x" type="button" hidden>
+            <span class="hidden">Close</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+          <p class="pdetail__kind">Refugee and newcomer services</p>
+          <h3 class="pdetail__name" id="h-abbas">Abba&rsquo;s House</h3>
+          <p class="pdetail__city">Houston, TX</p>
+
+          <!-- THE IMPACT BOX LEADS. The amber field is the one place on this
+               page a count gets to be loud, and it is the first thing in the
+               panel because it is the reason the panel exists. The totals are
+               summed by the script from the dated distributions further down,
+               so this box can never claim something those rows do not. -->
+          <div class="impact">
+            <p class="impact__n" data-sum="total">18</p>
+            <p class="impact__u">guides handed out, over
+               <span data-sum="drops">1</span>
+               distribution</p>
+            <ul class="impact__langs" role="list">
+              <li>
+                <span class="key__code">EN</span>
+                <span class="impact__ln">8</span>
+                <span class="impact__lw">English</span>
+              </li>
+              <li>
+                <span class="key__code">ES</span>
+                <span class="impact__ln">5</span>
+                <span class="impact__lw">Spanish</span>
+              </li>
+              <li>
+                <span class="key__code">TR</span>
+                <span class="impact__ln">2</span>
+                <span class="impact__lw">Turkish</span>
+              </li>
+              <li>
+                <span class="key__code">FA</span>
+                <span class="impact__ln">3</span>
+                <span class="impact__lw">Persian</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>About</h4>
+            <p>Support for refugee and newcomer families settling in the Houston area.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Who they serve</h4>
+            <p>Refugee and immigrant families, in several languages.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>When we have been</h4>
+            <ul class="drops" role="list">
                 <li>
                   <p class="drop__when"><time datetime="2026-09-21">September 21, 2026</time></p>
                   <div class="drop__fig">
@@ -779,57 +1013,82 @@
                   </div>
                   <div class="drop__bar" aria-hidden="true" hidden></div>
                   <div class="drop__key">
-                    <div class="key">
+                    <span class="key">
                       <span class="key__code">EN</span>
                       <p class="tally__part">8</p>
                       <span class="key__lang">English</span>
-                    </div>
-                    <div class="key">
+                    </span>
+                    <span class="key">
                       <span class="key__code">ES</span>
                       <p class="tally__part">5</p>
                       <span class="key__lang">Spanish</span>
-                    </div>
-                    <div class="key">
+                    </span>
+                    <span class="key">
                       <span class="key__code">TR</span>
                       <p class="tally__part">2</p>
                       <span class="key__lang">Turkish</span>
-                    </div>
-                    <div class="key">
+                    </span>
+                    <span class="key">
                       <span class="key__code">FA</span>
                       <p class="tally__part">3</p>
                       <span class="key__lang">Persian</span>
-                    </div>
+                    </span>
                   </div>
                 </li>
-              </ul>
-            </details>
-            <!-- NO LINK YET, on purpose. Every other address here was checked
-                 against the organisation's own site before it was published,
-                 and this one could not be. Add it the moment you have it from
-                 them directly:
-                 <p class="partner__link"><a href="https://…">…</a></p>
-                 A card without a link still reads; a card with the wrong link
-                 sends someone to a stranger. -->
-          </li>
+            </ul>
+          </div>
+          <!-- NO WEBSITE YET, on purpose. Every other address here was checked
+               against the organisation's own site before it was published and
+               this one could not be. Add it the moment you have it from them
+               directly. A panel without a link still reads; a wrong link sends
+               someone to a stranger. -->
+        </div>
 
-          <li class="partner">
-            <details class="partner__panel">
-              <summary class="partner__summary">
-              <span class="partner__head">
-                <span class="partner__name">Tomball Emergency Assistance Ministries</span>
-                <span class="partner__where">Tomball, TX</span>
-                <span class="partner__what">Food pantry and emergency assistance &mdash; TEAM</span>
-              </span>
-                <span class="partner__count">
-                  <span class="partner__count-n">10</span>
-                  <span class="partner__count-w">guides, over 1 distribution</span>
-                </span>
-                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
-                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </summary>
-              <ul class="drops" role="list">
+        <div class="pdetail" id="p-team" aria-labelledby="h-team">
+          <button class="pdetail__x" type="button" hidden>
+            <span class="hidden">Close</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+          <p class="pdetail__kind">Food pantry and emergency assistance</p>
+          <h3 class="pdetail__name" id="h-team">Tomball Emergency Assistance Ministries</h3>
+          <p class="pdetail__city">Tomball, TX</p>
+
+          <!-- THE IMPACT BOX LEADS. The amber field is the one place on this
+               page a count gets to be loud, and it is the first thing in the
+               panel because it is the reason the panel exists. The totals are
+               summed by the script from the dated distributions further down,
+               so this box can never claim something those rows do not. -->
+          <div class="impact">
+            <p class="impact__n" data-sum="total">10</p>
+            <p class="impact__u">guides handed out, over
+               <span data-sum="drops">1</span>
+               distribution</p>
+            <ul class="impact__langs" role="list">
+              <li>
+                <span class="key__code">EN</span>
+                <span class="impact__ln">10</span>
+                <span class="impact__lw">English</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>About</h4>
+            <p>Known as TEAM. A food pantry, resale shop and emergency assistance ministry in Tomball.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Who they serve</h4>
+            <p>Families needing short-term help with food, clothing, rent, utilities or prescriptions.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>When we have been</h4>
+            <ul class="drops" role="list">
                 <li>
                   <p class="drop__when"><time datetime="2026-10-13">October 13, 2026</time></p>
                   <div class="drop__fig">
@@ -838,45 +1097,61 @@
                   </div>
                   <div class="drop__bar" aria-hidden="true" hidden></div>
                   <div class="drop__key">
-                    <div class="key">
+                    <span class="key">
                       <span class="key__code">EN</span>
                       <p class="tally__part">10</p>
                       <span class="key__lang">English</span>
-                    </div>
+                    </span>
                   </div>
                 </li>
-              </ul>
-            </details>
-            <p class="partner__link">
-              <a href="https://teamtomball.com/">teamtomball.com</a>
-            </p>
-          </li>
+            </ul>
+          </div>
+          <div class="pdetail__block">
+            <h4>Find them</h4>
+            <p class="pdetail__link"><a href="https://teamtomball.com/">teamtomball.com</a></p>
+          </div>
+        </div>
 
-          <li class="partner">
-            <div class="partner__plain">
-              <span class="partner__head">
-                <span class="partner__name">Fort Bend Seniors Meals on Wheels</span>
-                <span class="partner__where">Rosenberg, TX</span>
-                <span class="partner__what">Senior meals and senior centers</span>
-              </span>
-            </div>
-            <p class="partner__link">
-              <a href="https://www.fortbendseniors.org/">fortbendseniors.org</a>
-            </p>
-          </li>
+        <div class="pdetail" id="p-fortbend" aria-labelledby="h-fortbend">
+          <button class="pdetail__x" type="button" hidden>
+            <span class="hidden">Close</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </button>
 
-          <!-- ADD A NEW PARTNER HERE, and add the name to both ribbon lists
-               above so the loop stays seamless. A partner with counted
-               distributions gets a <details>; one without gets the plain
-               card, and grows a <details> the first time there is something
-               to put behind it.
+          <p class="pdetail__kind">Senior meals and senior centers</p>
+          <h3 class="pdetail__name" id="h-fortbend">Fort Bend Seniors Meals on Wheels</h3>
+          <p class="pdetail__city">Rosenberg, TX</p>
 
-               TO ADD A DISTRIBUTION to a partner that already has one: copy
-               one <li> inside its <ul class="drops">, in date order. Keep the
-               <li> bare and never nest another <li> inside it — that is what
-               .github/scripts/check_numbers.py splits on, and it will stop
-               checking a row written any other way. -->
-        </ul>
+          <!-- THE IMPACT BOX LEADS. The amber field is the one place on this
+               page a count gets to be loud, and it is the first thing in the
+               panel because it is the reason the panel exists. The totals are
+               summed by the script from the dated distributions further down,
+               so this box can never claim something those rows do not. -->
+          <div class="impact">
+            <p class="impact__none">No distribution counted here yet. Guides are on
+               their front desk; the first counted drop will show up here.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>About</h4>
+            <p>Home-delivered meals and congregate senior centers across Fort Bend and Waller Counties.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Who they serve</h4>
+            <p>Adults 60 and over, regardless of income.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Find them</h4>
+            <p class="pdetail__link"><a href="https://www.fortbendseniors.org/">fortbendseniors.org</a></p>
+          </div>
+        </div>
+
+        </div>
 
         <div class="where__ask" data-reveal>
           <p class="where__ask-text">
@@ -1468,6 +1743,200 @@
     })();
 
     // ----------------------------------------------------------------
+    // THE PARTNER PANELS — card opens a dialog.
+    //
+    // The panels are real blocks in the page and the card links are plain
+    // jump links to them. This moves the one you asked for into a <dialog>
+    // and puts it back when you close it, so there is exactly one copy of
+    // every panel and nothing to keep in sync.
+    //
+    // <dialog>.showModal() brings Escape, the backdrop, the focus trap and
+    // inert-ing the rest of the page with it. Clicking outside is the only
+    // piece it does not give you, which is the one thing added below.
+    //
+    // If showModal does not exist, every listener here is skipped and the
+    // links stay what they already are: jump links to visible panels.
+    // ----------------------------------------------------------------
+    (function () {
+      var links = document.querySelectorAll('.pcard[data-opens]');
+      if (!links.length) return;
+
+      var modal = document.createElement('dialog');
+      if (typeof modal.showModal !== 'function') return;
+      modal.className = 'pmodal';
+      document.body.appendChild(modal);
+
+      var home = null;      // where the open panel came from
+      var panel = null;
+      var opener = null;    // the card to put focus back on
+
+      function close() {
+        if (modal.open) modal.close();
+      }
+
+      function open(id, from) {
+        var el = document.getElementById(id);
+        if (!el) return false;
+
+        panel = el;
+        // A comment node parked where the panel was, so it goes back into the
+        // same slot rather than the end of the list.
+        home = document.createComment('panel ' + id);
+        el.parentNode.insertBefore(home, el);
+        modal.appendChild(el);
+
+        var x = el.querySelector('.pdetail__x');
+        if (x) x.hidden = false;
+
+        opener = from || null;
+        modal.showModal();
+        modal.scrollTop = 0;
+        return true;
+      }
+
+      // Put the panel back wherever it was, whichever way it was closed —
+      // Escape, the button, the backdrop, or the browser.
+      modal.addEventListener('close', function () {
+        if (panel && home && home.parentNode) {
+          var x = panel.querySelector('.pdetail__x');
+          if (x) x.hidden = true;
+          home.parentNode.insertBefore(panel, home);
+          home.parentNode.removeChild(home);
+        }
+        panel = null; home = null;
+        if (opener && document.contains(opener)) opener.focus();
+        opener = null;
+      });
+
+      // Clicking outside. The dialog element fills the whole viewport as far
+      // as the event is concerned, so "outside" means the click landed on the
+      // dialog itself rather than on anything inside it.
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) close();
+      });
+
+      modal.addEventListener('click', function (e) {
+        if (e.target.closest && e.target.closest('.pdetail__x')) close();
+      });
+
+      Array.prototype.forEach.call(links, function (a) {
+        a.addEventListener('click', function (e) {
+          // Let a modified click do the ordinary thing — open in a new tab,
+          // copy the link — rather than swallowing it.
+          if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+          if (open(a.getAttribute('data-opens'), a)) e.preventDefault();
+        });
+      });
+    })();
+
+    // ----------------------------------------------------------------
+    // THE RIBBON — auto-scroll, hover, hand-scroll, arrows.
+    //
+    // One mechanism for all of it: the loop nudges scrollLeft, and a
+    // trackpad swipe, a finger drag and the arrows all move the same
+    // property. So "carry on from where they left it" needs no bookkeeping —
+    // the loop simply reads scrollLeft the next frame.
+    //
+    // The track is the name list printed twice. Half of it is one full set,
+    // so stepping back by half when we pass it loops with no visible seam.
+    //
+    // Under prefers-reduced-motion the loop never starts: the row is still
+    // there, still scrollable by hand, just never moving on its own.
+    // ----------------------------------------------------------------
+    (function () {
+      var view = document.querySelector('.ribbon__view');
+      var track = document.querySelector('.ribbon__track');
+      if (!view || !track) return;
+
+      var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var arrows = document.querySelectorAll('.ribbon__arrow');
+
+      // The arrows are the one part that is useful even when nothing
+      // auto-scrolls, so they are shown either way.
+      Array.prototype.forEach.call(arrows, function (b) {
+        b.hidden = false;
+        b.addEventListener('click', function () {
+          hold(3000);
+          view.scrollBy({
+            left: (b.classList.contains('ribbon__arrow--next') ? 1 : -1) * view.clientWidth * .6,
+            behavior: still.matches ? 'auto' : 'smooth'
+          });
+        });
+      });
+
+      var PX_PER_SEC = 38;      // slow enough to read a name as it goes past
+      var paused = false;       // pointer is over the band
+      var until = 0;            // held off until this timestamp, after a scroll
+      var mine = 0;             // when the loop last wrote scrollLeft itself
+      var last = 0;
+      var frame = null;
+
+      function hold(ms) { until = Date.now() + ms; }
+
+      function half() { return track.scrollWidth / 2; }
+
+      function tick(now) {
+        frame = requestAnimationFrame(tick);
+        var dt = last ? (now - last) / 1000 : 0;
+        last = now;
+        // A tab in the background can hand back a gap of many seconds; a
+        // capped dt stops the ribbon lurching when you come back to it.
+        if (dt > .1) dt = .1;
+        if (paused || Date.now() < until) return;
+        mine = Date.now();                  // this write is ours, not theirs
+        view.scrollLeft += PX_PER_SEC * dt;
+        if (view.scrollLeft >= half()) view.scrollLeft -= half();
+      }
+
+      function start() {
+        if (frame || still.matches) return;
+        last = 0;
+        frame = requestAnimationFrame(tick);
+      }
+      function stop() {
+        if (!frame) return;
+        cancelAnimationFrame(frame);
+        frame = null;
+      }
+
+      // 1. Over it, it stops; off it, it goes again. Pointer events cover the
+      //    mouse without firing for a touch, which is what we want: a finger
+      //    on the ribbon is a scroll, handled below.
+      view.addEventListener('pointerenter', function (e) {
+        if (e.pointerType === 'mouse') paused = true;
+      });
+      view.addEventListener('pointerleave', function (e) {
+        if (e.pointerType === 'mouse') paused = false;
+      });
+
+      // 2 & 3. A scroll the person made holds the loop off, then it carries
+      //    on from wherever they stopped. The guard is the loop's own writes:
+      //    those change scrollLeft too, and without it the ribbon would hold
+      //    itself off forever.
+      ['wheel', 'touchstart', 'pointerdown'].forEach(function (type) {
+        view.addEventListener(type, function () { hold(3000); }, { passive: true });
+      });
+      view.addEventListener('scroll', function () {
+        var now = Date.now();
+        if (now - mine < 120) return;     // our own nudge, not theirs
+        hold(3000);
+      }, { passive: true });
+
+      // 4. Reduced motion: never start, and react if the setting changes
+      //    while the page is open.
+      function sync() { still.matches ? stop() : start(); }
+      if (still.addEventListener) still.addEventListener('change', sync);
+      else if (still.addListener) still.addListener(sync);
+
+      // Nothing to animate while the tab is in the background.
+      document.addEventListener('visibilitychange', function () {
+        document.hidden ? stop() : sync();
+      });
+
+      sync();
+    })();
+
+    // ----------------------------------------------------------------
     // THE PARTNER CARDS — the split bars, and the stats strip.
     //
     // Everything here is read off figures already printed in the cards, so
@@ -1515,6 +1984,38 @@
       }
 
       set('partners', document.querySelectorAll('.partner').length);
+
+      // Each panel's headline is summed from its own dated distributions, so
+      // the loud number in the amber box can never claim something those rows
+      // do not. The written values are right as they stand; this keeps them
+      // from drifting the next time a distribution is added.
+      Array.prototype.forEach.call(document.querySelectorAll('.pdetail'), function (panel) {
+        var rows = panel.querySelectorAll('.drops > li');
+        if (!rows.length) return;
+        var sum = 0, per = {}, order = [];
+        Array.prototype.forEach.call(rows, function (row) {
+          var h = row.querySelector('.tally__n');
+          if (h) sum += parseInt(h.textContent.replace(/[^\d]/g, ''), 10) || 0;
+          Array.prototype.forEach.call(row.querySelectorAll('.key'), function (k) {
+            var code = (k.querySelector('.key__code') || {}).textContent;
+            var val = parseInt(((k.querySelector('.tally__part') || {}).textContent || '')
+                      .replace(/[^\d]/g, ''), 10) || 0;
+            if (!code) return;
+            code = code.trim();
+            if (!(code in per)) { per[code] = 0; order.push(code); }
+            per[code] += val;
+          });
+        });
+        var t = panel.querySelector('[data-sum="total"]');
+        var d = panel.querySelector('[data-sum="drops"]');
+        if (t) t.textContent = sum.toLocaleString('en-US');
+        if (d) d.textContent = rows.length;
+        Array.prototype.forEach.call(panel.querySelectorAll('.impact__langs > li'), function (li) {
+          var code = (li.querySelector('.key__code') || {}).textContent;
+          var n = li.querySelector('.impact__ln');
+          if (code && n && (code.trim() in per)) n.textContent = per[code.trim()];
+        });
+      });
 
       var total = 0, langs = {};
       Array.prototype.forEach.call(drops, function (row) {
