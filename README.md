@@ -545,9 +545,19 @@ nothing else changes.
 partners themselves. Confirm them with each organisation — they are the kind
 of thing that quietly goes stale.
 
-**No addresses yet, and no workshop counts.** Both were asked for and neither
-is in this repository. An address is worth getting right: someone reads it and
-drives there.
+**Three addresses are published, two are not.** TEAM, Fort Bend Seniors and
+MESA Outreach appeared consistently across public directories; the sources for
+Cy-Fair Helping Hands disagreed with each other and Abba's House was not found
+at all, so those two carry a commented slot instead of a guess. An address is
+the one field where being wrong puts a person outside the wrong building.
+Confirm all five with the partners when you can — none has been checked against
+the organisation's own site.
+
+MESA's sources gave a campus location and a PO box but never a street number,
+so both are published as what they are rather than one dressed up as the other.
+
+**No workshop counts.** None have been run at these partners yet. When they
+are, the impact box is where they go, beside the guide total.
 
 **No map.** A pin per partner needs either a paid tile key or an embedded
 iframe that ships third-party cookies onto a site that currently has none and
