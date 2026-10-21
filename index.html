@@ -48,7 +48,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=27">
+  <link rel="stylesheet" href="styles.css?v=28">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -323,178 +323,6 @@
       </div>
     </section>
 
-    <!-- ============================================================
-         THE WORK SO FAR — counts, and only counts. Guides handed out,
-         sessions run, places visited. A count is a fact you can stand on and
-         it is not an outcome, which is why it lives here and not in the
-         "What we measure" band below.
-
-         TO ADD AN EVENT: copy one <li>, change the number, the place and the
-         split. Every .tally__part inside a row must add up to that row's
-         .tally__n — .github/scripts/check_numbers.py enforces it on every
-         push, so a half-finished edit fails before it is live.
-
-         The numeral column sizes itself to the widest number across all
-         rows, so figures stay aligned as events are added.
-         ============================================================ -->
-    <section class="tally" id="numbers" aria-labelledby="numbers-h">
-      <div class="wide">
-        <div class="tally__head" data-reveal>
-          <h2 id="numbers-h">Our impact</h2>
-        </div>
-
-        <!-- One <li> per event. Inside it, .tally__n is the total and every
-             .tally__part is a piece of it; the parts must add up to the total.
-             Keep each class attribute exactly as written — the check matches
-             class="tally__n" and class="tally__part" literally. -->
-        <ul class="tally__list" role="list" data-reveal>
-          <li>
-            <div class="tally__stat">
-              <svg class="tally__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-                <path d="M14 3v5h5M9 13h6M9 17h6"/>
-              </svg>
-              <p class="tally__n">160</p>
-              <p class="tally__label">Guides handed out</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">EN</text>
-              </svg>
-              <p class="tally__part">90</p>
-              <p class="tally__label">In English</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">ES</text>
-              </svg>
-              <p class="tally__part">70</p>
-              <p class="tally__label">In Spanish</p>
-            </div>
-            <p class="tally__where">At Cy-Fair Helping Hands</p>
-          </li>
-
-          <li>
-            <div class="tally__stat">
-              <svg class="tally__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-                <path d="M14 3v5h5M9 13h6M9 17h6"/>
-              </svg>
-              <p class="tally__n">18</p>
-              <p class="tally__label">Guides handed out</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">EN</text>
-              </svg>
-              <p class="tally__part">8</p>
-              <p class="tally__label">In English</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">ES</text>
-              </svg>
-              <p class="tally__part">5</p>
-              <p class="tally__label">In Spanish</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">TR</text>
-              </svg>
-              <p class="tally__part">2</p>
-              <p class="tally__label">In Turkish</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">FA</text>
-              </svg>
-              <p class="tally__part">3</p>
-              <p class="tally__label">In Persian</p>
-            </div>
-            <p class="tally__where">At Abbas House</p>
-          </li>
-
-          <li>
-            <div class="tally__stat">
-              <svg class="tally__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-                <path d="M14 3v5h5M9 13h6M9 17h6"/>
-              </svg>
-              <p class="tally__n">40</p>
-              <p class="tally__label">Guides handed out</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">EN</text>
-              </svg>
-              <p class="tally__part">22</p>
-              <p class="tally__label">In English</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">ES</text>
-              </svg>
-              <p class="tally__part">18</p>
-              <p class="tally__label">In Spanish</p>
-            </div>
-            <p class="tally__where">At MESA outreach</p>
-          </li>
-
-          <li>
-            <div class="tally__stat">
-              <svg class="tally__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
-                <path d="M14 3v5h5M9 13h6M9 17h6"/>
-              </svg>
-              <p class="tally__n">220</p>
-              <p class="tally__label">Guides handed out</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">EN</text>
-              </svg>
-              <p class="tally__part">120</p>
-              <p class="tally__label">In English</p>
-            </div>
-            <div class="tally__stat">
-              <svg class="tally__icon tally__icon--lang" viewBox="0 0 32 28" aria-hidden="true">
-                <path fill="currentColor" d="M5 2h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H14l-6 5v-5H5a3 3 0 0 1-3-3V5a3 3 0 0 1 3-3z"/>
-                <text x="16" y="14.6" text-anchor="middle" font-family="'DM Sans', Arial, sans-serif"
-                      font-size="10" font-weight="700" fill="#062563">ES</text>
-              </svg>
-              <p class="tally__part">100</p>
-              <p class="tally__label">In Spanish</p>
-            </div>
-            <p class="tally__where">At Cy-Fair Helping Hands</p>
-          </li>
-
-          <!-- ADD THE NEXT EVENT HERE -->
-
-        </ul>
-      </div>
-    </section>
 
     <!-- ============================================================
          THE GUIDES — the artwork leads at size, because the guide is the
@@ -645,6 +473,7 @@
               data-keywords="lab labs bloodwork blood work test results reference range flag high low
                              hemoglobin CBC specimen units report
                              ¿Cómo leo un informe de laboratorio? informe laboratorio prueba resultado rango de referencia
+                             Làm sao để đọc phiếu kết quả xét nghiệm? lam sao doc phieu ket qua xet nghiem khoảng tham chiếu
                              Laboratuvar raporumu nasıl okurum? laboratuvar rapor sonuc referans aralığı tahlil
                              چگونه برگه آزمایش خود را بخوانم؟ آزمایش برگه نتیجه محدوده مرجع">
             <a class="guide__cover" href="assets/guides/how-do-i-read-a-lab-report.pdf"
@@ -682,6 +511,13 @@
                   <span class="lang__code">ES</span>
                   <span class="lang__name" lang="es">Español</span>
                   <span class="hidden">— ¿Cómo leo un informe de laboratorio? (PDF, Spanish)</span>
+                </a>
+                <a class="lang" data-lang="vi" data-lang-name="Tiếng Việt"
+                   href="assets/guides/lam-sao-de-doc-phieu-ket-qua-xet-nghiem.pdf" download
+                   data-goatcounter-click="guide-download-lab-vi">
+                  <span class="lang__code">VI</span>
+                  <span class="lang__name" lang="vi">Tiếng Việt</span>
+                  <span class="hidden">— Làm sao để đọc phiếu kết quả xét nghiệm? (PDF, Vietnamese)</span>
                 </a>
                 <a class="lang" data-lang="tr" data-lang-name="Türkçe"
                    href="assets/guides/laboratuvar-raporumu-nasil-okurum.pdf" download
@@ -759,7 +595,8 @@
           <p class="where__lede">
             We do not hand guides out on our own. These are the pantries, the
             outreach centers and the senior programs that put them in front of
-            the people who need them.
+            the people who need them. Open a partner to see what we have handed
+            out there.
           </p>
         </div>
 
@@ -807,56 +644,229 @@
         <ul class="partners" role="list" data-reveal>
 
           <li class="partner">
-            <h3>Cy-Fair Helping Hands</h3>
-            <p class="partner__where">Houston, TX</p>
-            <p class="partner__what">Food pantry and emergency assistance</p>
+            <details class="partner__panel">
+              <summary class="partner__summary">
+              <span class="partner__head">
+                <span class="partner__name">Cy-Fair Helping Hands</span>
+                <span class="partner__where">Houston, TX</span>
+                <span class="partner__what">Food pantry and emergency assistance</span>
+              </span>
+                <span class="partner__count">
+                  <span class="partner__count-n">380</span>
+                  <span class="partner__count-w">guides, over 2 distributions</span>
+                </span>
+                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <ul class="drops" role="list">
+                <li>
+                  <p class="drop__when">
+                    <!-- DATE GOES HERE, once it is known. Write it as:
+                         <time datetime="2026-07-18">18 July 2026</time>
+                         Leave the whole paragraph out rather than guess —
+                         a wrong date on a funder-facing count is worse
+                         than no date. -->
+                  </p>
+                  <div class="drop__fig">
+                    <p class="tally__n">160</p>
+                    <p class="drop__unit">guides handed&nbsp;out</p>
+                  </div>
+                  <div class="drop__bar" aria-hidden="true" hidden></div>
+                  <div class="drop__key">
+                    <div class="key">
+                      <span class="key__code">EN</span>
+                      <p class="tally__part">90</p>
+                      <span class="key__lang">English</span>
+                    </div>
+                    <div class="key">
+                      <span class="key__code">ES</span>
+                      <p class="tally__part">70</p>
+                      <span class="key__lang">Spanish</span>
+                    </div>
+                  </div>
+                </li>
+                <li>
+                  <p class="drop__when">
+                    <!-- DATE GOES HERE, once it is known. Write it as:
+                         <time datetime="2026-07-18">18 July 2026</time>
+                         Leave the whole paragraph out rather than guess —
+                         a wrong date on a funder-facing count is worse
+                         than no date. -->
+                  </p>
+                  <div class="drop__fig">
+                    <p class="tally__n">220</p>
+                    <p class="drop__unit">guides handed&nbsp;out</p>
+                  </div>
+                  <div class="drop__bar" aria-hidden="true" hidden></div>
+                  <div class="drop__key">
+                    <div class="key">
+                      <span class="key__code">EN</span>
+                      <p class="tally__part">120</p>
+                      <span class="key__lang">English</span>
+                    </div>
+                    <div class="key">
+                      <span class="key__code">ES</span>
+                      <p class="tally__part">100</p>
+                      <span class="key__lang">Spanish</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </details>
             <p class="partner__link">
               <a href="https://www.cyfairhelpinghands.org/">cyfairhelpinghands.org</a>
             </p>
           </li>
 
           <li class="partner">
-            <h3>MESA Outreach</h3>
-            <p class="partner__where">Houston, TX</p>
-            <p class="partner__what">Food pantry and community outreach</p>
+            <details class="partner__panel">
+              <summary class="partner__summary">
+              <span class="partner__head">
+                <span class="partner__name">MESA Outreach</span>
+                <span class="partner__where">Houston, TX</span>
+                <span class="partner__what">Food pantry and community outreach</span>
+              </span>
+                <span class="partner__count">
+                  <span class="partner__count-n">40</span>
+                  <span class="partner__count-w">guides, over 1 distribution</span>
+                </span>
+                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <ul class="drops" role="list">
+                <li>
+                  <p class="drop__when">
+                    <!-- DATE GOES HERE, once it is known. Write it as:
+                         <time datetime="2026-07-18">18 July 2026</time>
+                         Leave the whole paragraph out rather than guess —
+                         a wrong date on a funder-facing count is worse
+                         than no date. -->
+                  </p>
+                  <div class="drop__fig">
+                    <p class="tally__n">40</p>
+                    <p class="drop__unit">guides handed&nbsp;out</p>
+                  </div>
+                  <div class="drop__bar" aria-hidden="true" hidden></div>
+                  <div class="drop__key">
+                    <div class="key">
+                      <span class="key__code">EN</span>
+                      <p class="tally__part">22</p>
+                      <span class="key__lang">English</span>
+                    </div>
+                    <div class="key">
+                      <span class="key__code">ES</span>
+                      <p class="tally__part">18</p>
+                      <span class="key__lang">Spanish</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </details>
             <p class="partner__link">
               <a href="https://www.mesa-outreach.org/">mesa-outreach.org</a>
             </p>
           </li>
 
           <li class="partner">
-            <h3>Abba&rsquo;s House</h3>
-            <p class="partner__where">Houston, TX</p>
-            <p class="partner__what">Refugee and newcomer services</p>
+            <details class="partner__panel">
+              <summary class="partner__summary">
+              <span class="partner__head">
+                <span class="partner__name">Abba&rsquo;s House</span>
+                <span class="partner__where">Houston, TX</span>
+                <span class="partner__what">Refugee and newcomer services</span>
+              </span>
+                <span class="partner__count">
+                  <span class="partner__count-n">18</span>
+                  <span class="partner__count-w">guides, over 1 distribution</span>
+                </span>
+                <svg class="partner__cue" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor"
+                        stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </summary>
+              <ul class="drops" role="list">
+                <li>
+                  <p class="drop__when">
+                    <!-- DATE GOES HERE, once it is known. Write it as:
+                         <time datetime="2026-07-18">18 July 2026</time>
+                         Leave the whole paragraph out rather than guess —
+                         a wrong date on a funder-facing count is worse
+                         than no date. -->
+                  </p>
+                  <div class="drop__fig">
+                    <p class="tally__n">18</p>
+                    <p class="drop__unit">guides handed&nbsp;out</p>
+                  </div>
+                  <div class="drop__bar" aria-hidden="true" hidden></div>
+                  <div class="drop__key">
+                    <div class="key">
+                      <span class="key__code">EN</span>
+                      <p class="tally__part">8</p>
+                      <span class="key__lang">English</span>
+                    </div>
+                    <div class="key">
+                      <span class="key__code">ES</span>
+                      <p class="tally__part">5</p>
+                      <span class="key__lang">Spanish</span>
+                    </div>
+                    <div class="key">
+                      <span class="key__code">TR</span>
+                      <p class="tally__part">2</p>
+                      <span class="key__lang">Turkish</span>
+                    </div>
+                    <div class="key">
+                      <span class="key__code">FA</span>
+                      <p class="tally__part">3</p>
+                      <span class="key__lang">Persian</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </details>
             <!-- NO LINK YET, on purpose. Every other address here was checked
                  against the organisation's own site before it was published,
-                 and this one could not be. Add it the moment you have it
-                 from them directly:
+                 and this one could not be. Add it the moment you have it from
+                 them directly:
                  <p class="partner__link"><a href="https://…">…</a></p>
-                 A card without a link still reads; a card with the wrong
-                 link sends someone to a stranger. -->
+                 A card without a link still reads; a card with the wrong link
+                 sends someone to a stranger. -->
           </li>
 
           <li class="partner">
-            <h3>Tomball Emergency Assistance Ministries</h3>
-            <p class="partner__where">Tomball, TX</p>
-            <p class="partner__what">Food pantry and emergency assistance &mdash; TEAM</p>
+            <div class="partner__plain">
+              <span class="partner__head">
+                <span class="partner__name">Tomball Emergency Assistance Ministries</span>
+                <span class="partner__where">Tomball, TX</span>
+                <span class="partner__what">Food pantry and emergency assistance &mdash; TEAM</span>
+              </span>
+            </div>
             <p class="partner__link">
               <a href="https://teamtomball.com/">teamtomball.com</a>
             </p>
           </li>
 
           <li class="partner">
-            <h3>Fort Bend Seniors Meals on Wheels</h3>
-            <p class="partner__where">Rosenberg, TX</p>
-            <p class="partner__what">Senior meals and senior centers</p>
+            <div class="partner__plain">
+              <span class="partner__head">
+                <span class="partner__name">Fort Bend Seniors Meals on Wheels</span>
+                <span class="partner__where">Rosenberg, TX</span>
+                <span class="partner__what">Senior meals and senior centers</span>
+              </span>
+            </div>
             <p class="partner__link">
               <a href="https://www.fortbendseniors.org/">fortbendseniors.org</a>
             </p>
           </li>
 
           <!-- ADD A NEW PARTNER HERE, and add the name to both ribbon lists
-               above so the loop stays seamless. -->
+               above so the loop stays seamless. A partner with counted
+               distributions gets a <details>; one without gets the plain
+               card, and grows a <details> the first time there is something
+               to put behind it. -->
 
         </ul>
 
@@ -1450,17 +1460,44 @@
     })();
 
     // ----------------------------------------------------------------
-    // THE PARTNER STATS STRIP.
+    // THE PARTNER CARDS — the split bars, and the stats strip.
     //
-    // Three numbers that are all already on this page somewhere else, so
-    // none of them is typed in twice: the partner count is the number of
-    // cards, the guide total is the sum of the "Our impact" headline
-    // figures, and the language count is the number of distinct language
-    // badges across those same rows. The HTML fallbacks are correct as
-    // written; this only keeps them from drifting the next time a row is
-    // added upstairs and this section is forgotten.
+    // Everything here is read off figures already printed in the cards, so
+    // nothing can state something the page does not. The bars are flex-grow
+    // set to the raw counts: the widths ARE the numbers, with no percentage
+    // to recompute when one of them changes.
+    //
+    // It is additive. A bar carries `hidden` in the markup and is unhidden
+    // only once drawn, so a throw here leaves the figures — which were
+    // always the content — rather than equal-width bars misstating a split.
     // ----------------------------------------------------------------
     (function () {
+      var drops = document.querySelectorAll('.drops > li');
+
+      Array.prototype.forEach.call(drops, function (row) {
+        var bar = row.querySelector('.drop__bar');
+        var parts = row.querySelectorAll('.tally__part');
+        if (!bar || parts.length < 2) return;   // one language is not a split.
+
+        Array.prototype.forEach.call(parts, function (part) {
+          var v = parseInt(part.textContent.replace(/[^\d]/g, ''), 10);
+          if (!v) return;
+          var seg = document.createElement('span');
+          // flex-grow takes the count itself. No rounding, no total to
+          // divide by, and a segment can never be wider than its share.
+          seg.style.flex = v + ' 0 0';
+          bar.appendChild(seg);
+        });
+
+        if (bar.childNodes.length) bar.hidden = false;
+      });
+
+      // The three figures above the ribbon. None is typed in twice: the
+      // partner count is the number of cards, the guide total is the sum of
+      // every distribution's headline, and the language count is the number
+      // of distinct badge codes across them. The written values are correct
+      // as they stand; this only keeps them from drifting the next time a
+      // distribution is added and the strip is forgotten.
       var strip = document.querySelector('.where__stats');
       if (!strip) return;
 
@@ -1471,17 +1508,15 @@
 
       set('partners', document.querySelectorAll('.partner').length);
 
-      var rows = document.querySelectorAll('.tally__list > li');
       var total = 0, langs = {};
-      Array.prototype.forEach.call(rows, function (row) {
+      Array.prototype.forEach.call(drops, function (row) {
         var n = row.querySelector('.tally__n');
         if (n) total += parseInt(n.textContent.replace(/[^\d]/g, ''), 10) || 0;
-        // The language of a part is the code inside its badge: EN, ES, TR, FA.
-        Array.prototype.forEach.call(row.querySelectorAll('.tally__icon--lang text'), function (t) {
-          langs[t.textContent.trim()] = true;
+        Array.prototype.forEach.call(row.querySelectorAll('.key__code'), function (c) {
+          langs[c.textContent.trim()] = true;
         });
       });
-      set('guides', total);
+      set('guides', total.toLocaleString('en-US'));
       set('languages', Object.keys(langs).length);
     })();
   </script>
