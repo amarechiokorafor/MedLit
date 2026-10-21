@@ -503,39 +503,90 @@ even grid; add ten and they wrap. That switch is a single `:has()` rule in
 
 ## Adding a partner
 
-"Where to find our guides" is one card per partner: name, city, what they
-actually are, and a link to their own site.
+"Where to find our guides" is a grid of small cards. Clicking one opens a
+pop-up with the partner's details; the running counts live at the top of it.
 
-1. Copy one `<li class="partner">` in `.partners`.
-2. Add the same name to **both** `<ul class="ribbon__set">` lists above it, in
-   the same order. The ribbon is one list printed twice — the second copy is
-   only there so the loop's seam lands off-screen, and a name missing from one
-   of them makes the loop jump.
+1. Copy one `<li class="partner">` with its `.pcard`, and one matching
+   `.pdetail` panel in `.pdetails` below. **They share an `id`** — the card's
+   `href="#p-x"` and `data-opens="p-x"` both point at the panel's `id="p-x"`.
+2. Add the name to **both** `<ul class="ribbon__set">` lists above, in the
+   same order. The ribbon is one list printed twice — the second copy only
+   exists so the loop's seam lands off-screen, and a name missing from one of
+   them makes the loop jump.
 
-**Check the link against the organisation's own site before publishing it.** A
-card without a link still reads; a card with the wrong link sends someone to a
-stranger. Abba's House has no link for exactly this reason.
+**The pop-up is progressive, not required.** The panels are ordinary blocks
+in the page and the cards are plain jump links to them. The script lifts the
+one you asked for into a `<dialog>` and puts it back on close, so there is
+exactly one copy of every panel and nothing to keep in sync. With JavaScript
+off — or if the script throws, or `showModal` is missing — the panels are
+simply visible and the links jump to them. That is rule 4 doing its job.
+
+`<dialog>.showModal()` brings Escape, the backdrop, the focus trap and
+inert-ing the rest of the page with it. Clicking outside is the only piece it
+does not give you, and that is the one listener added by hand. On a phone the
+same panel becomes a sheet off the bottom edge.
+
+**The impact box leads the panel** and is the one place on this page a count
+is allowed to be loud. Its headline and language breakdown are summed by the
+script from the dated distributions further down the same panel, so it cannot
+claim something those rows do not say.
+
+**Check the website link against the organisation's own site before
+publishing it.** A panel without a link still reads; a panel with the wrong
+link sends someone to a stranger. Abba's House has none for exactly this
+reason.
 
 **Logos only after the partner says yes in writing.** A name is a fact; a logo
-is a borrowed endorsement. There is a `.partner__logo` slot ready in the CSS for
-the day one agrees.
+is a borrowed endorsement. Until then each card shows a navy monogram; swap
+the `<span class="pcard__logo">` for an `<img class="pcard__logo">` and
+nothing else changes.
 
-**No map yet.** A pin per partner needs either a paid tile key or an embedded
+**Descriptions are drafted from public directory listings**, not from the
+partners themselves. Confirm them with each organisation — they are the kind
+of thing that quietly goes stale.
+
+**Three addresses are published, two are not.** TEAM, Fort Bend Seniors and
+MESA Outreach appeared consistently across public directories; the sources for
+Cy-Fair Helping Hands disagreed with each other and Abba's House was not found
+at all, so those two carry a commented slot instead of a guess. An address is
+the one field where being wrong puts a person outside the wrong building.
+Confirm all five with the partners when you can — none has been checked against
+the organisation's own site.
+
+MESA's sources gave a campus location and a PO box but never a street number,
+so both are published as what they are rather than one dressed up as the other.
+
+**No workshop counts.** None have been run at these partners yet. When they
+are, the impact box is where they go, beside the guide total.
+
+**No map.** A pin per partner needs either a paid tile key or an embedded
 iframe that ships third-party cookies onto a site that currently has none and
 therefore needs no consent banner. Five cards with a city on each do the same
 job today. Revisit it past a dozen partners.
 
 The three figures in the stats strip are not typed in twice: the partner count
-is the number of cards, the guide total is the sum of the `.tally__n` headlines
-in "Our impact", and the language count is the number of distinct badge codes
-across those rows. The HTML values are correct as written and the script keeps
-them from drifting.
+is the number of cards, the guide total is the sum of every distribution's
+headline, and the language count is the number of distinct badge codes across
+them.
 
-**The ribbon is the only thing on this page that moves on its own.** It earns
-that because the names *are* the content. It pauses on hover and on keyboard
-focus inside the section, it does not go to the printer, and under
-`prefers-reduced-motion` it stops entirely and becomes a plain wrapped row of
-names. Do not add a second moving thing to this page.
+## The ribbon
+
+**It is a scroll container the script nudges, not a CSS animation.** That one
+decision is what lets all four behaviours share a mechanism: the loop moves
+`scrollLeft`, and a trackpad swipe, a finger drag and the arrows move the same
+property — so "carry on from where they left it" needs no bookkeeping at all.
+
+- Mouse over it, it stops. Mouse off, it goes again.
+- A scroll of their own holds the loop off for three seconds after they stop.
+- The arrows are mouse affordances: `tabindex="-1"`, inside an `aria-hidden`
+  band, because every name in the ribbon is a card below with more besides. A
+  screen reader gets the real thing rather than a duplicate it cannot act on.
+- Under `prefers-reduced-motion` the loop never starts. The row is still there
+  and still scrollable by hand; it just never moves on its own.
+- With the script off nothing moves, and it is still scrollable by hand.
+
+**It is the only thing on this page that moves on its own.** Do not add a
+second.
 
 ## When you have photographs
 
