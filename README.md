@@ -514,6 +514,15 @@ pop-up with the partner's details; the running counts live at the top of it.
    exists so the loop's seam lands off-screen, and a name missing from one of
    them makes the loop jump.
 
+**Restoring a panel is stateless, and it has to be.** Each panel carries its
+own marker on itself, and closing puts back whatever is in the dialog right
+then. Tracking "the open panel" in a variable cannot be made correct:
+`close()` flips `open` at once but fires its `close` event on a later task, so
+an open landing in between overwrites the variable and the earlier panel is
+never put back — not on the next close either. It is simply gone from the
+page, and the card that owned it never works again. Sweeping the dialog has no
+such window and is idempotent.
+
 **The pop-up is progressive, not required.** The panels are ordinary blocks
 in the page and the cards are plain jump links to them. The script lifts the
 one you asked for into a `<dialog>` and puts it back on close, so there is

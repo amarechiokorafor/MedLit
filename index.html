@@ -1803,23 +1803,57 @@
       modal.className = 'pmodal';
       document.body.appendChild(modal);
 
-      var home = null;      // where the open panel came from
-      var panel = null;
       var opener = null;    // the card to put focus back on
+
+      // RESTORING IS STATELESS, and that is the whole trick. Each panel
+      // carries its own marker on itself, and this puts back whatever is in
+      // the dialog right now — however many that is, in any order.
+      //
+      // Tracking "the open panel" in a variable here cannot be made correct:
+      // close() flips modal.open at once but fires its `close` event on a
+      // later task, so an open that lands in between overwrites the variable
+      // and the earlier panel is never put back. It does not come back on the
+      // next close either — it is simply gone from the page. Sweeping the
+      // dialog instead has no such window, and it is idempotent, so calling
+      // it twice costs nothing.
+      function restore() {
+        Array.prototype.forEach.call(modal.querySelectorAll('.pdetail'), function (el) {
+          var x = el.querySelector('.pdetail__x');
+          if (x) x.hidden = true;
+
+          var slot = el._home;
+          el._home = null;
+          // Prefer the exact slot it came from. If that marker is gone or has
+          // itself ended up in the dialog, the shelf is the fallback: a panel
+          // in the wrong order still reads, a panel stranded in a closed
+          // dialog is off the page entirely.
+          if (slot && slot.parentNode && !modal.contains(slot)) {
+            slot.parentNode.insertBefore(el, slot);
+            slot.parentNode.removeChild(slot);
+          } else {
+            var shelf = document.querySelector('.pdetails');
+            if (shelf) shelf.appendChild(el);
+            if (slot && slot.parentNode) slot.parentNode.removeChild(slot);
+          }
+        });
+      }
 
       function close() {
         if (modal.open) modal.close();
+        restore();
       }
 
       function open(id, from) {
         var el = document.getElementById(id);
         if (!el) return false;
 
-        panel = el;
-        // A comment node parked where the panel was, so it goes back into the
-        // same slot rather than the end of the list.
-        home = document.createComment('panel ' + id);
-        el.parentNode.insertBefore(home, el);
+        restore();          // anything left over goes home first
+        if (modal.open) return false;
+
+        // A comment node parked where the panel was, kept on the panel itself
+        // so a second open cannot overwrite it.
+        el._home = document.createComment('panel ' + id);
+        el.parentNode.insertBefore(el._home, el);
         modal.appendChild(el);
 
         var x = el.querySelector('.pdetail__x');
@@ -1831,23 +1865,17 @@
         return true;
       }
 
-      // Put the panel back wherever it was, whichever way it was closed —
-      // Escape, the button, the backdrop, or the browser.
+      // Whichever way it closed — Escape, the button, the backdrop, or the
+      // browser — everything in the dialog goes back where it came from.
       modal.addEventListener('close', function () {
-        if (panel && home && home.parentNode) {
-          var x = panel.querySelector('.pdetail__x');
-          if (x) x.hidden = true;
-          home.parentNode.insertBefore(panel, home);
-          home.parentNode.removeChild(home);
-        }
-        panel = null; home = null;
+        restore();
         if (opener && document.contains(opener)) opener.focus();
         opener = null;
       });
 
-      // Clicking outside. The dialog element fills the whole viewport as far
-      // as the event is concerned, so "outside" means the click landed on the
-      // dialog itself rather than on anything inside it.
+      // Clicking outside. As far as the event is concerned the dialog fills
+      // the viewport, so "outside" means the click landed on the dialog
+      // itself rather than on anything inside it.
       modal.addEventListener('click', function (e) {
         if (e.target === modal) close();
       });
