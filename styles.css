@@ -870,12 +870,23 @@ a:hover { color: var(--navy-deep); }
 .ribbon__track { display: flex; width: max-content; }
 .ribbon__set { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
 .ribbon__set > li {
-  display: flex; align-items: center; white-space: nowrap;
+  display: flex; align-items: center; gap: .85rem; white-space: nowrap;
   font-family: var(--display); font-weight: 700;
   font-size: clamp(1.3rem, .7rem + 1.6vw, 2.1rem);
   line-height: 1.1; letter-spacing: -0.015em;
   padding-inline: clamp(1.1rem, 2.5vw, 2.2rem);
 }
+/* Same white chip as the cards, for the same reason: these are other
+   people's files, some transparent and some flattened onto white, and on
+   navy a flattened one would otherwise show as a bright slab. Capped on
+   both axes so a wide wordmark cannot swamp a square mark. */
+.ribbon__logo {
+  display: block; box-sizing: content-box; flex: none;
+  width: auto; max-width: 7rem; height: auto; max-height: 1.9rem;
+  object-fit: contain;
+  background: var(--stock); border-radius: 3px; padding: .35rem .45rem;
+}
+
 /* The separator is the callout disc shrunk to a dot: the printed guide's own
    mark, not a decorative bar. */
 .ribbon__set > li::after {
@@ -937,8 +948,8 @@ a:hover { color: var(--navy-deep); }
 }
 .pcard:focus-visible { outline: 3px solid var(--navy); outline-offset: 3px; }
 
-/* The monogram standing in for a logo. Navy disc, white letters — not amber,
-   which on this page means "language". */
+/* The monogram, for a partner whose logo we do not have. Navy disc, white
+   letters — not amber, which on this page means "language". */
 .pcard__logo {
   display: grid; place-items: center;
   width: 2.6rem; height: 2.6rem; margin-bottom: .9rem;
@@ -946,7 +957,34 @@ a:hover { color: var(--navy-deep); }
   font-family: var(--display); font-size: .85rem; font-weight: 700;
   letter-spacing: .01em;
 }
-img.pcard__logo { border-radius: 0; background: none; width: auto; height: 2.6rem; object-fit: contain; }
+
+/* A REAL LOGO IS A BOX, NOT A HEIGHT. These come in whatever shape their
+   owner drew them: Fort Bend's is a 4:1 wordmark, Abba's House is square,
+   TEAM's is taller than it is wide. Sizing on height alone would set the
+   wordmark five times the width of the square one and the row of cards
+   would read as a mistake.
+
+   So both axes are capped and object-fit does the rest — every logo sits in
+   the same box and keeps its own proportions.
+
+   The white chip is not decoration either: these are other people's files,
+   some with transparency and some flattened onto white, and a flattened one
+   would otherwise show as a pale rectangle on the card's warm grey. One
+   chip, and they all sit on the same ground. The footer does this already
+   for MedLit's own navy wordmark. */
+img.pcard__logo, .pdetail__logo {
+  display: block; box-sizing: content-box;
+  /* align-self, or the card's flex column stretches every chip to the full
+     card width and each logo floats in a plate three times its size. The
+     chip should be the logo's size, whatever shape that is. */
+  align-self: flex-start;
+  width: auto; max-width: 8.5rem; height: 2.1rem;
+  object-fit: contain; object-position: left center;
+  background: var(--stock); border-radius: 3px;
+  padding: .4rem .5rem; margin-bottom: .9rem;
+  border: 1px solid var(--rule);
+}
+.pdetail__logo { height: 2.6rem; max-width: 11rem; margin-bottom: 1.1rem; }
 .pcard__name {
   font-family: var(--display); font-weight: 700;
   font-size: 1.05rem; line-height: 1.25; color: var(--ink);
