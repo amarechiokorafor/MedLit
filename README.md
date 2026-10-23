@@ -377,10 +377,8 @@ page said 160 was 90 and 70 added together.
 
 The counts belong to the partners, so they sit on the partner cards now: the
 running total on the face of each card, the distributions behind a `<details>`
-disclosure. Today that is **448 guides across five distributions** — two at
-Cy-Fair Helping Hands (160 on 5 September 2026, then 220 on 17 October), one at
-Abba's House (18, in four languages), one at MESA Outreach (40) and one at TEAM
-(10).
+disclosure. Today that is **798 guides across nine distributions at seven
+partners**, and one workshop.
 
 **Every distribution carries its date** in a `<time datetime="…">`, so the
 machine-readable date and the printed one can never say different things. A
@@ -565,8 +563,10 @@ the organisation's own site.
 MESA's sources gave a campus location and a PO box but never a street number,
 so both are published as what they are rather than one dressed up as the other.
 
-**No workshop counts.** None have been run at these partners yet. When they
-are, the impact box is where they go, beside the guide total.
+**Workshops are marked on the distribution they happened at**, with a
+`<p class="drop__workshop">` inside that `<li>` — not on the `<li>` itself,
+which has to stay bare for `check_numbers.py`. The strip above counts those
+markers, so adding a workshop is one line in one place.
 
 **No map.** A pin per partner needs either a paid tile key or an embedded
 iframe that ships third-party cookies onto a site that currently has none and
