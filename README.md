@@ -173,8 +173,11 @@ legible reads as confident. It also happens to be the thing MedLit sells.
 
 Five rules hold it together:
 
-1. **One typeface.** Atkinson Hyperlegible Next, everywhere. If a serif shows
-   up here, ask what it knows that Atkinson doesn't.
+1. **Three typefaces, each with one job.** Schibsted Grotesk for every word of
+   body copy, DM Sans for every figure and micro-label, Instrument Serif for
+   `h1` and `h2` and nothing else. This rule used to read "one typeface,
+   Atkinson Hyperlegible Next, everywhere" and then "if a serif shows up here,
+   ask what it knows that Atkinson doesn't" — fair question, answered below.
 2. **Amber carries dark ink only.** White on amber is 1.7:1, and `--ink-2` on
    amber is 4.1:1. On amber the secondary voice is `--navy-deep`.
 3. **The callout disc** — a navy circle with a white numeral, lifted from the
@@ -231,12 +234,41 @@ amber 7.2, navy on stock 9.5, soft ink on stock 8.2, amber on navy-deep 7.2.
 **Type.** One family, self-hosted, latin subset, no CDN — about 65 KB, which
 matters because this may load on an old phone on library wifi.
 
-- **Atkinson Hyperlegible Next** for every word of language on the page. The
-  Braille Institute drew it for readers with low vision — it pulls apart the
-  character pairs that normally blur together. Given who our workshops are for,
-  it is the argument in a typeface. It is a variable font with a 200–800 weight
-  axis, which is the whole reason one family can carry an extreme type scale.
-  **Don't swap it out, and don't add a display face beside it.**
+- **Schibsted Grotesk** for every word of body copy. A Scandinavian newspaper
+  grotesque: open apertures, tall x-height, a single-storey `g` and an `a` that
+  stays distinct at 18px. Variable on a 400–900 axis.
+
+- **DM Sans** for every figure and every micro-label — the counts, the
+  `.tally__n` and `.where__n` and `.impact__n`, and the two-letter language
+  badges at 0.65rem inside their coloured discs. **This is the one not to
+  touch.** It is 15 rules and most of them are small; a display face here
+  costs legibility exactly where this site cannot afford it.
+
+- **Instrument Serif** for `h1` and `h2`. One weight, 400, both cuts, 30 KB —
+  and the headings are set at 400 deliberately, because a single-weight face
+  asked for 700 gets a fake bold smeared out of its own outline. Every heading
+  it touches renders at 44px or more. `h3` stays DM Sans at 1.2rem: there are
+  far more of them and they work as labels.
+
+  The footer's `Contact` is an `h2` by outline and a label by eye, at 1rem, so
+  it is explicitly put back to DM Sans. If another small `h2` appears, do the
+  same.
+
+  *What does the serif know that a grotesque doesn't?* Nothing about
+  legibility — that is why it is kept away from the body copy, the figures and
+  the badges. What it carries is register: it says a document was made with
+  care, which is the thing MedLit is asking a library programming lead to
+  believe. It is spent only where the type is large enough that the claim
+  costs nothing to read.
+
+- **Atkinson Hyperlegible Next** is still in `assets/fonts/`, 60 KB of it, and
+  **referenced nowhere** — zero mentions in the CSS or the HTML. The Braille
+  Institute drew it for readers with low vision, pulling apart the character
+  pairs that blur together, and given who the workshops are for it is the
+  strongest argument available for a body face. It was the body face once and
+  something replaced it. Left in place on purpose, as an open question rather
+  than a dead one: either wire it back in for body copy or delete it, but do
+  not let it sit there unlabelled a third time.
 IBM Plex Mono used to sit beside it for the transcribed documents in the
 interactive label and the before/after panel. Both are gone, so it went too.
 
