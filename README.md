@@ -377,10 +377,8 @@ page said 160 was 90 and 70 added together.
 
 The counts belong to the partners, so they sit on the partner cards now: the
 running total on the face of each card, the distributions behind a `<details>`
-disclosure. Today that is **448 guides across five distributions** — two at
-Cy-Fair Helping Hands (160 on 5 September 2026, then 220 on 17 October), one at
-Abba's House (18, in four languages), one at MESA Outreach (40) and one at TEAM
-(10).
+disclosure. Today that is **798 guides across nine distributions at seven
+partners**, and one workshop.
 
 **Every distribution carries its date** in a `<time datetime="…">`, so the
 machine-readable date and the printed one can never say different things. A
@@ -514,6 +512,15 @@ pop-up with the partner's details; the running counts live at the top of it.
    exists so the loop's seam lands off-screen, and a name missing from one of
    them makes the loop jump.
 
+**Restoring a panel is stateless, and it has to be.** Each panel carries its
+own marker on itself, and closing puts back whatever is in the dialog right
+then. Tracking "the open panel" in a variable cannot be made correct:
+`close()` flips `open` at once but fires its `close` event on a later task, so
+an open landing in between overwrites the variable and the earlier panel is
+never put back — not on the next close either. It is simply gone from the
+page, and the card that owned it never works again. Sweeping the dialog has no
+such window and is idempotent.
+
 **The pop-up is progressive, not required.** The panels are ordinary blocks
 in the page and the cards are plain jump links to them. The script lifts the
 one you asked for into a `<dialog>` and puts it back on close, so there is
@@ -536,10 +543,29 @@ publishing it.** A panel without a link still reads; a panel with the wrong
 link sends someone to a stranger. Abba's House has none for exactly this
 reason.
 
-**Logos only after the partner says yes in writing.** A name is a fact; a logo
-is a borrowed endorsement. Until then each card shows a navy monogram; swap
-the `<span class="pcard__logo">` for an `<img class="pcard__logo">` and
-nothing else changes.
+**Logos live in `assets/logos/`**, one PNG per partner, fitted inside 420x140
+and used in three places: the card, the pop-up and the ribbon. A partner with
+no logo keeps a navy monogram instead — St. Elizabeth Ann Seton sets its name
+as type in its own header and has no logo file, so it keeps "SE". Swap the
+`<span class="pcard__logo">` for an `<img class="pcard__logo">` the day one
+arrives.
+
+**They come in every shape**, so both axes are capped and `object-fit:
+contain` does the rest: Fort Bend's is a 4:1 wordmark, Abba's House is square,
+TEAM's is taller than wide. Sizing on height alone would make the wordmark
+five times the width of the square mark. `align-self: flex-start` matters too
+— without it the card's flex column stretches every chip to the full card
+width and each logo floats in a plate three times its size.
+
+**The white chip is not decoration.** These are other people's files, some
+with transparency and some flattened onto white, and a flattened one would
+show as a pale rectangle on the card's warm grey or a bright slab on the
+ribbon's navy. One chip, and they all sit on the same ground — the footer
+already does this for MedLit's own wordmark.
+
+**These were taken from each partner's own website, not given to us.** Worth
+asking each of them whether they are happy to be shown this way, and whether
+the file we picked is the one they would choose.
 
 **Descriptions are drafted from public directory listings**, not from the
 partners themselves. Confirm them with each organisation — they are the kind
@@ -556,8 +582,10 @@ the organisation's own site.
 MESA's sources gave a campus location and a PO box but never a street number,
 so both are published as what they are rather than one dressed up as the other.
 
-**No workshop counts.** None have been run at these partners yet. When they
-are, the impact box is where they go, beside the guide total.
+**Workshops are marked on the distribution they happened at**, with a
+`<p class="drop__workshop">` inside that `<li>` — not on the `<li>` itself,
+which has to stay bare for `check_numbers.py`. The strip above counts those
+markers, so adding a workshop is one line in one place.
 
 **No map.** A pin per partner needs either a paid tile key or an embedded
 iframe that ships third-party cookies onto a site that currently has none and
