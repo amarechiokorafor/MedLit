@@ -409,7 +409,7 @@ page said 160 was 90 and 70 added together.
 
 The counts belong to the partners, so they sit on the partner cards now: the
 running total on the face of each card, the distributions behind a `<details>`
-disclosure. Today that is **798 guides across nine distributions at seven
+disclosure. Today that is **948 guides across ten distributions at eight
 partners**, and one workshop.
 
 **Every distribution carries its date** in a `<time datetime="…">`, so the
@@ -603,7 +603,11 @@ the file we picked is the one they would choose.
 partners themselves. Confirm them with each organisation — they are the kind
 of thing that quietly goes stale.
 
-**Three addresses are published, two are not.** TEAM, Fort Bend Seniors and
+**Trini Mendenhall's address is the only one checked against its operator's
+own site** — Harris County Precinct 3 lists the centre by name, address and
+hours. The rest came from third-party directories.
+
+**Three other addresses are published, two are not.** TEAM, Fort Bend Seniors and
 MESA Outreach appeared consistently across public directories; the sources for
 Cy-Fair Helping Hands disagreed with each other and Abba's House was not found
 at all, so those two carry a commented slot instead of a guess. An address is
