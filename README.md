@@ -636,8 +636,23 @@ decision is what lets all four behaviours share a mechanism: the loop moves
 `scrollLeft`, and a trackpad swipe, a finger drag and the arrows move the same
 property — so "carry on from where they left it" needs no bookkeeping at all.
 
+- **Every name is a button** that opens the same panel its card does, through
+  the same `data-opens` attribute. Focus goes back to the *card*, never to the
+  ribbon's button: those are `tabindex="-1"` inside an `aria-hidden` band, and
+  parking focus on one would leave it somewhere a screen reader has been told
+  does not exist.
+- **It scrolls forever in both directions.** The track is the list printed
+  **three** times and the position is kept inside the middle copy — wander
+  past a copy's width and it jumps back by exactly that width, which is
+  invisible because the copies are identical. Three copies, not two: wrapping
+  needs somewhere to wrap to, so the track must stay wider than the window by
+  at least one copy, and with two copies that means a single copy has to beat
+  the viewport, which this list does not on a 2560px display. Wrapping at the
+  very edge is also not enough — a swipe left decelerates into `scrollLeft` 0,
+  the browser clamps, and the momentum dies before a wrap can fire. Parked in
+  the middle there is a full copy of runway each way.
 - Mouse over it, it stops. Mouse off, it goes again.
-- A scroll of their own holds the loop off for three seconds after they stop.
+- A scroll of their own holds the loop off for a second after they stop.
 - The arrows are mouse affordances: `tabindex="-1"`, inside an `aria-hidden`
   band, because every name in the ribbon is a card below with more besides. A
   screen reader gets the real thing rather than a duplicate it cannot act on.

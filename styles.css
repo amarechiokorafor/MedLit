@@ -928,19 +928,33 @@ a:hover { color: var(--navy-deep); }
 .ribbon__view::-webkit-scrollbar { display: none; }
 .ribbon__track { display: flex; width: max-content; }
 .ribbon__set { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
-.ribbon__set > li {
+.ribbon__set > li { display: flex; align-items: center; }
+
+/* Each name is a button that opens the same panel its card does. It has to
+   look pressable without turning the ribbon into a row of buttons, so the
+   affordance is the cursor and a lift on hover — the type itself does not
+   change colour, because amber on navy is already the loudest thing here. */
+.ribbon__name {
   display: flex; align-items: center; gap: .85rem; white-space: nowrap;
+  padding: .2rem clamp(1.1rem, 2.5vw, 2.2rem);
+  border: 0; background: none; cursor: pointer;
   font-family: var(--display); font-weight: 700;
   font-size: clamp(1.3rem, .7rem + 1.6vw, 2.1rem);
   line-height: 1.1; letter-spacing: -0.015em;
-  padding-inline: clamp(1.1rem, 2.5vw, 2.2rem);
+  color: var(--amber);
+  transition: transform .18s var(--ease), opacity .18s var(--ease);
 }
+@media (hover: hover) and (pointer: fine) {
+  .ribbon__name:hover { transform: translateY(-2px); }
+  .ribbon__name:hover .ribbon__logo { box-shadow: 0 2px 10px rgba(0, 0, 0, .3); }
+}
+.ribbon__name:active { transform: translateY(0); opacity: .8; }
 /* Same white chip as the cards, for the same reason: these are other
    people's files, some transparent and some flattened onto white, and on
    navy a flattened one would otherwise show as a bright slab. Capped on
    both axes so a wide wordmark cannot swamp a square mark. */
 .ribbon__logo {
-  display: block; box-sizing: content-box; flex: none;
+  display: block; transition: box-shadow .18s var(--ease); box-sizing: content-box; flex: none;
   width: auto; max-width: 7rem; height: auto; max-height: 1.9rem;
   object-fit: contain;
   background: var(--stock); border-radius: 3px; padding: .35rem .45rem;
@@ -950,7 +964,7 @@ a:hover { color: var(--navy-deep); }
    mark, not a decorative bar. */
 .ribbon__set > li::after {
   content: ''; flex: none;
-  width: .5rem; height: .5rem; margin-left: clamp(1.1rem, 2.5vw, 2.2rem);
+  width: .5rem; height: .5rem;
   background: var(--amber); border-radius: 50%;
 }
 
