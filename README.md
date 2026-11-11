@@ -4,7 +4,8 @@ Single-page static site for MedLit. Plain HTML + CSS, no frameworks and no build
 step, so it deploys as-is.
 
 ```
-index.html                       the whole page (plus ~40 lines of inline JS)
+index.html                       the front page (plus ~40 lines of inline JS)
+chapter.html                     Start a chapter — the only other page
 styles.css                       the whole stylesheet
 assets/medlit-logo.png           stacked lockup — header and footer
 assets/medlit-logo-vertical.png  full lockup with tagline — source for the icons
@@ -74,6 +75,39 @@ changes, change both; the Volunteer one carries a comment saying so.
 Volunteer submissions are handled by `automation/MedLit.gs`: it copies each one
 to a Volunteers tab, emails you an alert, and sends the volunteer a
 confirmation. That file has its own setup notes at the top.
+
+## The chapter page
+
+`chapter.html` is the second page on the site. It shares `styles.css` with
+`index.html` — one stylesheet, one cache buster, so **bump `?v=` in BOTH files
+together** whenever the stylesheet changes. Its own rules are section 22.
+
+**Four form links are not live yet.** Each is a `.pending` chip, which is a
+`<span>` and not a link, so nobody is sent to a 404. Search `chapter.html` for
+`PASTE THE FORM LINK HERE` — there are four, in step order, each with the real
+`<a>` sitting commented out beside it:
+
+| # | What | Who fills it in |
+|---|---|---|
+| 1 | Chapter interest form | Someone starting a chapter, once |
+| 2 | Starter kit (a file, not a form) | Downloaded by the chapter lead |
+| 3 | Volunteer form chapters share | That chapter's own volunteers |
+| 4 | Monthly check-in form | The chapter lead, monthly |
+
+To put one live: delete the `<span class="pending">` and uncomment the `<a>`
+above it. Nothing else changes.
+
+Two notes worth keeping:
+
+- Form 3 is **not** the same form as the volunteer one in the section above.
+  That one has no chapter field, so submissions through it cannot be credited
+  to a chapter. Keep them separate.
+- Form 4 should collect the same fields a partner card shows — date, partner,
+  total, and the split by language — or a check-in cannot be turned into a
+  distribution row without emailing the chapter back.
+
+If the starter kit lands as a file in this repository rather than a Drive
+link, put it at `assets/chapter/medlit-chapter-starter-kit.pdf`.
 
 ## Installed skills
 
@@ -173,8 +207,11 @@ legible reads as confident. It also happens to be the thing MedLit sells.
 
 Five rules hold it together:
 
-1. **One typeface.** Atkinson Hyperlegible Next, everywhere. If a serif shows
-   up here, ask what it knows that Atkinson doesn't.
+1. **Three typefaces, each with one job.** Schibsted Grotesk for every word of
+   body copy, DM Sans for every figure and micro-label, Instrument Serif for
+   `h1` and `h2` and nothing else. This rule used to read "one typeface,
+   Atkinson Hyperlegible Next, everywhere" and then "if a serif shows up here,
+   ask what it knows that Atkinson doesn't" — fair question, answered below.
 2. **Amber carries dark ink only.** White on amber is 1.7:1, and `--ink-2` on
    amber is 4.1:1. On amber the secondary voice is `--navy-deep`.
 3. **The callout disc** — a navy circle with a white numeral, lifted from the
@@ -231,12 +268,41 @@ amber 7.2, navy on stock 9.5, soft ink on stock 8.2, amber on navy-deep 7.2.
 **Type.** One family, self-hosted, latin subset, no CDN — about 65 KB, which
 matters because this may load on an old phone on library wifi.
 
-- **Atkinson Hyperlegible Next** for every word of language on the page. The
-  Braille Institute drew it for readers with low vision — it pulls apart the
-  character pairs that normally blur together. Given who our workshops are for,
-  it is the argument in a typeface. It is a variable font with a 200–800 weight
-  axis, which is the whole reason one family can carry an extreme type scale.
-  **Don't swap it out, and don't add a display face beside it.**
+- **Schibsted Grotesk** for every word of body copy. A Scandinavian newspaper
+  grotesque: open apertures, tall x-height, a single-storey `g` and an `a` that
+  stays distinct at 18px. Variable on a 400–900 axis.
+
+- **DM Sans** for every figure and every micro-label — the counts, the
+  `.tally__n` and `.where__n` and `.impact__n`, and the two-letter language
+  badges at 0.65rem inside their coloured discs. **This is the one not to
+  touch.** It is 15 rules and most of them are small; a display face here
+  costs legibility exactly where this site cannot afford it.
+
+- **Instrument Serif** for `h1` and `h2`. One weight, 400, both cuts, 30 KB —
+  and the headings are set at 400 deliberately, because a single-weight face
+  asked for 700 gets a fake bold smeared out of its own outline. Every heading
+  it touches renders at 44px or more. `h3` stays DM Sans at 1.2rem: there are
+  far more of them and they work as labels.
+
+  The footer's `Contact` is an `h2` by outline and a label by eye, at 1rem, so
+  it is explicitly put back to DM Sans. If another small `h2` appears, do the
+  same.
+
+  *What does the serif know that a grotesque doesn't?* Nothing about
+  legibility — that is why it is kept away from the body copy, the figures and
+  the badges. What it carries is register: it says a document was made with
+  care, which is the thing MedLit is asking a library programming lead to
+  believe. It is spent only where the type is large enough that the claim
+  costs nothing to read.
+
+- **Atkinson Hyperlegible Next** is still in `assets/fonts/`, 60 KB of it, and
+  **referenced nowhere** — zero mentions in the CSS or the HTML. The Braille
+  Institute drew it for readers with low vision, pulling apart the character
+  pairs that blur together, and given who the workshops are for it is the
+  strongest argument available for a body face. It was the body face once and
+  something replaced it. Left in place on purpose, as an open question rather
+  than a dead one: either wire it back in for body copy or delete it, but do
+  not let it sit there unlabelled a third time.
 IBM Plex Mono used to sit beside it for the transcribed documents in the
 interactive label and the before/after panel. Both are gone, so it went too.
 
@@ -377,7 +443,7 @@ page said 160 was 90 and 70 added together.
 
 The counts belong to the partners, so they sit on the partner cards now: the
 running total on the face of each card, the distributions behind a `<details>`
-disclosure. Today that is **798 guides across nine distributions at seven
+disclosure. Today that is **948 guides across ten distributions at eight
 partners**, and one workshop.
 
 **Every distribution carries its date** in a `<time datetime="…">`, so the
@@ -571,7 +637,11 @@ the file we picked is the one they would choose.
 partners themselves. Confirm them with each organisation — they are the kind
 of thing that quietly goes stale.
 
-**Three addresses are published, two are not.** TEAM, Fort Bend Seniors and
+**Trini Mendenhall's address is the only one checked against its operator's
+own site** — Harris County Precinct 3 lists the centre by name, address and
+hours. The rest came from third-party directories.
+
+**Three other addresses are published, two are not.** TEAM, Fort Bend Seniors and
 MESA Outreach appeared consistently across public directories; the sources for
 Cy-Fair Helping Hands disagreed with each other and Abba's House was not found
 at all, so those two carry a commented slot instead of a guess. An address is
@@ -604,8 +674,23 @@ decision is what lets all four behaviours share a mechanism: the loop moves
 `scrollLeft`, and a trackpad swipe, a finger drag and the arrows move the same
 property — so "carry on from where they left it" needs no bookkeeping at all.
 
+- **Every name is a button** that opens the same panel its card does, through
+  the same `data-opens` attribute. Focus goes back to the *card*, never to the
+  ribbon's button: those are `tabindex="-1"` inside an `aria-hidden` band, and
+  parking focus on one would leave it somewhere a screen reader has been told
+  does not exist.
+- **It scrolls forever in both directions.** The track is the list printed
+  **three** times and the position is kept inside the middle copy — wander
+  past a copy's width and it jumps back by exactly that width, which is
+  invisible because the copies are identical. Three copies, not two: wrapping
+  needs somewhere to wrap to, so the track must stay wider than the window by
+  at least one copy, and with two copies that means a single copy has to beat
+  the viewport, which this list does not on a 2560px display. Wrapping at the
+  very edge is also not enough — a swipe left decelerates into `scrollLeft` 0,
+  the browser clamps, and the momentum dies before a wrap can fire. Parked in
+  the middle there is a full copy of runway each way.
 - Mouse over it, it stops. Mouse off, it goes again.
-- A scroll of their own holds the loop off for three seconds after they stop.
+- A scroll of their own holds the loop off for a second after they stop.
 - The arrows are mouse affordances: `tabindex="-1"`, inside an `aria-hidden`
   band, because every name in the ribbon is a card below with more besides. A
   screen reader gets the real thing rather than a duplicate it cannot act on.

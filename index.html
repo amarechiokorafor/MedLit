@@ -20,14 +20,24 @@
        so it always matches the page.
        If the site ever moves, the four URLs below change with it.
        ============================================================ -->
-  <link rel="canonical" href="https://amarechiokorafor.github.io/MedLit/">
+  <!-- medliterate.org is the address people are given; the github.io URL is
+       where GitHub Pages happens to serve it from. These four told search
+       engines and every link preview the opposite, so pasting the .org into
+       a DM or an email showed a card headed amarechiokorafor.github.io.
+
+       NO CNAME FILE HERE ON PURPOSE. The domain is pointed at this site from
+       outside the repository (it answers from Cloudflare), and adding a
+       CNAME makes GitHub Pages claim the domain too. If those two disagree
+       the live site goes down, so whoever owns that DNS should make that
+       change, not this file. -->
+  <link rel="canonical" href="https://medliterate.org/">
   <meta name="theme-color" content="#f4a838">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="MedLit">
   <meta property="og:title" content="MedLit">
   <meta property="og:description" content="A student-led nonprofit that makes health information understandable. Free workshops and free plain-language guides.">
-  <meta property="og:url" content="https://amarechiokorafor.github.io/MedLit/">
-  <meta property="og:image" content="https://amarechiokorafor.github.io/MedLit/assets/og-image.jpg">
+  <meta property="og:url" content="https://medliterate.org/">
+  <meta property="og:image" content="https://medliterate.org/assets/og-image.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Understanding your own health shouldn't be a privilege. Free workshops and free plain-language guides.">
@@ -48,7 +58,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=34">
+  <link rel="stylesheet" href="styles.css?v=40">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -68,8 +78,8 @@
     "name": "MedLit",
     "slogan": "health made understandable.",
     "description": "A student-led nonprofit that makes health information understandable. Free workshops and free plain-language guides to prescription labels, lab results, and insurance letters.",
-    "url": "https://amarechiokorafor.github.io/MedLit/",
-    "logo": "https://amarechiokorafor.github.io/MedLit/assets/medlit-logo.png",
+    "url": "https://medliterate.org/",
+    "logo": "https://medliterate.org/assets/medlit-logo.png",
     "email": "medliterateofficial@gmail.com",
     "sameAs": [
       "https://www.instagram.com/med.literate/",
@@ -149,6 +159,10 @@
           <li><a href="#partners">Partners</a></li>
           <li><a href="#workshops">Workshops</a></li>
           <li><a href="#host">Host a workshop</a></li>
+          <!-- The only item in here that leaves the page. It is last on
+               purpose: it is the biggest ask on the site and the smallest
+               audience for it. -->
+          <li><a href="chapter.html">Start a chapter</a></li>
         </ul>
       </nav>
 
@@ -605,11 +619,11 @@
              of the "Our impact" rows above so the two can never drift. -->
         <ul class="where__stats" role="list" data-reveal>
           <li>
-            <p class="where__n" data-count="partners">7</p>
+            <p class="where__n" data-count="partners">8</p>
             <p class="where__label">Partner organizations</p>
           </li>
           <li>
-            <p class="where__n" data-count="guides">798</p>
+            <p class="where__n" data-count="guides">948</p>
             <p class="where__label">Guides handed out through them</p>
           </li>
           <li>
@@ -652,73 +666,193 @@
 
         <div class="ribbon__view">
           <div class="ribbon__track">
-            <ul class="ribbon__set" role="list">
+          <ul class="ribbon__set" role="list">
             <li>
-              <img class="ribbon__logo" src="assets/logos/cy-fair-helping-hands.png" alt=""
-                   width="246" height="140" loading="lazy">
-              Cy-Fair Helping Hands
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-cyfair">
+                <img class="ribbon__logo" src="assets/logos/cy-fair-helping-hands.png" alt=""
+                     width="246" height="140" loading="lazy">
+                Cy-Fair Helping Hands
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/mesa-outreach.png" alt=""
-                   width="160" height="140" loading="lazy">
-              MESA Outreach
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-mesa">
+                <img class="ribbon__logo" src="assets/logos/mesa-outreach.png" alt=""
+                     width="160" height="140" loading="lazy">
+                MESA Outreach
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/abbas-house.png" alt=""
-                   width="140" height="140" loading="lazy">
-              Abba&rsquo;s House
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-abbas">
+                <img class="ribbon__logo" src="assets/logos/abbas-house.png" alt=""
+                     width="140" height="140" loading="lazy">
+                Abba&rsquo;s House
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/team-tomball.png" alt=""
-                   width="102" height="140" loading="lazy">
-              Tomball Emergency Assistance Ministries
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-team">
+                <img class="ribbon__logo" src="assets/logos/team-tomball.png" alt=""
+                     width="102" height="140" loading="lazy">
+                Tomball Emergency Assistance Ministries
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/fort-bend-seniors.png" alt=""
-                   width="420" height="101" loading="lazy">
-              Fort Bend Seniors Meals on Wheels
-            </li>
-            <li>St. Elizabeth Ann Seton Catholic Church</li>
-            <li>
-              <img class="ribbon__logo" src="assets/logos/park-creek.png" alt=""
-                   width="343" height="140" loading="lazy">
-              Park Creek Active Living
-            </li>
-            </ul>
-            <ul class="ribbon__set" role="list">
-            <li>
-              <img class="ribbon__logo" src="assets/logos/cy-fair-helping-hands.png" alt=""
-                   width="246" height="140" loading="lazy">
-              Cy-Fair Helping Hands
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-fortbend">
+                <img class="ribbon__logo" src="assets/logos/fort-bend-seniors.png" alt=""
+                     width="420" height="101" loading="lazy">
+                Fort Bend Seniors Meals on Wheels
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/mesa-outreach.png" alt=""
-                   width="160" height="140" loading="lazy">
-              MESA Outreach
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-seton">
+                St. Elizabeth Ann Seton Catholic Church
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/abbas-house.png" alt=""
-                   width="140" height="140" loading="lazy">
-              Abba&rsquo;s House
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-parkcreek">
+                <img class="ribbon__logo" src="assets/logos/park-creek.png" alt=""
+                     width="343" height="140" loading="lazy">
+                Park Creek Active Living
+              </button>
             </li>
             <li>
-              <img class="ribbon__logo" src="assets/logos/team-tomball.png" alt=""
-                   width="102" height="140" loading="lazy">
-              Tomball Emergency Assistance Ministries
-            </li>
-            <li>
-              <img class="ribbon__logo" src="assets/logos/fort-bend-seniors.png" alt=""
-                   width="420" height="101" loading="lazy">
-              Fort Bend Seniors Meals on Wheels
-            </li>
-            <li>St. Elizabeth Ann Seton Catholic Church</li>
-            <li>
-              <img class="ribbon__logo" src="assets/logos/park-creek.png" alt=""
-                   width="343" height="140" loading="lazy">
-              Park Creek Active Living
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-trini">
+                Trini Mendenhall Community Center
+              </button>
             </li>
             </ul>
-          </div>
+          <ul class="ribbon__set" role="list">
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-cyfair">
+                <img class="ribbon__logo" src="assets/logos/cy-fair-helping-hands.png" alt=""
+                     width="246" height="140" loading="lazy">
+                Cy-Fair Helping Hands
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-mesa">
+                <img class="ribbon__logo" src="assets/logos/mesa-outreach.png" alt=""
+                     width="160" height="140" loading="lazy">
+                MESA Outreach
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-abbas">
+                <img class="ribbon__logo" src="assets/logos/abbas-house.png" alt=""
+                     width="140" height="140" loading="lazy">
+                Abba&rsquo;s House
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-team">
+                <img class="ribbon__logo" src="assets/logos/team-tomball.png" alt=""
+                     width="102" height="140" loading="lazy">
+                Tomball Emergency Assistance Ministries
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-fortbend">
+                <img class="ribbon__logo" src="assets/logos/fort-bend-seniors.png" alt=""
+                     width="420" height="101" loading="lazy">
+                Fort Bend Seniors Meals on Wheels
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-seton">
+                St. Elizabeth Ann Seton Catholic Church
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-parkcreek">
+                <img class="ribbon__logo" src="assets/logos/park-creek.png" alt=""
+                     width="343" height="140" loading="lazy">
+                Park Creek Active Living
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-trini">
+                Trini Mendenhall Community Center
+              </button>
+            </li>
+            </ul>
+          <ul class="ribbon__set" role="list">
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-cyfair">
+                <img class="ribbon__logo" src="assets/logos/cy-fair-helping-hands.png" alt=""
+                     width="246" height="140" loading="lazy">
+                Cy-Fair Helping Hands
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-mesa">
+                <img class="ribbon__logo" src="assets/logos/mesa-outreach.png" alt=""
+                     width="160" height="140" loading="lazy">
+                MESA Outreach
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-abbas">
+                <img class="ribbon__logo" src="assets/logos/abbas-house.png" alt=""
+                     width="140" height="140" loading="lazy">
+                Abba&rsquo;s House
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-team">
+                <img class="ribbon__logo" src="assets/logos/team-tomball.png" alt=""
+                     width="102" height="140" loading="lazy">
+                Tomball Emergency Assistance Ministries
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-fortbend">
+                <img class="ribbon__logo" src="assets/logos/fort-bend-seniors.png" alt=""
+                     width="420" height="101" loading="lazy">
+                Fort Bend Seniors Meals on Wheels
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-seton">
+                St. Elizabeth Ann Seton Catholic Church
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-parkcreek">
+                <img class="ribbon__logo" src="assets/logos/park-creek.png" alt=""
+                     width="343" height="140" loading="lazy">
+                Park Creek Active Living
+              </button>
+            </li>
+            <li>
+              <button class="ribbon__name" type="button" tabindex="-1"
+                      data-opens="p-trini">
+                Trini Mendenhall Community Center
+              </button>
+            </li>
+            </ul>
+                  </div>
         </div>
 
         <button class="ribbon__arrow ribbon__arrow--next" type="button" tabindex="-1" hidden>
@@ -804,6 +938,22 @@
                    width="343" height="140" loading="lazy">
               <span class="pcard__name">Park Creek Active Living</span>
               <span class="pcard__city">Cypress, TX</span>
+              <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
+            </a>
+          </li>
+
+          <li class="partner">
+            <!-- NO LOGO: a Harris County Precinct 3 facility rather than an
+                 organisation with its own branding — the precinct's site
+                 lists it by name and address and carries no logo for it. If
+                 one turns up, drop in
+                 <img class="pcard__logo" src="assets/logos/….png" alt=""
+                      width="" height="" loading="lazy">
+                 in place of this span and nothing else changes. -->
+            <a class="pcard" href="#p-trini" data-opens="p-trini">
+              <span class="pcard__logo" aria-hidden="true">TMC</span>
+              <span class="pcard__name">Trini Mendenhall Community Center</span>
+              <span class="pcard__city">Houston, TX</span>
               <span class="pcard__more">View details <span aria-hidden="true">&rarr;</span></span>
             </a>
           </li>
@@ -1404,7 +1554,7 @@
           <img class="pdetail__logo" src="assets/logos/park-creek.png" alt=""
                width="343" height="140" loading="lazy">
 
-          <p class="pdetail__kind">Senior living community</p>
+          <p class="pdetail__kind">Independent living retirement community</p>
           <h3 class="pdetail__name" id="h-parkcreek">Park Creek Active Living</h3>
           <p class="pdetail__city">Cypress, TX</p>
 
@@ -1426,24 +1576,38 @@
             </ul>
           </div>
 
+          <!-- Every sentence here comes from Park Creek's own site. It had
+               been carrying Fort Bend Seniors' "About" text, which described
+               a meals programme two counties away. If this needs updating,
+               parkcreekactiveliving.com is the only source to take it from —
+               not a listings directory, which is where the wrong kind of
+               detail gets in. Deliberately NOT claimed, because the operator
+               does not state it: a minimum age, a 55+ rule, income limits,
+               the number of units, or any assisted-living licence. -->
           <div class="pdetail__block">
             <h4>About</h4>
-            <p>A senior living community in Cypress.</p>
+            <p>A maintenance-free retirement community on Huffmeister Road, with
+               apartments from studios to two bedrooms. Mowing, landscaping,
+               repairs and housekeeping are covered, and there is all-day
+               dining, a fitness center, a salon and a wellness program on
+               site.</p>
           </div>
 
           <div class="pdetail__block">
             <h4>Who they serve</h4>
-            <p>Residents of the community.</p>
+            <p>Older adults living independently. Personal care providers are
+               available on site for residents who come to need them, and the
+               community also takes short-term respite stays after an illness,
+               an injury or a hospital visit.</p>
           </div>
-          <!-- ADDRESS GOES HERE for Park Creek Active Living, once it is known. Nothing is
-               published rather than something wrong: an address is the one
-               field where being wrong puts a person outside the wrong
-               building. Write it as:
+
+          <!-- Taken from the operator's own site, same standard as Trini
+               Mendenhall below: an address is the one field where being
+               wrong puts a person outside the wrong building. -->
           <div class="pdetail__block">
             <h4>Where they are</h4>
-            <p class="pdetail__addr">000 Example St.<br>City, TX 00000</p>
+            <p class="pdetail__addr">16718 Huffmeister Road<br>Cypress, TX 77429</p>
           </div>
-               -->
 
           <div class="pdetail__block">
             <h4>Find them</h4>
@@ -1468,6 +1632,101 @@
                     </span>
                   </div>
                   <p class="drop__workshop">Included a workshop</p>
+                </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pdetail" id="p-trini" aria-labelledby="h-trini">
+          <button class="pdetail__x" type="button" hidden>
+            <span class="hidden">Close</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor"
+                    stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </button>
+
+          <p class="pdetail__kind">County community center</p>
+          <h3 class="pdetail__name" id="h-trini">Trini Mendenhall Community Center</h3>
+          <p class="pdetail__city">Houston, TX</p>
+
+          <!-- THE IMPACT BOX LEADS. Its totals are summed by the script from
+               the dated distributions below, so it cannot claim something
+               those rows do not. -->
+          <div class="impact">
+            <p class="impact__n" data-sum="total">150</p>
+            <p class="impact__u">guides handed out, over
+               <span data-sum="drops">1</span>
+               distribution</p>
+            <ul class="impact__langs" role="list">
+              <li>
+                <span class="key__code">EN</span>
+                <span class="impact__ln">50</span>
+                <span class="impact__lw">English</span>
+              </li>
+              <li>
+                <span class="key__code">ES</span>
+                <span class="impact__ln">50</span>
+                <span class="impact__lw">Spanish</span>
+              </li>
+              <li>
+                <span class="key__code">TR</span>
+                <span class="impact__ln">50</span>
+                <span class="impact__lw">Turkish</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>About</h4>
+            <p>One of eight community centers run by Harris County Precinct 3,
+               open to the public six days a week.</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Who they serve</h4>
+            <p>Neighbours across west Houston.</p>
+          </div>
+
+          <!-- The only address on this page taken from the operator's own
+               site rather than a third-party directory. -->
+          <div class="pdetail__block">
+            <h4>Where they are</h4>
+            <p class="pdetail__addr">1414 Wirt Road<br>Houston, TX 77055</p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>Find them</h4>
+            <p class="pdetail__link"><a href="https://www.pct3.com/Explore/Community-Centers">pct3.com</a></p>
+          </div>
+
+          <div class="pdetail__block">
+            <h4>When we have been</h4>
+            <ul class="drops" role="list">
+                <li>
+                  <p class="drop__when"><time datetime="2026-10-29">October 29, 2026</time></p>
+                  <div class="drop__fig">
+                    <p class="tally__n">150</p>
+                    <p class="drop__unit">guides handed&nbsp;out</p>
+                  </div>
+                  <div class="drop__bar" aria-hidden="true" hidden></div>
+                  <div class="drop__key">
+                    <span class="key">
+                      <span class="key__code">EN</span>
+                      <p class="tally__part">50</p>
+                      <span class="key__lang">English</span>
+                    </span>
+                    <span class="key">
+                      <span class="key__code">ES</span>
+                      <p class="tally__part">50</p>
+                      <span class="key__lang">Spanish</span>
+                    </span>
+                    <span class="key">
+                      <span class="key__code">TR</span>
+                      <p class="tally__part">50</p>
+                      <span class="key__lang">Turkish</span>
+                    </span>
+                  </div>
                 </li>
             </ul>
           </div>
@@ -1554,6 +1813,39 @@
             <p class="quote__who">
               <span class="quote__name">Janet Ryan</span>
               <span class="quote__role">Executive Director, Cy-Fair Helping Hands</span>
+            </p>
+          </li>
+
+          <li class="quote">
+            <blockquote>
+              <p>&ldquo;The MedLit health guides have been a wonderful addition to our
+                food pantry. We love being able to offer our families more than just
+                food by sharing helpful information they can use at home to make
+                healthier choices. These guides are an easy, practical way to support
+                the families we serve and remind them that we care about their overall
+                well-being, not just putting food on the table.&rdquo;</p>
+            </blockquote>
+            <p class="quote__who">
+              <span class="quote__name">Jennifer Adkins</span>
+              <span class="quote__role">MESA-Outreach, Inc.</span>
+            </p>
+          </li>
+
+          <li class="quote">
+            <blockquote>
+              <!-- "pamphlets" and "first aid station" are her words. Do not
+                   swap in "guides" to match the rest of the page. -->
+              <p>&ldquo;We distributed several of your pamphlets at our fall festival&rsquo;s
+                first aid station, and they were a fantastic resource for our community.
+                When we reached out requesting materials in English, Spanish, and
+                Vietnamese, you did not hesitate to supply everything we asked for.
+                Your prompt support and inclusive resources were deeply appreciated,
+                and we hope to continue partnering with MedLit for our future workshops
+                and events.&rdquo;</p>
+            </blockquote>
+            <p class="quote__who">
+              <span class="quote__name">Marian Salway, BSN</span>
+              <span class="quote__role">SEAS Parish Nursing Ministry</span>
             </p>
           </li>
 
@@ -1711,6 +2003,12 @@
             Already volunteering?
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScLH6j8_-dfggbeB2p0WIYp7nVSYbpSfJ5AvShFJ3h5CY5QYw/viewform"
                data-goatcounter-click="volunteer-hours">Log your hours</a>.
+          </p>
+          <!-- The step up from volunteering, so it sits under it rather than
+               competing with the button above. -->
+          <p class="volunteer__hours">
+            Want to run MedLit in your city?
+            <a href="chapter.html" data-goatcounter-click="chapter-from-volunteer">Start a chapter</a>.
           </p>
         </div>
 
@@ -2117,7 +2415,10 @@
     // links stay what they already are: jump links to visible panels.
     // ----------------------------------------------------------------
     (function () {
-      var links = document.querySelectorAll('.pcard[data-opens]');
+      // Any control carrying data-opens, not just the cards: the ribbon's
+      // names are buttons with the same attribute, so they open the same
+      // panel through the same path.
+      var links = document.querySelectorAll('[data-opens]');
       if (!links.length) return;
 
       var modal = document.createElement('dialog');
@@ -2211,7 +2512,14 @@
           // Let a modified click do the ordinary thing — open in a new tab,
           // copy the link — rather than swallowing it.
           if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
-          if (open(a.getAttribute('data-opens'), a)) e.preventDefault();
+          var id = a.getAttribute('data-opens');
+          // Focus returns to the CARD, even when the ribbon opened the panel.
+          // The ribbon's buttons are tabindex="-1" inside an aria-hidden band:
+          // putting focus back on one would park it somewhere a screen reader
+          // has been told does not exist.
+          var back = a.classList.contains('pcard')
+            ? a : (document.querySelector('.pcard[data-opens="' + id + '"]') || a);
+          if (open(id, back)) e.preventDefault();
         });
       });
     })();
@@ -2264,7 +2572,41 @@
       var RESUME_AFTER = 1000;
       function hold(ms) { until = Date.now() + ms; }
 
-      function half() { return track.scrollWidth / 2; }
+      // The width of ONE copy of the list. The track holds three identical
+      // copies, so moving the scroll position by exactly one copy lands on
+      // the same pixels and nothing appears to move.
+      function span() {
+        var set = track.querySelector('.ribbon__set');
+        return set ? set.getBoundingClientRect().width : 0;
+      }
+
+      // INFINITE IN BOTH DIRECTIONS. A scroll container has ends, so the
+      // trick is never to let anyone reach one: when the position drifts
+      // past a copy's width it jumps back by exactly that width, and since
+      // the copies are identical the jump cannot be seen.
+      //
+      // Both directions matter and only one used to work — scrolling right
+      // wrapped, scrolling LEFT hit scrollLeft 0 and stopped dead, which is
+      // the thing that felt broken.
+      //
+      // THREE COPIES, NOT TWO, and that is a real constraint rather than
+      // belt and braces. Wrapping needs somewhere to wrap to, so the track
+      // must stay wider than the window by at least one copy. With two
+      // copies that means one copy has to be wider than the viewport, and on
+      // a 2560px display this list is not. Three makes the margin two copies
+      // wide, which nothing realistic beats.
+      // The position is kept inside the MIDDLE copy — [w, 2w) — never near
+      // an end. Wrapping only at the very edge is not enough: a swipe left
+      // decelerates into scrollLeft 0, the browser clamps there, and the
+      // momentum dies before any wrap can fire. Parked in the middle there
+      // is a full copy of runway in each direction, so a flick never reaches
+      // an edge to be stopped by.
+      function wrap() {
+        var w = span();
+        if (!w) return;
+        if (view.scrollLeft >= 2 * w)  { mine = Date.now(); view.scrollLeft -= w; }
+        else if (view.scrollLeft < w)  { mine = Date.now(); view.scrollLeft += w; }
+      }
 
       function tick(now) {
         frame = requestAnimationFrame(tick);
@@ -2276,7 +2618,7 @@
         if (paused || Date.now() < until) return;
         mine = Date.now();                  // this write is ours, not theirs
         view.scrollLeft += PX_PER_SEC * dt;
-        if (view.scrollLeft >= half()) view.scrollLeft -= half();
+        wrap();
       }
 
       function start() {
@@ -2308,6 +2650,9 @@
         view.addEventListener(type, function () { hold(RESUME_AFTER); }, { passive: true });
       });
       view.addEventListener('scroll', function () {
+        // Wrap on every scroll, whoever caused it — this is what makes a
+        // trackpad swipe or a finger drag endless rather than just the loop.
+        wrap();
         var now = Date.now();
         if (now - mine < 120) return;     // our own nudge, not theirs
         hold(RESUME_AFTER);
@@ -2323,6 +2668,18 @@
       document.addEventListener('visibilitychange', function () {
         document.hidden ? stop() : sync();
       });
+
+      // Park it in the middle copy to begin with, so the first swipe in
+      // either direction has a copy of runway. Done again once the logos
+      // have loaded, because they change how wide a copy is and the first
+      // measurement is taken before any of them have arrived.
+      function centre() {
+        var w = span();
+        if (w) view.scrollLeft = w;
+      }
+      centre();
+      if (document.readyState !== 'complete') window.addEventListener('load', centre);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(centre);
 
       sync();
     })();

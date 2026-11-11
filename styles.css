@@ -58,6 +58,7 @@
    19. Photography slots
    20. Facts, actions
    21. Footer
+   22. Start a chapter — chapter.html
    22. Responsive
    ========================================================================== */
 
@@ -73,9 +74,30 @@
    one set of letterforms across both.
 
    Atkinson Hyperlegible Next was here before it and is still in
-   assets/fonts/ if it ever comes back. DM Sans, below, sets the headings.
-   Two families is the ceiling: a third and the page starts performing
-   instead of reading.
+   assets/fonts/, unreferenced — it is the Braille Institute's face, drawn so
+   low-vision readers can tell similar letterforms apart, and whether it comes
+   back is an open question rather than a dead one.
+
+   THERE ARE THREE FAMILIES NOW, where the rule said two. Instrument Serif
+   sets h1 and h2 and nothing else. The ceiling was never about the number —
+   it was that a third face starts performing instead of reading — so the
+   scope is what keeps it honest:
+
+     Instrument Serif   h1 and h2 only. Display sizes, 2.4rem and up.
+     DM Sans            every figure and every micro-label, unchanged.
+     Schibsted Grotesk  all body copy, unchanged.
+
+   DM SANS KEEPS THE NUMERALS, and that is the whole reason this is safe.
+   --display is not "headings": it is 15 rules, and most are counts and
+   two-letter badges — .tally__n, .where__n, .impact__n, and .lang__code and
+   .key__code at 0.65rem inside coloured discs. Instrument Serif is condensed
+   and high-contrast; it is handsome at 4rem and mush at 10px. Putting EN, ES
+   and VI into it would have cost legibility for exactly the readers this site
+   is built for.
+
+   h3 stays DM Sans too, at 1.2rem: there are a lot of them — guide titles,
+   panel names, the two commitments — and they work as labels rather than
+   headlines.
    -------------------------------------------------------------------------- */
 @font-face {
   font-family: 'Schibsted';
@@ -100,6 +122,21 @@
   src: url('assets/fonts/dm-sans-italic.woff2') format('woff2');
   font-weight: 100 1000; font-style: italic; font-display: swap;
 }
+/* Instrument Serif, for h1 and h2. One weight, 400, both cuts, 30 KB the
+   pair. A single-weight face is a constraint worth knowing about: ask for
+   700 and the browser draws a fake bold by smearing the outline, so the
+   headings below are set at 400 deliberately, not by oversight. */
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('assets/fonts/instrument-serif.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Instrument Serif';
+  src: url('assets/fonts/instrument-serif-italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+
 /* ---------- 2. Tokens ----------------------------------------------------
    The navy and the amber are the logo's own. Everything else is stock, ink
    and rules.
@@ -149,6 +186,11 @@
 
   --sans: 'Schibsted', 'Schibsted Grotesk', 'Helvetica Neue', Arial, system-ui, sans-serif;
   --display: 'DM Sans', 'Helvetica Neue', Arial, system-ui, sans-serif;
+  /* Swapping the headline face is this one line. Georgia is the fallback
+     that matters — it is on every machine and it is a serif, so a page that
+     never gets the woff2 still reads as intended rather than snapping back
+     to a grotesque. */
+  --serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
   --r: 4px;
   --ease: cubic-bezier(.16, 1, .3, 1);
@@ -200,11 +242,25 @@ body {
    it is a few seconds. This costs nothing when the font is loaded and it never
    triggers. */
 h1, h2, h3 { margin: 0; color: var(--ink); text-wrap: balance; overflow-wrap: break-word; }
-/* Headings are DM Sans at 700, not 800 — confident without shouting. */
 h1, h2, h3 { font-family: var(--display); }
 h1 { font-size: var(--t1); font-weight: 700; line-height: 1.04; letter-spacing: -0.015em; }
 h2 { font-size: var(--t2); font-weight: 700; line-height: 1.12; letter-spacing: -0.01em; }
+/* h3 stays DM Sans at 600: 1.2rem is label territory, not headline, and
+   there are far more h3s on this page than h1s and h2s put together. */
 h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.3; letter-spacing: 0; }
+
+/* The editorial serif, on the two sizes that can carry it.
+   400 because the face has no other weight — see the @font-face above.
+   Letter-spacing back to 0 because the negative tracking above was drawn for
+   a grotesque; a condensed serif at -0.015em closes up and sets dense. And a
+   touch more line-height, since the serif runs narrower per line. */
+h1, h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+h1 { line-height: 1.06; }
+h2 { line-height: 1.16; }
 h1 em, h2 em, h3 em { font-style: italic; font-weight: inherit; }
 
 p { margin: 0 0 1.1em; }
@@ -458,7 +514,11 @@ a:hover { color: var(--navy-deep); }
 .hero h1 {
   color: var(--stock);
   font-size: clamp(2.4rem, 1rem + 3.6vw, 4rem);
-  max-width: 13ch;
+  /* 13ch when this was a grotesque. A ch is the width of a "0", and
+     Instrument Serif is condensed, so the same 13ch came out a good deal
+     narrower and broke the headline into four lines with "your own"
+     stranded alone on the second. Measured at 1280, 1024 and 768. */
+  max-width: 17ch;
 }
 .hero h1 em { color: var(--amber); }
 
@@ -869,19 +929,33 @@ a:hover { color: var(--navy-deep); }
 .ribbon__view::-webkit-scrollbar { display: none; }
 .ribbon__track { display: flex; width: max-content; }
 .ribbon__set { list-style: none; display: flex; align-items: center; margin: 0; padding: 0; }
-.ribbon__set > li {
+.ribbon__set > li { display: flex; align-items: center; }
+
+/* Each name is a button that opens the same panel its card does. It has to
+   look pressable without turning the ribbon into a row of buttons, so the
+   affordance is the cursor and a lift on hover — the type itself does not
+   change colour, because amber on navy is already the loudest thing here. */
+.ribbon__name {
   display: flex; align-items: center; gap: .85rem; white-space: nowrap;
+  padding: .2rem clamp(1.1rem, 2.5vw, 2.2rem);
+  border: 0; background: none; cursor: pointer;
   font-family: var(--display); font-weight: 700;
   font-size: clamp(1.3rem, .7rem + 1.6vw, 2.1rem);
   line-height: 1.1; letter-spacing: -0.015em;
-  padding-inline: clamp(1.1rem, 2.5vw, 2.2rem);
+  color: var(--amber);
+  transition: transform .18s var(--ease), opacity .18s var(--ease);
 }
+@media (hover: hover) and (pointer: fine) {
+  .ribbon__name:hover { transform: translateY(-2px); }
+  .ribbon__name:hover .ribbon__logo { box-shadow: 0 2px 10px rgba(0, 0, 0, .3); }
+}
+.ribbon__name:active { transform: translateY(0); opacity: .8; }
 /* Same white chip as the cards, for the same reason: these are other
    people's files, some transparent and some flattened onto white, and on
    navy a flattened one would otherwise show as a bright slab. Capped on
    both axes so a wide wordmark cannot swamp a square mark. */
 .ribbon__logo {
-  display: block; box-sizing: content-box; flex: none;
+  display: block; transition: box-shadow .18s var(--ease); box-sizing: content-box; flex: none;
   width: auto; max-width: 7rem; height: auto; max-height: 1.9rem;
   object-fit: contain;
   background: var(--stock); border-radius: 3px; padding: .35rem .45rem;
@@ -891,7 +965,7 @@ a:hover { color: var(--navy-deep); }
    mark, not a decorative bar. */
 .ribbon__set > li::after {
   content: ''; flex: none;
-  width: .5rem; height: .5rem; margin-left: clamp(1.1rem, 2.5vw, 2.2rem);
+  width: .5rem; height: .5rem;
   background: var(--amber); border-radius: 50%;
 }
 
@@ -1439,7 +1513,13 @@ img.pcard__logo, .pdetail__logo {
 .foot__chip { display: inline-flex; background: var(--stock); padding: .85rem 1.15rem; border-radius: var(--r); }
 .foot__chip img { width: auto; height: 3.2rem; }
 .foot__tagline { font-size: .96rem; color: var(--stock); }
+/* An <h2> by outline, a label by eye — 1rem, which is a quarter the size of
+   every other h2 on the page. The serif goes back to DM Sans here: at 18px
+   its thin strokes in amber on navy are exactly the case the serif was kept
+   off the numerals and the badges for. The element is the right one
+   semantically; the type just should not follow it down here. */
 .foot__contact h2 {
+  font-family: var(--display);
   font-size: 1rem; font-weight: 600; color: var(--amber); margin: 0 0 .8rem;
 }
 .foot__contact ul { list-style: none; display: grid; gap: .25rem; }
@@ -1660,4 +1740,98 @@ img.pcard__logo, .pdetail__logo {
 @media (max-width: 40rem) {
   .hero { min-height: clamp(28rem, 78svh, 40rem); }
   .hero__photo { object-position: 62% 30%; }
+}
+
+/* ---------- 22. Start a chapter — chapter.html ---------------------------
+   The only rules on this stylesheet that the front page never uses. They are
+   here rather than in a second stylesheet so that the tokens, the type scale
+   and the two faces cannot drift between the two pages — there is one
+   stylesheet and one cache buster for the whole site.
+
+   Everything structural on chapter.html is borrowed: .wide, .read, .facts,
+   .checks with .callout, .host for the closing ask, .foot. What is new is the
+   page head (no photograph), the kit list, and the pending chip.
+   -------------------------------------------------------------------------- */
+
+/* The head. The front page opens on a photograph with the claim over it; this
+   one opens on words, so it needs the air that the photo was providing. */
+.chead {
+  border-bottom: 1px solid var(--rule);
+  padding-block: clamp(2.75rem, 6vw, 5rem);
+}
+.chead__inner > * { max-width: var(--read); }
+.chead h1 { margin-top: .6rem; font-size: var(--t1); }
+.chead__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.25rem; }
+.chead__fine { margin-top: 1.1rem; font-size: .95rem; color: var(--ink-2); }
+.host .chead__fine { color: var(--on-navy-dim); }
+.host .chead__fine a { color: var(--amber); }
+
+/* What a chapter does. Same two-column split as .workshops__grid, so the
+   rhythm down this page matches the rhythm down the front one. */
+.cwhat { padding-block: clamp(2.5rem, 4.5vw, 3.75rem); }
+.cwhat__grid {
+  display: grid; gap: clamp(1.75rem, 4vw, 3.25rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+.cwhat__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
+@media (min-width: 60rem) {
+  .cwhat__grid { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); align-items: start; }
+}
+
+/* The four steps. .checks already draws the numbered rows; this only adds the
+   room the actions and the kit list need inside one. */
+.csteps {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
+}
+.csteps__list > li > p { font-size: 1rem; }
+
+/* A step here is taller than a row in "How we check it": it carries a
+   paragraph, sometimes a list, and an action. That section pins its one
+   paragraph to `grid-row: 2`, so without this EVERY <p> in a step lands in
+   row 2 and the action chip is painted straight over the step's own text.
+   Let them flow instead, and hold them all in column 2 so the discs stay in
+   a single column however tall a step gets. */
+.csteps__list > li > p,
+.csteps__list > li > .ckit,
+.csteps__list > li > .csteps__act { grid-column: 2; grid-row: auto; }
+.csteps__act { margin-top: 1.25rem; display: grid; gap: .65rem; justify-items: start; }
+
+/* What is in the kit. A list of contents, not a list of claims — so it is set
+   quietly, with the disc's own dot as the marker. */
+.ckit {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  display: grid; gap: .45rem;
+  font-size: 1rem; color: var(--ink-2);
+}
+.ckit li { display: grid; grid-template-columns: .85rem minmax(0, 1fr); gap: .7rem; }
+.ckit li::before {
+  content: ""; align-self: start;
+  width: .34rem; height: .34rem; margin-top: .62em;
+  border-radius: 50%; background: var(--amber);
+}
+
+/* THE PENDING CHIP, and the reason it is not a link.
+
+   Four forms on chapter.html do not exist yet. A button with a dead or
+   placeholder href looks identical to a working one, so it costs a willing
+   volunteer a click and a 404 to find that out — and that is the one visitor
+   this page cannot afford to lose. So the slot is a <span>: it reads as
+   unavailable, it cannot be tabbed to, and it cannot be clicked.
+
+   It is deliberately quieter than .action. When a real link replaces it, the
+   step should get louder, not merely different. */
+.pending {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .6rem .95rem;
+  border: 1px dashed var(--rule);
+  border-radius: var(--r);
+  background: var(--stock);
+  font-size: .95rem; color: var(--ink-2);
+}
+.pending::before {
+  content: ""; flex: none;
+  width: .5rem; height: .5rem;
+  border-radius: 50%; background: var(--amber);
 }

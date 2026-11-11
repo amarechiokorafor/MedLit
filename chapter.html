@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Start a MedLit chapter</title>
+  <meta name="description" content="Start a MedLit chapter where you are. Free guides, a starter kit, and the forms you need to sign up volunteers and tell us what you handed out.">
+
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+  <link rel="canonical" href="https://medliterate.org/chapter.html">
+  <meta name="theme-color" content="#f4a838">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MedLit">
+  <meta property="og:title" content="Start a MedLit chapter">
+  <meta property="og:description" content="Free guides, a starter kit, and the forms you need to sign up volunteers and tell us what you handed out.">
+  <meta property="og:url" content="https://medliterate.org/chapter.html">
+  <meta property="og:image" content="https://medliterate.org/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Understanding your own health shouldn't be a privilege. Free workshops and free plain-language guides.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preload" href="assets/fonts/schibsted-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Same cache buster as index.html, and it has to stay in step with it.
+       BUMP BOTH TOGETHER whenever styles.css changes, or this page and the
+       front page can end up rendering against two different stylesheets. -->
+  <link rel="stylesheet" href="styles.css?v=40">
+
+  <script>
+    if ('IntersectionObserver' in window) document.documentElement.className += ' js';
+  </script>
+</head>
+
+<!-- ==============================================================
+     START A CHAPTER — the second page on this site, and the first time
+     anything here has been more than one page.
+
+     WHY IT IS ITS OWN PAGE. Everything on the front page is for someone who
+     wants a guide, a workshop, or to volunteer an afternoon. A chapter is a
+     different commitment and a different person: someone who will run MedLit
+     where they live. Dropping four forms into the front page would have made
+     the longest section on it the one fewest visitors need.
+
+     THE SHAPE: what a chapter is, what we send, then the four steps in the
+     order they actually happen. The four things a chapter needs — the
+     interest form, the starter kit, a volunteer form of its own, and the
+     monthly check-in — ARE those steps, so they are numbered rather than
+     listed. The callout disc earns its place here for the first time outside
+     "How we check it": each disc points at one real step and says what it
+     means. See section 4 of the stylesheet before reusing it anywhere else.
+
+     THE FORM LINKS DO NOT EXIST YET. Every one of the four is a
+     .pending chip, which is deliberately NOT a link — a dead or
+     placeholder href on a page like this sends a willing volunteer to a
+     404 and loses them. Each one carries a comment saying exactly what to
+     paste where. Search this file for PASTE THE FORM LINK HERE; there are
+     four, in step order. Nothing else needs to change when they arrive:
+     swap the <span class="pending"> for the <a class="action"> that sits
+     commented out beside it.
+     ============================================================== -->
+<body>
+
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="masthead">
+    <div class="wide masthead__inner">
+
+      <a class="brand" href="index.html#top">
+        <img class="brand__mark" src="assets/medlit-logo.png"
+             alt="MedLit" width="398" height="420">
+        <span class="brand__tagline">health made understandable.</span>
+      </a>
+
+      <!-- Every item points back at the front page, because this page has no
+           sections of its own worth jumping to and a nav that mixes
+           same-page anchors with cross-page links is a nav nobody trusts. -->
+      <nav class="topnav" aria-label="Sections">
+        <ul>
+          <li><a href="index.html#what-we-do">What we do</a></li>
+          <li><a href="index.html#guides">Guides</a></li>
+          <li><a href="index.html#partners">Partners</a></li>
+          <li><a href="index.html#workshops">Workshops</a></li>
+          <li><a href="index.html#host">Host a workshop</a></li>
+          <!-- The page you are on. aria-current is the only thing marking it,
+               because a nav item that is styled as "here" but still a link is
+               the pattern everyone already understands. -->
+          <li><a href="chapter.html" aria-current="page">Start a chapter</a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================================
+         THE HEAD. No photograph: there is no honest one to use yet. The
+         first chapter has not happened, and a stock picture of students
+         would be the one thing on this site that is staged.
+         ============================================================ -->
+    <section class="chead">
+      <div class="wide chead__inner" data-reveal>
+        <p class="kicker">Start a chapter</p>
+        <h1>Run MedLit where you&nbsp;are.</h1>
+        <p class="chead__lede">
+          A chapter is a few people in one city who get plain-language health
+          guides onto front desks — a pantry, a clinic waiting room, a library,
+          a senior center — and run a workshop when a room says yes. We send the
+          guides, the kit and the forms. You bring the city.
+        </p>
+        <p class="chead__fine">
+          Free, and free to leave. There are no dues, no quotas, and nothing to
+          sign.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         WHAT IT TAKES, and what we send. Two plain lists, because the
+         question someone asks at this point is "what am I signing up for",
+         and the honest answer is short.
+         ============================================================ -->
+    <section class="cwhat" aria-labelledby="cwhat-h">
+      <div class="wide cwhat__grid" data-reveal>
+
+        <div class="cwhat__say">
+          <h2 id="cwhat-h">What a chapter actually does.</h2>
+          <p class="cwhat__lede">
+            Less than people expect. A chapter is not a branch office and it does
+            not write the guides — those are written here and reviewed by a
+            licensed healthcare professional before anyone prints them.
+          </p>
+        </div>
+
+        <dl class="facts facts--wide">
+          <div><dt>How many people</dt><dd>Two is enough to start. One is enough to ask.</dd></div>
+          <div><dt>How much time</dt><dd>A few hours a month, in practice.</dd></div>
+          <div><dt>The work</dt><dd>Print guides, ask a front desk, restock it, log what you handed out.</dd></div>
+          <div><dt>Workshops</dt><dd>Optional. We will run the first one with you over a call if you want it.</dd></div>
+          <div><dt>What we send</dt><dd>The guides as print-ready files, the starter kit, and the forms below.</dd></div>
+          <div><dt>What it costs</dt><dd><strong>Nothing.</strong> If printing is the thing stopping you, tell us and we will print.</dd></div>
+          <div><dt>Who can start one</dt><dd>Students, mostly. Nobody has to be pre-med, or a student at all.</dd></div>
+        </dl>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE FOUR STEPS. Numbered, in the order they happen, each with the
+         one thing you need at that point.
+         ============================================================ -->
+    <section class="csteps" aria-labelledby="csteps-h">
+      <div class="read" data-reveal>
+        <h2 id="csteps-h">Four steps, in order.</h2>
+
+        <ol class="checks csteps__list" role="list">
+
+          <li>
+            <span class="callout" aria-hidden="true">1</span>
+            <h3>Tell us you want to start one</h3>
+            <p>
+              The chapter interest form: who you are, what city, and what you
+              have in mind. It takes about three minutes, and it is not an
+              application — we have never said no. Someone reads it and emails
+              you back.
+            </p>
+            <p class="csteps__act">
+              <!-- PASTE THE FORM LINK HERE (1 of 4) — the chapter interest
+                   form. Delete the <span> below and uncomment the <a>:
+              <a class="action action--solid" href="PASTE_CHAPTER_INTEREST_FORM_URL"
+                 data-goatcounter-click="chapter-interest">
+                Chapter interest form
+              </a>
+              -->
+              <span class="pending">Chapter interest form &mdash; link coming soon</span>
+              <span class="act__fine">
+                In the meantime, <a href="mailto:medliterateofficial@gmail.com?subject=Starting%20a%20MedLit%20chapter">email us</a>
+                and say which city. That works just as well.
+              </span>
+            </p>
+          </li>
+
+          <li>
+            <span class="callout" aria-hidden="true">2</span>
+            <h3>Get the starter kit</h3>
+            <p>
+              One PDF with everything a first month needs: the print settings for
+              the guides, a one-page script for asking a front desk, what to say
+              when they ask who we are, a sheet to leave behind, and the
+              MedLit logo files.
+            </p>
+            <!-- WHAT IS IN THE KIT is listed here rather than left to the
+                 download, so someone can tell whether it is worth their time
+                 before they have the file. If the kit's contents change, this
+                 list changes with it. -->
+            <ul class="ckit" role="list">
+              <li>Print-ready files for every guide, in all five languages</li>
+              <li>How to ask a front desk, in one page</li>
+              <li>A leave-behind that explains MedLit to a partner</li>
+              <li>The workshop outline, with the timings</li>
+              <li>Logo files and the two things we ask you not to do with them</li>
+            </ul>
+            <p class="csteps__act">
+              <!-- PASTE THE FORM LINK HERE (2 of 4) — the starter kit. If the
+                   kit lands as a file in this repository rather than a Drive
+                   link, put it at assets/chapter/medlit-chapter-starter-kit.pdf
+                   and point the href there instead. Delete the <span> and
+                   uncomment the <a>:
+              <a class="action action--amber" href="PASTE_STARTER_KIT_URL"
+                 data-goatcounter-click="chapter-kit">
+                Download the starter kit
+              </a>
+              -->
+              <span class="pending">Starter kit &mdash; link coming soon</span>
+            </p>
+          </li>
+
+          <li>
+            <span class="callout" aria-hidden="true">3</span>
+            <h3>Sign up your own volunteers</h3>
+            <p>
+              A volunteer form you can share as your own — post it, print the
+              link, put it in a group chat. Everyone who fills it in comes
+              through to us and to you, so you are not retyping names into a
+              spreadsheet.
+            </p>
+            <p class="csteps__act">
+              <!-- PASTE THE FORM LINK HERE (3 of 4) — the volunteer form
+                   chapters share. This is NOT the same form as the one in the
+                   Volunteer section of index.html; that one is for individual
+                   volunteers and has no chapter field. Keep them separate.
+                   Delete the <span> and uncomment the <a>:
+              <a class="action action--solid" href="PASTE_CHAPTER_VOLUNTEER_FORM_URL"
+                 data-goatcounter-click="chapter-volunteer">
+                Volunteer form to share
+              </a>
+              -->
+              <span class="pending">Volunteer form to share &mdash; link coming soon</span>
+            </p>
+          </li>
+
+          <li>
+            <span class="callout" aria-hidden="true">4</span>
+            <h3>Tell us what you handed out, once a month</h3>
+            <p>
+              The monthly check-in: where you went, how many guides, which
+              languages. This is the only thing we ask you to keep doing, and it
+              is the reason the numbers on the front page are real. Five minutes.
+              A month with nothing to report is a valid answer.
+            </p>
+            <p class="csteps__act">
+              <!-- PASTE THE FORM LINK HERE (4 of 4) — the monthly check-in
+                   form. Whatever it feeds should carry the same fields the
+                   partner cards on index.html show: date, partner, total, and
+                   the split by language. Otherwise the check-in cannot be
+                   turned into a distribution row without emailing the chapter
+                   back. Delete the <span> and uncomment the <a>:
+              <a class="action action--solid" href="PASTE_MONTHLY_CHECKIN_FORM_URL"
+                 data-goatcounter-click="chapter-checkin">
+                Monthly check-in form
+              </a>
+              -->
+              <span class="pending">Monthly check-in &mdash; link coming soon</span>
+            </p>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         THE ASK. Navy, same as "Host a workshop" on the front page, because
+         it is the same kind of moment: the page is over and there is one
+         thing left to do.
+         ============================================================ -->
+    <section class="host" id="chapter-ask" aria-labelledby="chapter-ask-h">
+      <div class="wide host__grid" data-reveal>
+        <h2 id="chapter-ask-h">Not sure yet? Ask anyway.</h2>
+        <div class="host__body">
+          <p>
+            You do not need a plan, a team, or a partner lined up. If you are
+            thinking about it, email us and say where you are — we will tell you
+            honestly whether a chapter makes sense there and what the first month
+            would look like.
+          </p>
+          <p class="act">
+            <a class="action action--amber"
+               href="mailto:medliterateofficial@gmail.com?subject=Starting%20a%20MedLit%20chapter"
+               data-goatcounter-click="chapter-email">
+              Email us about a chapter
+            </a>
+            <span class="act__fine">medliterateofficial@gmail.com</span>
+          </p>
+          <p class="chead__fine">
+            Not ready to run one? <a href="index.html#volunteer">Volunteering takes an afternoon</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="wide foot__inner">
+
+      <div class="foot__brand">
+        <span class="foot__chip">
+          <img src="assets/medlit-logo.png" alt="MedLit" width="398" height="420">
+        </span>
+        <p class="foot__tagline">health made understandable.</p>
+      </div>
+
+      <div class="foot__contact">
+        <h2>Contact</h2>
+        <ul role="list">
+          <li>
+            <a href="mailto:medliterateofficial@gmail.com">
+              <svg class="foot__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true" focusable="false">
+                <rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/>
+                <path d="m3.2 6.4 8.8 6.1 8.8-6.1"/>
+              </svg>
+              medliterateofficial@gmail.com
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/med.literate/">
+              <svg class="foot__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
+                   aria-hidden="true" focusable="false">
+                <rect x="2.6" y="2.6" width="18.8" height="18.8" rx="5.4"/>
+                <circle cx="12" cy="12" r="4.1"/>
+                <circle cx="17.5" cy="6.5" r="1.15" fill="currentColor" stroke="none"/>
+              </svg>
+              Instagram: @med.literate
+            </a>
+          </li>
+          <li>
+            <a href="https://www.tiktok.com/@med.literate">
+              <svg class="foot__icon" viewBox="0 0 24 24" fill="currentColor"
+                   aria-hidden="true" focusable="false">
+                <path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5
+                         2.59 2.59 0 1 1 .77-5.06V9.7a5.67 5.67 0 0 0-.77-.05A5.67 5.67 0 1 0
+                         15.54 15.3V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.28 4.28 0 0 1-3.24-1.48Z"/>
+              </svg>
+              TikTok: @med.literate
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="wide">
+      <p class="foot__note">
+        MedLit provides general health education, not medical advice. Always talk to
+        your doctor or pharmacist about your specific medications.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    // The same reveal observer as index.html, and the same contract: delete
+    // this block and every word is still on the page. The catch strips the
+    // `js` flag so the stylesheet stops hiding blocks it may never be told
+    // to reveal.
+    (function () {
+      var root = document.documentElement;
+
+      try {
+        var targets = document.querySelectorAll('[data-reveal]');
+        if (!targets.length) return;
+
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            e.target.style.setProperty('--rv',
+              e.boundingClientRect.top < 0 ? '-20px' : '20px');
+            e.target.classList.toggle('is-in', e.isIntersecting);
+          });
+        }, { rootMargin: '-7% 0px -7% 0px', threshold: 0 });
+
+        Array.prototype.forEach.call(targets, function (t) { io.observe(t); });
+      } catch (err) {
+        root.className = root.className.replace(/\bjs\b/, '');
+      }
+    })();
+  </script>
+
+  <script data-goatcounter="https://medlit.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+
+</body>
+</html>
