@@ -58,7 +58,7 @@
        index.html itself can't be versioned this way — that one is the
        browser's own cache, cleared by a hard reload (Cmd/Ctrl + Shift + R)
        or by opening the URL with ?anything on the end. -->
-  <link rel="stylesheet" href="styles.css?v=39">
+  <link rel="stylesheet" href="styles.css?v=40">
 
   <!-- Motion is opt-in, and this is the opt-in. The stylesheet only hides a
        block before revealing it when `js` is present, so if this script never
@@ -159,6 +159,10 @@
           <li><a href="#partners">Partners</a></li>
           <li><a href="#workshops">Workshops</a></li>
           <li><a href="#host">Host a workshop</a></li>
+          <!-- The only item in here that leaves the page. It is last on
+               purpose: it is the biggest ask on the site and the smallest
+               audience for it. -->
+          <li><a href="chapter.html">Start a chapter</a></li>
         </ul>
       </nav>
 
@@ -1550,7 +1554,7 @@
           <img class="pdetail__logo" src="assets/logos/park-creek.png" alt=""
                width="343" height="140" loading="lazy">
 
-          <p class="pdetail__kind">Senior living community</p>
+          <p class="pdetail__kind">Independent living retirement community</p>
           <h3 class="pdetail__name" id="h-parkcreek">Park Creek Active Living</h3>
           <p class="pdetail__city">Cypress, TX</p>
 
@@ -1572,24 +1576,38 @@
             </ul>
           </div>
 
+          <!-- Every sentence here comes from Park Creek's own site. It had
+               been carrying Fort Bend Seniors' "About" text, which described
+               a meals programme two counties away. If this needs updating,
+               parkcreekactiveliving.com is the only source to take it from —
+               not a listings directory, which is where the wrong kind of
+               detail gets in. Deliberately NOT claimed, because the operator
+               does not state it: a minimum age, a 55+ rule, income limits,
+               the number of units, or any assisted-living licence. -->
           <div class="pdetail__block">
             <h4>About</h4>
-            <p>A senior living community in Cypress.</p>
+            <p>A maintenance-free retirement community on Huffmeister Road, with
+               apartments from studios to two bedrooms. Mowing, landscaping,
+               repairs and housekeeping are covered, and there is all-day
+               dining, a fitness center, a salon and a wellness program on
+               site.</p>
           </div>
 
           <div class="pdetail__block">
             <h4>Who they serve</h4>
-            <p>Residents of the community.</p>
+            <p>Older adults living independently. Personal care providers are
+               available on site for residents who come to need them, and the
+               community also takes short-term respite stays after an illness,
+               an injury or a hospital visit.</p>
           </div>
-          <!-- ADDRESS GOES HERE for Park Creek Active Living, once it is known. Nothing is
-               published rather than something wrong: an address is the one
-               field where being wrong puts a person outside the wrong
-               building. Write it as:
+
+          <!-- Taken from the operator's own site, same standard as Trini
+               Mendenhall below: an address is the one field where being
+               wrong puts a person outside the wrong building. -->
           <div class="pdetail__block">
             <h4>Where they are</h4>
-            <p class="pdetail__addr">000 Example St.<br>City, TX 00000</p>
+            <p class="pdetail__addr">16718 Huffmeister Road<br>Cypress, TX 77429</p>
           </div>
-               -->
 
           <div class="pdetail__block">
             <h4>Find them</h4>
@@ -1798,6 +1816,39 @@
             </p>
           </li>
 
+          <li class="quote">
+            <blockquote>
+              <p>&ldquo;The MedLit health guides have been a wonderful addition to our
+                food pantry. We love being able to offer our families more than just
+                food by sharing helpful information they can use at home to make
+                healthier choices. These guides are an easy, practical way to support
+                the families we serve and remind them that we care about their overall
+                well-being, not just putting food on the table.&rdquo;</p>
+            </blockquote>
+            <p class="quote__who">
+              <span class="quote__name">Jennifer Adkins</span>
+              <span class="quote__role">MESA-Outreach, Inc.</span>
+            </p>
+          </li>
+
+          <li class="quote">
+            <blockquote>
+              <!-- "pamphlets" and "first aid station" are her words. Do not
+                   swap in "guides" to match the rest of the page. -->
+              <p>&ldquo;We distributed several of your pamphlets at our fall festival&rsquo;s
+                first aid station, and they were a fantastic resource for our community.
+                When we reached out requesting materials in English, Spanish, and
+                Vietnamese, you did not hesitate to supply everything we asked for.
+                Your prompt support and inclusive resources were deeply appreciated,
+                and we hope to continue partnering with MedLit for our future workshops
+                and events.&rdquo;</p>
+            </blockquote>
+            <p class="quote__who">
+              <span class="quote__name">Marian Salway, BSN</span>
+              <span class="quote__role">SEAS Parish Nursing Ministry</span>
+            </p>
+          </li>
+
           <!-- ADD NEW TESTIMONIALS HERE -->
 
         </ul>
@@ -1952,6 +2003,12 @@
             Already volunteering?
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScLH6j8_-dfggbeB2p0WIYp7nVSYbpSfJ5AvShFJ3h5CY5QYw/viewform"
                data-goatcounter-click="volunteer-hours">Log your hours</a>.
+          </p>
+          <!-- The step up from volunteering, so it sits under it rather than
+               competing with the button above. -->
+          <p class="volunteer__hours">
+            Want to run MedLit in your city?
+            <a href="chapter.html" data-goatcounter-click="chapter-from-volunteer">Start a chapter</a>.
           </p>
         </div>
 

@@ -58,6 +58,7 @@
    19. Photography slots
    20. Facts, actions
    21. Footer
+   22. Start a chapter — chapter.html
    22. Responsive
    ========================================================================== */
 
@@ -1739,4 +1740,98 @@ img.pcard__logo, .pdetail__logo {
 @media (max-width: 40rem) {
   .hero { min-height: clamp(28rem, 78svh, 40rem); }
   .hero__photo { object-position: 62% 30%; }
+}
+
+/* ---------- 22. Start a chapter — chapter.html ---------------------------
+   The only rules on this stylesheet that the front page never uses. They are
+   here rather than in a second stylesheet so that the tokens, the type scale
+   and the two faces cannot drift between the two pages — there is one
+   stylesheet and one cache buster for the whole site.
+
+   Everything structural on chapter.html is borrowed: .wide, .read, .facts,
+   .checks with .callout, .host for the closing ask, .foot. What is new is the
+   page head (no photograph), the kit list, and the pending chip.
+   -------------------------------------------------------------------------- */
+
+/* The head. The front page opens on a photograph with the claim over it; this
+   one opens on words, so it needs the air that the photo was providing. */
+.chead {
+  border-bottom: 1px solid var(--rule);
+  padding-block: clamp(2.75rem, 6vw, 5rem);
+}
+.chead__inner > * { max-width: var(--read); }
+.chead h1 { margin-top: .6rem; font-size: var(--t1); }
+.chead__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.25rem; }
+.chead__fine { margin-top: 1.1rem; font-size: .95rem; color: var(--ink-2); }
+.host .chead__fine { color: var(--on-navy-dim); }
+.host .chead__fine a { color: var(--amber); }
+
+/* What a chapter does. Same two-column split as .workshops__grid, so the
+   rhythm down this page matches the rhythm down the front one. */
+.cwhat { padding-block: clamp(2.5rem, 4.5vw, 3.75rem); }
+.cwhat__grid {
+  display: grid; gap: clamp(1.75rem, 4vw, 3.25rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+.cwhat__lede { font-size: var(--t3); color: var(--ink-2); margin-top: 1.15rem; }
+@media (min-width: 60rem) {
+  .cwhat__grid { grid-template-columns: minmax(0, 22rem) minmax(0, 1fr); align-items: start; }
+}
+
+/* The four steps. .checks already draws the numbered rows; this only adds the
+   room the actions and the kit list need inside one. */
+.csteps {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(2.5rem, 4.5vw, 3.75rem);
+}
+.csteps__list > li > p { font-size: 1rem; }
+
+/* A step here is taller than a row in "How we check it": it carries a
+   paragraph, sometimes a list, and an action. That section pins its one
+   paragraph to `grid-row: 2`, so without this EVERY <p> in a step lands in
+   row 2 and the action chip is painted straight over the step's own text.
+   Let them flow instead, and hold them all in column 2 so the discs stay in
+   a single column however tall a step gets. */
+.csteps__list > li > p,
+.csteps__list > li > .ckit,
+.csteps__list > li > .csteps__act { grid-column: 2; grid-row: auto; }
+.csteps__act { margin-top: 1.25rem; display: grid; gap: .65rem; justify-items: start; }
+
+/* What is in the kit. A list of contents, not a list of claims — so it is set
+   quietly, with the disc's own dot as the marker. */
+.ckit {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  display: grid; gap: .45rem;
+  font-size: 1rem; color: var(--ink-2);
+}
+.ckit li { display: grid; grid-template-columns: .85rem minmax(0, 1fr); gap: .7rem; }
+.ckit li::before {
+  content: ""; align-self: start;
+  width: .34rem; height: .34rem; margin-top: .62em;
+  border-radius: 50%; background: var(--amber);
+}
+
+/* THE PENDING CHIP, and the reason it is not a link.
+
+   Four forms on chapter.html do not exist yet. A button with a dead or
+   placeholder href looks identical to a working one, so it costs a willing
+   volunteer a click and a 404 to find that out — and that is the one visitor
+   this page cannot afford to lose. So the slot is a <span>: it reads as
+   unavailable, it cannot be tabbed to, and it cannot be clicked.
+
+   It is deliberately quieter than .action. When a real link replaces it, the
+   step should get louder, not merely different. */
+.pending {
+  display: inline-flex; align-items: center; gap: .55rem;
+  padding: .6rem .95rem;
+  border: 1px dashed var(--rule);
+  border-radius: var(--r);
+  background: var(--stock);
+  font-size: .95rem; color: var(--ink-2);
+}
+.pending::before {
+  content: ""; flex: none;
+  width: .5rem; height: .5rem;
+  border-radius: 50%; background: var(--amber);
 }

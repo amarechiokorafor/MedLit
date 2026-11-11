@@ -4,7 +4,8 @@ Single-page static site for MedLit. Plain HTML + CSS, no frameworks and no build
 step, so it deploys as-is.
 
 ```
-index.html                       the whole page (plus ~40 lines of inline JS)
+index.html                       the front page (plus ~40 lines of inline JS)
+chapter.html                     Start a chapter — the only other page
 styles.css                       the whole stylesheet
 assets/medlit-logo.png           stacked lockup — header and footer
 assets/medlit-logo-vertical.png  full lockup with tagline — source for the icons
@@ -74,6 +75,39 @@ changes, change both; the Volunteer one carries a comment saying so.
 Volunteer submissions are handled by `automation/MedLit.gs`: it copies each one
 to a Volunteers tab, emails you an alert, and sends the volunteer a
 confirmation. That file has its own setup notes at the top.
+
+## The chapter page
+
+`chapter.html` is the second page on the site. It shares `styles.css` with
+`index.html` — one stylesheet, one cache buster, so **bump `?v=` in BOTH files
+together** whenever the stylesheet changes. Its own rules are section 22.
+
+**Four form links are not live yet.** Each is a `.pending` chip, which is a
+`<span>` and not a link, so nobody is sent to a 404. Search `chapter.html` for
+`PASTE THE FORM LINK HERE` — there are four, in step order, each with the real
+`<a>` sitting commented out beside it:
+
+| # | What | Who fills it in |
+|---|---|---|
+| 1 | Chapter interest form | Someone starting a chapter, once |
+| 2 | Starter kit (a file, not a form) | Downloaded by the chapter lead |
+| 3 | Volunteer form chapters share | That chapter's own volunteers |
+| 4 | Monthly check-in form | The chapter lead, monthly |
+
+To put one live: delete the `<span class="pending">` and uncomment the `<a>`
+above it. Nothing else changes.
+
+Two notes worth keeping:
+
+- Form 3 is **not** the same form as the volunteer one in the section above.
+  That one has no chapter field, so submissions through it cannot be credited
+  to a chapter. Keep them separate.
+- Form 4 should collect the same fields a partner card shows — date, partner,
+  total, and the split by language — or a check-in cannot be turned into a
+  distribution row without emailing the chapter back.
+
+If the starter kit lands as a file in this repository rather than a Drive
+link, put it at `assets/chapter/medlit-chapter-starter-kit.pdf`.
 
 ## Installed skills
 
